@@ -1,0 +1,54 @@
+{
+  "app_name": "스마트트래블 응우하인선",
+  "tagline": "응우하인선 스마트 관광 플랫폼 (SE13)",
+  "common": {
+    "confirm": "확인",
+    "cancel": "취소",
+    "save": "저장",
+    "back": "뒤로가기",
+    "search": "검색...",
+    "loading": "로딩 중...",
+    "error": "오류가 발생했습니다. 다시 시도해 주세요.",
+    "retry": "다시 시도",
+    "view_all": "모두 보기"
+  },
+  "nav": {
+    "home": "홈",
+    "explore": "탐색",
+    "map": "지도",
+    "assistant": "AI 비서",
+    "loyalty": "포인트",
+    "profile": "프로필"
+  },
+  "auth": {
+    "login": "로그인",
+    "register": "회원가입",
+    "logout": "로그아웃",
+    "forgot_password": "비밀번호 찾기",
+    "email": "이메일",
+    "password": "비밀번호",
+    "full_name": "이름"
+  },
+  "destinations": {
+    "title": "응우하인선 명소",
+    "filter_all": "전체",
+    "cultural_history": "문화 및 역사 정보",
+    "vr360_experience": "VR 360° 가상 투어",
+    "audio_guide": "다국어 오디오 가이드"
+  },
+  "ai_assistant": {
+    "title": "AI 관광 비서",
+    "capture_photo": "명소 사진 인식",
+    "generate_itinerary": "맞춤형 여행 일정 생성"
+  },
+  "checkin_loyalty": {
+    "title": "QR 체크인 및 포인트",
+    "scan_qr": "체크인 QR 스캔",
+    "my_points": "적립 포인트:",
+    "rewards_catalog": "기념품 및 바우처 교환"
+  },
+  "events": {
+    "title": "이벤트 및 공예 워크숍",
+    "book_now": "예약하기"
+  }
+}

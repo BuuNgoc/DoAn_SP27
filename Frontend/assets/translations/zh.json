@@ -1,0 +1,54 @@
+{
+  "app_name": "SmartTravel 五行山",
+  "tagline": "五行山智慧旅游平台 (SE13)",
+  "common": {
+    "confirm": "确认",
+    "cancel": "取消",
+    "save": "保存",
+    "back": "返回",
+    "search": "搜索...",
+    "loading": "加载中...",
+    "error": "发生错误，请重试。",
+    "retry": "重试",
+    "view_all": "查看全部"
+  },
+  "nav": {
+    "home": "首页",
+    "explore": "探索",
+    "map": "地图",
+    "assistant": "AI 助手",
+    "loyalty": "积分",
+    "profile": "个人中心"
+  },
+  "auth": {
+    "login": "登录",
+    "register": "注册",
+    "logout": "退出登录",
+    "forgot_password": "找回密码",
+    "email": "电子邮箱",
+    "password": "密码",
+    "full_name": "姓名"
+  },
+  "destinations": {
+    "title": "五行山精选景点",
+    "filter_all": "全部",
+    "cultural_history": "文化与历史信息",
+    "vr360_experience": "VR 360° 全景体验",
+    "audio_guide": "多语言语音导览"
+  },
+  "ai_assistant": {
+    "title": "AI 旅游助手与行程规划",
+    "capture_photo": "地标图像识别",
+    "generate_itinerary": "智能定制行程"
+  },
+  "checkin_loyalty": {
+    "title": "QR 扫码打卡与积分奖励",
+    "scan_qr": "扫码打卡",
+    "my_points": "我的积分:",
+    "rewards_catalog": "兑换精美纪念品与优惠券"
+  },
+  "events": {
+    "title": "活动与手工艺工作坊",
+    "book_now": "立即预约"
+  }
+}

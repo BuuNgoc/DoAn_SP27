@@ -1,0 +1,171 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ----------------------------------------------------
+    // RBAC Security Helper Functions (LI-02, LI-07)
+    // ----------------------------------------------------
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function getUserRole() {
+      return request.auth.token.role != null 
+        ? request.auth.token.role 
+        : (isSignedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+            ? getUserData().role 
+            : null);
+    }
+
+    function isAdmin() {
+      return isSignedIn() && getUserRole() == 'ADMIN';
+    }
+
+    function isTourismManager() {
+      return isSignedIn() && (getUserRole() == 'TOURISM_MANAGER' || isAdmin());
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // ----------------------------------------------------
+    // Collection: users/{uid} [FE-01, FE-26, FE-27]
+    // ----------------------------------------------------
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      // Du khách chỉ được sửa profile cơ bản của mình; KHÔNG được đổi role hoặc loyaltyPoints (LI-07)
+      allow update: if isOwner(userId)
+                    && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role', 'loyaltyPoints', 'isActive'])
+                    || isAdmin();
+      allow create: if isOwner(userId)
+                    && request.resource.data.role == 'TOURIST'
+                    && request.resource.data.loyaltyPoints == 0
+                    || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ----------------------------------------------------
+    // Collection: destinations/{destinationId} [FE-02, FE-17]
+    // ----------------------------------------------------
+    match /destinations/{destinationId} {
+      allow read: if resource.data.isPublished == true || isTourismManager();
+      allow write: if isTourismManager();
+
+      // Sub-collection: vr360_contents [FE-03, FE-18]
+      match /vr360_contents/{vrId} {
+        allow read: if true;
+        allow write: if isTourismManager();
+      }
+
+      // Sub-collection: audio_guides [FE-03, FE-18]
+      match /audio_guides/{audioId} {
+        allow read: if true;
+        allow write: if isTourismManager();
+      }
+
+      // Sub-collection: reviews [FE-10]
+      match /reviews/{reviewId} {
+        allow read: if true;
+        allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+        allow update, delete: if isSignedIn() && (resource.data.userId == request.auth.uid || isTourismManager());
+      }
+    }
+
+    // ----------------------------------------------------
+    // Collection: artisans/{artisanId} [FE-15, FE-21]
+    // ----------------------------------------------------
+    match /artisans/{artisanId} {
+      allow read: if true;
+      allow write: if isTourismManager();
+    }
+
+    // ----------------------------------------------------
+    // Collection: events_workshops/{eventId} [FE-06, FE-19]
+    // ----------------------------------------------------
+    match /events_workshops/{eventId} {
+      allow read: if true;
+      allow write: if isTourismManager();
+    }
+
+    // ----------------------------------------------------
+    // Collection: bookings/{bookingId} [FE-07]
+    // Mutation must be done via Cloud Functions to guarantee capacity (LI-07)
+    // ----------------------------------------------------
+    match /bookings/{bookingId} {
+      allow read: if isSignedIn() && (resource.data.userId == request.auth.uid || isTourismManager());
+      allow create, update, delete: if isTourismManager(); // Clients call createBooking Cloud Function
+    }
+
+    // ----------------------------------------------------
+    // Collection: checkin_points & checkin_records [FE-08, FE-20]
+    // ----------------------------------------------------
+    match /checkin_points/{pointId} {
+      allow read: if true;
+      allow write: if isTourismManager();
+    }
+
+    match /checkin_records/{recordId} {
+      allow read: if isSignedIn() && (resource.data.userId == request.auth.uid || isTourismManager());
+      allow write: if isTourismManager(); // Writes strictly handled by validateQrCheckin Cloud Function (LI-07)
+    }
+
+    // ----------------------------------------------------
+    // Collection: rewards & reward_redemptions [FE-09, FE-20]
+    // ----------------------------------------------------
+    match /rewards/{rewardId} {
+      allow read: if true;
+      allow write: if isTourismManager();
+    }
+
+    match /reward_redemptions/{redemptionId} {
+      allow read: if isSignedIn() && (resource.data.userId == request.auth.uid || isTourismManager());
+      allow write: if isTourismManager(); // Writes strictly handled by redeemLoyaltyReward Cloud Function (LI-07)
+    }
+
+    // ----------------------------------------------------
+    // Collection: stone_carving_contests [FE-16, FE-22]
+    // ----------------------------------------------------
+    match /stone_carving_contests/{contestId} {
+      allow read: if true;
+      allow write: if isTourismManager();
+
+      match /entries/{entryId} {
+        allow read: if true;
+        allow write: if isTourismManager();
+      }
+
+      match /votes/{voteId} {
+        allow read: if isSignedIn() && (resource.data.userId == request.auth.uid || isTourismManager());
+        allow write: if isTourismManager(); // Voting must go through Cloud Function to prevent duplicate votes
+      }
+    }
+
+    // ----------------------------------------------------
+    // Collection: promotion_campaigns/{campaignId} [FE-14, FE-24]
+    // ----------------------------------------------------
+    match /promotion_campaigns/{campaignId} {
+      allow read: if true;
+      allow write: if isTourismManager();
+    }
+
+    // ----------------------------------------------------
+    // Collection: ai_itineraries_and_logs/{logId} [FE-05]
+    // ----------------------------------------------------
+    match /ai_itineraries_and_logs/{logId} {
+      allow read, write: if isSignedIn() && (resource.data.userId == request.auth.uid || isTourismManager());
+    }
+
+    // ----------------------------------------------------
+    // Collection: system_administration/* [FE-25, FE-28]
+    // ----------------------------------------------------
+    match /system_administration/{document=**} {
+      allow read, write: if isAdmin();
+    }
+  }
+}

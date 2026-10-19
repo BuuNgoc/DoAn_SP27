@@ -1,0 +1,66 @@
+{
+  "app_name": "SmartTravel Ngu Hanh Son",
+  "tagline": "Smart Tourism Platform for Ngu Hanh Son (SE13)",
+  "common": {
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "save": "Save",
+    "back": "Back",
+    "search": "Search...",
+    "loading": "Loading...",
+    "error": "An error occurred, please try again.",
+    "retry": "Retry",
+    "view_all": "View All"
+  },
+  "nav": {
+    "home": "Home",
+    "explore": "Explore",
+    "map": "Map",
+    "assistant": "AI Assistant",
+    "loyalty": "Rewards",
+    "profile": "Profile"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "forgot_password": "Forgot Password",
+    "email": "Email",
+    "password": "Password",
+    "full_name": "Full Name"
+  },
+  "destinations": {
+    "title": "Ngu Hanh Son Destinations",
+    "filter_all": "All",
+    "mountains": "Mountains",
+    "caves": "Caves",
+    "pagodas": "Pagodas",
+    "craft_village": "Non Nuoc Stone Village",
+    "beaches": "Son Thuy - Tan Tra Beach",
+    "an_thuong": "An Thuong Tourism Zone",
+    "cultural_history": "Cultural & Historical Details",
+    "vr360_experience": "VR 360° Experience",
+    "audio_guide": "Automated Audio Guide"
+  },
+  "ai_assistant": {
+    "title": "AI Tourism Assistant & RAG",
+    "capture_photo": "Snap Landmark Photo",
+    "generate_itinerary": "Smart Itinerary Planner",
+    "budget": "Budget (VND)",
+    "time_available": "Available Time",
+    "interests": "Interests"
+  },
+  "checkin_loyalty": {
+    "title": "QR Check-in & Rewards",
+    "scan_qr": "Scan QR Check-in",
+    "my_points": "My Loyalty Points:",
+    "rewards_catalog": "Redeem Gifts & Vouchers",
+    "cooldown_warning": "You already checked in here recently. Please wait."
+  },
+  "events": {
+    "title": "Events & Craft Workshops",
+    "book_now": "Book Experience",
+    "stone_contest": "Non Nuoc Stone Carving Contest",
+    "vote_now": "Vote Entry"
+  }
+}

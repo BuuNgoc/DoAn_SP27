@@ -1,0 +1,40 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isImageFile() {
+      return request.resource.contentType.matches('image/.*') && request.resource.size < 10 * 1024 * 1024;
+    }
+
+    function isAudioFile() {
+      return request.resource.contentType.matches('audio/.*') && request.resource.size < 30 * 1024 * 1024;
+    }
+
+    // Public readable assets (destinations, VR360, audio guides)
+    match /destinations/{allPaths=**} {
+      allow read: if true;
+      allow write: if isSignedIn(); // Tourism manager or admin
+    }
+
+    match /audio_guides/{allPaths=**} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
+
+    // User review images upload [FE-10]
+    match /user_reviews/{userId}/{reviewId}/{fileName} {
+      allow read: if true;
+      allow write: if isSignedIn() && request.auth.uid == userId && isImageFile();
+    }
+
+    // User avatars
+    match /avatars/{userId}/{fileName} {
+      allow read: if true;
+      allow write: if isSignedIn() && request.auth.uid == userId && isImageFile();
+    }
+  }
+}

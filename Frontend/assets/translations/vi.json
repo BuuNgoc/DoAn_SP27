@@ -1,0 +1,66 @@
+{
+  "app_name": "SmartTravel Ngũ Hành Sơn",
+  "tagline": "Nền tảng Du lịch Thông minh Ngũ Hành Sơn (SE13)",
+  "common": {
+    "confirm": "Xác nhận",
+    "cancel": "Hủy bỏ",
+    "save": "Lưu",
+    "back": "Quay lại",
+    "search": "Tìm kiếm...",
+    "loading": "Đang tải dữ liệu...",
+    "error": "Đã xảy ra lỗi, vui lòng thử lại.",
+    "retry": "Thử lại",
+    "view_all": "Xem tất cả"
+  },
+  "nav": {
+    "home": "Trang chủ",
+    "explore": "Khám phá",
+    "map": "Bản đồ",
+    "assistant": "Trợ lý AI",
+    "loyalty": "Tích điểm",
+    "profile": "Tài khoản"
+  },
+  "auth": {
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
+    "logout": "Đăng xuất",
+    "forgot_password": "Quên mật khẩu",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "full_name": "Họ và tên"
+  },
+  "destinations": {
+    "title": "Điểm đến Ngũ Hành Sơn",
+    "filter_all": "Tất cả",
+    "mountains": "Danh thắng Núi",
+    "caves": "Hang động",
+    "pagodas": "Chùa chiền",
+    "craft_village": "Làng nghề Non Nước",
+    "beaches": "Bãi biển Sơn Thủy - Tân Trà",
+    "an_thuong": "Phố du lịch An Thượng",
+    "cultural_history": "Thông tin Lịch sử & Văn hóa",
+    "vr360_experience": "Trải nghiệm VR 360°",
+    "audio_guide": "Thuyết minh tự động (Audio Guide)"
+  },
+  "ai_assistant": {
+    "title": "Trợ lý Du lịch AI & RAG",
+    "capture_photo": "Chụp ảnh địa danh",
+    "generate_itinerary": "Lập lịch trình thông minh",
+    "budget": "Ngân sách (VNĐ)",
+    "time_available": "Thời gian (giờ/ngày)",
+    "interests": "Sở thích du lịch"
+  },
+  "checkin_loyalty": {
+    "title": "QR Check-in & Tích Điểm",
+    "scan_qr": "Quét mã Check-in",
+    "my_points": "Điểm tích lũy:",
+    "rewards_catalog": "Đổi quà lưu niệm & Voucher",
+    "cooldown_warning": "Bạn vừa check-in tại đây. Vui lòng quay lại sau."
+  },
+  "events": {
+    "title": "Sự kiện & Workshop Làng Nghề",
+    "book_now": "Đặt chỗ tham gia",
+    "stone_contest": "Cuộc thi Điêu khắc đá Non Nước",
+    "vote_now": "Bình chọn tác phẩm"
+  }
+}
