@@ -5,6 +5,7 @@
 
 // Module 1: Auth & Users [FE-01, FE-26, FE-27]
 export { onUserCreated } from './modules/auth_and_users/on_user_created.trigger';
+export { ensureUserProfile } from './modules/auth_and_users/ensure_user_profile.fn';
 export { setUserRole } from './modules/auth_and_users/set_user_role.fn';
 export { manageUserStatus } from './modules/auth_and_users/manage_user_status.fn';
 

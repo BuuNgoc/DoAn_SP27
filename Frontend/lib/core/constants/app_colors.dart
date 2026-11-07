@@ -1,30 +1,52 @@
 import 'package:flutter/material.dart';
 
-/// App Colors representing Ngu Hanh Son culture (ocean blue, marble green, stone grey, sunset amber)
+/// SmartTravel Design System – "Soft Ice-Mint Pastel & Topographic Contour".
+///
+/// Bảng màu lấy cảm hứng từ vân đá cẩm thạch Ngũ Hành Sơn và mặt biển
+/// Sơn Thủy – Tân Trà. Mọi widget trong ứng dụng chỉ dùng màu từ lớp này.
 class AppColors {
   AppColors._();
 
-  static const Color primary = Color(0xFF0D5C75);      // Deep Ocean Teal
-  static const Color primaryLight = Color(0xFF1E88A8);
-  static const Color primaryDark = Color(0xFF083C4D);
-  static const Color secondary = Color(0xFFE5A638);    // Non Nuoc Sunset Amber
-  static const Color accent = Color(0xFF2E8B57);       // Sea Stone Emerald
+  // ── Nền & bề mặt ───────────────────────────────────────────────────────
+  static const Color backgroundIceMint = Color(0xFFF4FAFA);
+  static const Color backgroundSecondary = Color(0xFFECF7F7);
+  static const Color contourLineColor = Color(0xFFE0EFEF);
+  static const Color surfaceWhite = Color(0xFFFFFFFF);
+  static const Color cardBorder = Color(0xFFDFEEEE);
 
-  static const Color backgroundLight = Color(0xFFF8FAFC);
-  static const Color surfaceLight = Color(0xFFFFFFFF);
-  static const Color cardLight = Color(0xFFFFFFFF);
+  // ── Thương hiệu ────────────────────────────────────────────────────────
+  static const Color primaryTeal = Color(0xFF24838B);
+  static const Color primaryPastel = Color(0xFF58B4BC);
+  static const Color accentSoftGold = Color(0xFFE4B363);
 
-  static const Color backgroundDark = Color(0xFF0F172A);
-  static const Color surfaceDark = Color(0xFF1E293B);
-  static const Color cardDark = Color(0xFF334155);
+  // ── Chữ ────────────────────────────────────────────────────────────────
+  static const Color textPrimary = Color(0xFF183438);
+  static const Color textSecondary = Color(0xFF627F83);
+  static const Color textMuted = Color(0xFF94AEB2);
 
-  static const Color textPrimaryLight = Color(0xFF1E293B);
-  static const Color textSecondaryLight = Color(0xFF64748B);
-  static const Color textPrimaryDark = Color(0xFFF8FAFC);
-  static const Color textSecondaryDark = Color(0xFF94A3B8);
+  // ── Trạng thái (pastel dịu mắt) ───────────────────────────────────────
+  static const Color success = Color(0xFF4CAF7A);
+  static const Color warning = Color(0xFFF2A65A);
+  static const Color error = Color(0xFFE56B6B);
 
-  static const Color error = Color(0xFFDC2626);
-  static const Color success = Color(0xFF16A34A);
-  static const Color warning = Color(0xFFF59E0B);
-  static const Color info = Color(0xFF2563EB);
+  // ── Gradient & bóng đổ dùng chung ──────────────────────────────────────
+  static const LinearGradient primaryGradient = LinearGradient(
+    colors: [primaryTeal, primaryPastel],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
+  static const LinearGradient goldGradient = LinearGradient(
+    colors: [Color(0xFFE4B363), Color(0xFFF1CF8E)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
+  static List<BoxShadow> get softShadow => [
+        BoxShadow(
+          color: primaryTeal.withValues(alpha: 0.06),
+          blurRadius: 16,
+          offset: const Offset(0, 6),
+        ),
+      ];
 }

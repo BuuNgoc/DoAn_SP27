@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import { auth } from '../config/firebase.config';
+import { auth } from '../../config/firebase.config';
 
 export type UserRole = 'TOURIST' | 'TOURISM_MANAGER' | 'ADMIN';
 

@@ -31,7 +31,16 @@ service firebase.storage {
       allow write: if isSignedIn() && request.auth.uid == userId && isImageFile();
     }
 
-    // User avatars
+    // User avatars [FE-01]
+    match /users/{userId}/avatar/{allPaths=**} {
+      allow read: if true;
+      allow write: if isSignedIn() 
+                   && request.auth.uid == userId 
+                   && request.resource.contentType.matches('image/.*')
+                   && request.resource.size <= 5 * 1024 * 1024;
+    }
+
+    // Backwards compatibility for legacy avatar path
     match /avatars/{userId}/{fileName} {
       allow read: if true;
       allow write: if isSignedIn() && request.auth.uid == userId && isImageFile();

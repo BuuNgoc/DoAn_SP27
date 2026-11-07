@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
-/// Default [FirebaseOptions] stub for use with Firebase.initializeApp
+/// Default [FirebaseOptions] for use with Firebase.initializeApp
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
@@ -18,28 +18,28 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyStubApiKeyForWebDevelopment12345',
-    appId: '1:1234567890:web:abcdef123456',
-    messagingSenderId: '1234567890',
+    apiKey: 'AIzaSyBcIRU-3DtPCDveyT6ZiDkw2FLPSlraZzg',
+    appId: '1:462033431838:web:3512ce9388d23f187e2d0f',
+    messagingSenderId: '462033431838',
     projectId: 'smarttravel-se13',
     authDomain: 'smarttravel-se13.firebaseapp.com',
-    storageBucket: 'smarttravel-se13.appspot.com',
+    storageBucket: 'smarttravel-se13.firebasestorage.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyStubApiKeyForAndroidDevelopment12345',
-    appId: '1:1234567890:android:abcdef123456',
-    messagingSenderId: '1234567890',
+    apiKey: 'AIzaSyBcIRU-3DtPCDveyT6ZiDkw2FLPSlraZzg',
+    appId: '1:462033431838:android:3512ce9388d23f187e2d0f',
+    messagingSenderId: '462033431838',
     projectId: 'smarttravel-se13',
-    storageBucket: 'smarttravel-se13.appspot.com',
+    storageBucket: 'smarttravel-se13.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyStubApiKeyForIOSDevelopment12345',
-    appId: '1:1234567890:ios:abcdef123456',
-    messagingSenderId: '1234567890',
+    apiKey: 'AIzaSyBcIRU-3DtPCDveyT6ZiDkw2FLPSlraZzg',
+    appId: '1:462033431838:ios:3512ce9388d23f187e2d0f',
+    messagingSenderId: '462033431838',
     projectId: 'smarttravel-se13',
-    storageBucket: 'smarttravel-se13.appspot.com',
-    iosBundleId: 'com.se13.smarttravel',
+    storageBucket: 'smarttravel-se13.firebasestorage.app',
+    iosBundleId: 'com.se13.smarttravel.smart_travel_app',
   );
 }

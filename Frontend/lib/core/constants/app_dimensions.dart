@@ -9,10 +9,15 @@ class AppDimensions {
   static const double xl = 32.0;
   static const double xxl = 48.0;
 
-  // Border Radius
-  static const double radiusSm = 6.0;
-  static const double radiusMd = 12.0;
-  static const double radiusLg = 16.0;
+  /// Lề ngang chuẩn của mọi màn hình.
+  static const double screenPadding = 20.0;
+
+  // Border Radius (bo góc mềm 16 – 20px theo Design System)
+  static const double radiusSm = 10.0;
+  static const double radiusMd = 16.0;
+  static const double radiusLg = 18.0;
+  static const double radiusXl = 20.0;
+  static const double radiusSheet = 28.0;
   static const double radiusFull = 999.0;
 
   // Icon Sizes
@@ -20,8 +25,6 @@ class AppDimensions {
   static const double iconMd = 24.0;
   static const double iconLg = 32.0;
 
-  // Elevation
-  static const double elevationLow = 2.0;
-  static const double elevationMedium = 4.0;
-  static const double elevationHigh = 8.0;
+  /// Khoảng trống dưới cùng để nội dung không bị NavigationBar nổi che mất.
+  static const double bottomNavClearance = 110.0;
 }

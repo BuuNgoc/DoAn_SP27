@@ -1,24 +1,34 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'firebase_options.dart';
-import 'core/di/injection_container.dart' as di;
-import 'app.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
-/// App Entry Point: SmartTravel - Smart Tourism Platform for Ngu Hanh Son
-/// Group SE13 - FPT University Da Nang
-void main() async {
+import 'app.dart';
+import 'core/config/app_config.dart';
+import 'core/di/injection_container.dart' as di;
+import 'features/destination_discovery/data/datasources/destination_data_sources.dart';
+import 'firebase_options.dart';
+
+/// Điểm khởi chạy: SmartTravel – Nền tảng du lịch thông minh Ngũ Hành Sơn (nhóm SE13).
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Firebase Serverless Services (LI-04)
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // Firebase serverless (LI-04). Ở chế độ dữ liệu mẫu, ứng dụng vẫn chạy khi chưa cấu hình Firebase.
+  if (!AppConfig.useMockBackend) {
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  } else {
+    try {
+      await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    } catch (e) {
+      debugPrint('Bỏ qua khởi tạo Firebase (đang dùng dữ liệu mẫu): $e');
+    }
+  }
 
-  // Initialize Local Cache (Hive) for Offline Persistence (LI-05)
+  // Bộ nhớ đệm cục bộ cho chế độ ngoại tuyến – địa điểm yêu thích (LI-05).
   await Hive.initFlutter();
+  await FavoritesLocalDataSource.init();
 
-  // Initialize Dependency Injection
+  await initializeDateFormatting('vi');
   await di.initDependencyInjection();
 
   runApp(const SmartTravelApp());

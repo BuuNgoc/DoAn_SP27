@@ -1,4 +1,4 @@
-import { db } from '../config/firebase.config';
+import { db } from '../../config/firebase.config';
 import * as admin from 'firebase-admin';
 
 export interface AuditLogEntry {

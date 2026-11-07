@@ -20,6 +20,6 @@ export const syncDestinationEmbeddings = functions.firestore
       return; // No need to recompute embedding
     }
 
-    console.log(`Syncing vector embeddings for destination: ${context.params.destinationId}`);
+    console.log(`Syncing vector embeddings for destination: ${context.params.destinationId} (content length: ${content.length})`);
     // TODO: Call Gemini Text Embedding model text-embedding-004 and update doc.embedding
   });

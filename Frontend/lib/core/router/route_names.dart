@@ -1,67 +1,80 @@
-/// All GoRouter route names and paths mapping to FE-01 through FE-28
+/// Toàn bộ đường dẫn GoRouter của ứng dụng di động (FE-01 → FE-16).
 class RouteNames {
   RouteNames._();
 
-  // Root & Shell
-  static const String home = '/';
-  static const String explore = '/explore';
-  static const String map = '/map';
-  static const String assistant = '/assistant';
-  static const String profile = '/profile';
+  // ── 5 tab của MainNavigationShell ─────────────────────────────────────
+  static const String explore = '/explore'; // FE-02, 03, 06, 12, 13, 14
+  static const String map = '/map'; // FE-04
+  static const String ai = '/ai'; // FE-05 & RAG
+  static const String checkin = '/checkin'; // FE-08, FE-09
+  static const String profile = '/profile'; // FE-01, 07, 10, 11
 
-  // FE-01: Auth
+  // ── FE-01: Authentication ─────────────────────────────────────────────
   static const String login = '/login';
   static const String register = '/register';
-  static const String forgotPassword = '/forgot-password';
+  static const String resetPassword = '/reset-password';
   static const String changePassword = '/change-password';
+  static const String editProfile = '/edit-profile';
 
-  // FE-02: Destination Discovery
-  static const String destinationDetails = '/destinations/:id';
-  static const String destinationFavorites = '/favorites';
+  // ── FE-02: Destination Discovery ──────────────────────────────────────
+  static const String destinations = '/destinations';
+  static String destinationDetail(String id) => '/destinations/$id';
+  static const String favorites = '/favorites';
 
-  // FE-03: VR360 & Audio Guide
-  static const String vr360Viewer = '/vr360/:id';
-  static const String audioPlayer = '/audio-guide/:id';
+  // ── FE-03: VR360 & Audio Guide ────────────────────────────────────────
+  static String vr360(String destinationId) => '/vr360/$destinationId';
+  static String audioGuide(String destinationId) => '/audio-guide/$destinationId';
 
-  // FE-04: Interactive Map
-  static const String mapPoiDetails = '/map/poi/:id';
+  // ── FE-05: AI Photo Recognition & RAG Itinerary ───────────────────────
+  static const String aiScan = '/ai-scan';
+  static const String aiResult = '/ai-result';
+  static const String aiPlanner = '/ai-planner';
+  static const String aiChat = '/ai-chat';
 
-  // FE-05: AI Photo Recognition & RAG Itinerary
-  static const String aiCamera = '/ai/camera';
-  static const String aiItineraryResult = '/ai/itinerary-result';
-
-  // FE-06, FE-15, FE-16: Events & Workshops & Stone Village
+  // ── FE-06, FE-15, FE-16: Events, Workshops, Artisans, Contest ─────────
   static const String events = '/events';
-  static const String eventDetails = '/events/:id';
-  static const String workshops = '/workshops';
-  static const String artisans = '/artisans';
-  static const String stoneContest = '/stone-contest';
+  static String eventDetail(String id) => '/events/$id';
+  static String artisan(String id) => '/artisans/$id';
+  static const String contest = '/contest';
+  static String contestEntry(String contestId, String entryId) => '/contest/$contestId/entries/$entryId';
 
-  // FE-07: Booking
-  static const String createBooking = '/booking/create';
-  static const String bookingHistory = '/booking/history';
-  static const String bookingDetails = '/booking/:id';
+  // ── FE-07: Booking ────────────────────────────────────────────────────
+  static String bookingForm(String serviceId) => '/booking/new/$serviceId';
+  static String bookingConfirmation(String bookingId) => '/booking/confirmation/$bookingId';
+  static const String bookingHistory = '/bookings';
+  static String bookingDetail(String id) => '/bookings/$id';
 
-  // FE-08, FE-09: QR Check-in & Loyalty
-  static const String qrScanner = '/checkin/scan';
-  static const String checkinHistory = '/checkin/history';
-  static const String loyaltyRewards = '/loyalty/rewards';
-  static const String rewardRedemptions = '/loyalty/redemptions';
+  // ── FE-08, FE-09: QR Check-in & Loyalty ───────────────────────────────
+  static const String qrScanner = '/checkin-scan';
+  static const String checkinPoints = '/checkin-points';
+  static const String checkinConfirmation = '/checkin-confirmation';
+  static const String rewards = '/rewards';
+  static String rewardDetail(String id) => '/rewards/$id';
+  static const String redemptionHistory = '/redemptions';
 
-  // FE-10, FE-11: Reviews & Social Share
-  static const String writeReview = '/reviews/write/:destinationId';
+  // ── FE-10, FE-11: Reviews & Social Sharing ────────────────────────────
+  static String destinationReviews(String destinationId) => '/reviews/$destinationId';
+  static String writeReview(String destinationId) => '/reviews/$destinationId/write';
+  static const String myReviews = '/my-reviews';
 
-  // FE-12, FE-13, FE-14: Specialized Zones
-  static const String anThuongHub = '/zones/an-thuong';
-  static const String beachSafety = '/zones/beach-safety';
-  static const String airportPromos = '/zones/airport-promos';
+  // ── FE-12, FE-13, FE-14: Specialized Zones ────────────────────────────
+  static const String anThuong = '/zones/an-thuong';
+  static const String beach = '/zones/beach';
+  static const String airportWelcome = '/welcome-airport';
 
-  // FE-17 -> FE-28: Admin Portal
-  static const String adminDashboard = '/admin/dashboard';
-  static const String adminDestinations = '/admin/destinations';
-  static const String adminEvents = '/admin/events';
-  static const String adminLoyalty = '/admin/loyalty';
-  static const String adminUsers = '/admin/users';
-  static const String adminAnalytics = '/admin/analytics';
-  static const String adminAuditLogs = '/admin/audit-logs';
+  /// Các đường dẫn cần đăng nhập (chuyển hướng về `/login?from=...`).
+  static const List<String> protectedPrefixes = [
+    changePassword,
+    editProfile,
+    '/booking',
+    bookingHistory,
+    qrScanner,
+    redemptionHistory,
+    myReviews,
+  ];
+
+  static bool requiresAuth(String location) {
+    if (location.startsWith('/reviews/') && location.endsWith('/write')) return true;
+    return protectedPrefixes.any(location.startsWith);
+  }
 }

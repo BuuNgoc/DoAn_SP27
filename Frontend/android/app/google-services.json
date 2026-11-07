@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "462033431838",
+    "project_id": "smarttravel-se13",
+    "storage_bucket": "smarttravel-se13.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:462033431838:android:3512ce9388d23f187e2d0f",
+        "android_client_info": {
+          "package_name": "com.se13.smarttravel.smart_travel_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "462033431838-tio2p2shpbt05psprti0k6kgqpk15mhd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.se13.smarttravel.smart_travel_app",
+            "certificate_hash": "592d56b75bde153374afb1cbd5477dc72fd6aa5c"
+          }
+        },
+        {
+          "client_id": "462033431838-eqq40v4p09cr42deajnogn8dgj543j63.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcIRU-3DtPCDveyT6ZiDkw2FLPSlraZzg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "462033431838-eqq40v4p09cr42deajnogn8dgj543j63.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
