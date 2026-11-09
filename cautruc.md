@@ -135,9 +135,17 @@ DoAn_SP27/
 
 ### Run Flutter Frontend (`DoAn_SP27/Frontend`)
 ~~~bash
+# Cách 1: Chạy trực tiếp qua file script (mặc định luôn chạy cổng 8000):
+./run_web.bat     # Trên Windows (hoặc nhấp đúp file run_web.bat)
+./run_web.sh      # Trên macOS / Linux
+
+# Cách 2: Chạy qua VS Code / IDE:
+# Nhấn F5 (đã cấu hình sẵn profile "SmartTravel Web (Port 8000)" trong .vscode/launch.json)
+
+# Cách 3: Chạy thủ công qua lệnh terminal:
 cd Frontend
 flutter pub get
-flutter run
+flutter run -d chrome --web-port 8000
 ~~~
 
 ### Run / Deploy Firebase Backend (`DoAn_SP27/Backend`)
