@@ -1,14 +1,20 @@
 import '../../../../core/errors/exceptions.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../domain/entities/destination.dart';
 import '../../domain/repositories/destination_repository.dart';
 import '../datasources/destination_data_sources.dart';
 import '../models/destination_model.dart';
 
 class DestinationRepositoryImpl implements DestinationRepository {
-  DestinationRepositoryImpl({required this.remote, required this.favorites});
+  DestinationRepositoryImpl({
+    required this.remote,
+    required this.favorites,
+    RecentlyViewedLocalDataSource? recentlyViewed,
+  }) : recentlyViewed = recentlyViewed ?? RecentlyViewedLocalDataSource();
 
   final DestinationRemoteDataSource remote;
   final FavoritesLocalDataSource favorites;
+  final RecentlyViewedLocalDataSource recentlyViewed;
 
   List<DestinationModel>? _cache;
 
@@ -32,7 +38,7 @@ class DestinationRepositoryImpl implements DestinationRepository {
     final all = await _all();
     return all.firstWhere(
       (d) => d.id == id,
-      orElse: () => throw const ServerException('Không tìm thấy điểm đến.'),
+      orElse: () => throw ServerException(AppLocalizations.trStatic('destinations.not_found')),
     );
   }
 
@@ -41,6 +47,15 @@ class DestinationRepositoryImpl implements DestinationRepository {
 
   @override
   Future<bool> toggleFavorite(String destinationId) => favorites.toggle(destinationId);
+
+  @override
+  Future<List<String>> getRecentlyViewedIds() async => recentlyViewed.getIds();
+
+  @override
+  Future<List<String>> addRecentlyViewed(String destinationId) => recentlyViewed.add(destinationId);
+
+  @override
+  Future<void> clearRecentlyViewed() => recentlyViewed.clear();
 
   /// Tìm kiếm không phân biệt dấu tiếng Việt ("dong huyen khong" ↔ "Động Huyền Không").
   static String _normalize(String input) {

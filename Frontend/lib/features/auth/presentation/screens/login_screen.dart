@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../shared/widgets/app_feedback.dart';
@@ -48,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    showAppSnackBar(context, 'Chào mừng bạn quay lại SmartTravel!', type: SnackType.success);
+    showAppSnackBar(context, context.tr('auth.welcome_back'), type: SnackType.success);
     context.go(widget.redirectTo ?? RouteNames.explore);
   }
 
@@ -68,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    showAppSnackBar(context, 'Đăng nhập bằng tài khoản Google thành công!', type: SnackType.success);
+    showAppSnackBar(context, context.tr('auth.google_login_success'), type: SnackType.success);
     context.go(widget.redirectTo ?? RouteNames.explore);
   }
 
@@ -85,9 +86,9 @@ class _LoginScreenState extends State<LoginScreen> {
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
           child: Column(
             children: [
-              const AuthBrandHeader(
-                title: 'Đăng nhập',
-                subtitle: 'Lưu địa điểm yêu thích, đặt workshop và tích điểm check-in.',
+              AuthBrandHeader(
+                title: context.tr('auth.login'),
+                subtitle: context.tr('auth.login_subtitle'),
               ),
               const SizedBox(height: 24),
               GlassCard(
@@ -101,9 +102,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,
                         validator: Validators.email,
-                        decoration: const InputDecoration(
-                          labelText: 'Email',
-                          prefixIcon: Icon(Icons.alternate_email_rounded),
+                        decoration: InputDecoration(
+                          labelText: context.tr('auth.email'),
+                          prefixIcon: const Icon(Icons.alternate_email_rounded),
                         ),
                       ),
                       const SizedBox(height: 14),
@@ -116,17 +117,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () => context.push(RouteNames.resetPassword),
-                          child: const Text('Quên mật khẩu?'),
+                          child: Text(context.tr('auth.forgot_password_question')),
                         ),
                       ),
                       CustomButton(
-                        label: 'Đăng nhập',
+                        label: context.tr('auth.login'),
                         isLoading: isSubmitting && !_isGoogleLoading,
                         onPressed: _isGoogleLoading ? null : _submitEmailLogin,
                       ),
-                      const AuthOrDivider(text: 'Hoặc tiếp tục với'),
+                      AuthOrDivider(text: context.tr('auth.or_continue_with')),
                       GoogleSignInButton(
-                        label: 'Đăng nhập bằng Google',
+                        label: context.tr('auth.google_login'),
                         isLoading: _isGoogleLoading,
                         onPressed: isSubmitting ? null : _submitGoogleLogin,
                       ),
@@ -138,17 +139,20 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Chưa có tài khoản?', style: TextStyle(color: AppColors.textSecondary)),
+                  Text(
+                    context.tr('auth.no_account'),
+                    style: const TextStyle(color: AppColors.textSecondary),
+                  ),
                   TextButton(
                     onPressed: () => context.push(RouteNames.register),
-                    child: const Text('Đăng ký ngay'),
+                    child: Text(context.tr('auth.register_now')),
                   ),
                 ],
               ),
               TextButton.icon(
                 onPressed: () => context.go(RouteNames.explore),
                 icon: const Icon(Icons.explore_outlined, size: 18),
-                label: const Text('Tiếp tục khám phá với tư cách khách'),
+                label: Text(context.tr('auth.continue_as_guest')),
                 style: TextButton.styleFrom(foregroundColor: AppColors.textSecondary),
               ),
             ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/constants/app_colors.dart';
+import '../../core/localization/app_localizations.dart';
 import '../../core/network/connectivity_cubit.dart';
 
 /// Dải thông báo tự hiện khi mất mạng; nội dung đã lưu đệm vẫn xem được.
@@ -26,14 +27,14 @@ class OfflineBannerWidget extends StatelessWidget {
                     color: Color(0xFFFFF4E6),
                     border: Border(bottom: BorderSide(color: Color(0xFFF7D9B5))),
                   ),
-                  child: const Row(
+                  child: Row(
                     children: [
-                      Icon(Icons.wifi_off_rounded, size: 18, color: AppColors.warning),
-                      SizedBox(width: 10),
+                      const Icon(Icons.wifi_off_rounded, size: 18, color: AppColors.warning),
+                      const SizedBox(width: 10),
                       Expanded(
                         child: Text(
-                          'Bạn đang ngoại tuyến. Địa điểm yêu thích và nội dung đã lưu vẫn xem được.',
-                          style: TextStyle(
+                          context.tr('core.offline_banner'),
+                          style: const TextStyle(
                             fontSize: 12.5,
                             color: Color(0xFF8A5A22),
                             fontWeight: FontWeight.w600,

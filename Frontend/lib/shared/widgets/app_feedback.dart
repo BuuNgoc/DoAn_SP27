@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/constants/app_colors.dart';
+import '../../core/localization/app_localizations.dart';
 
 enum SnackType { info, success, warning, error }
 
@@ -32,18 +33,20 @@ Future<bool> showConfirmDialog(
   BuildContext context, {
   required String title,
   required String message,
-  String confirmLabel = 'Xác nhận',
+  String? confirmLabel,
   bool destructive = false,
 }) async {
+  final resolvedConfirm = confirmLabel ?? context.tr('common.confirm');
   final result = await showDialog<bool>(
     context: context,
     builder: (ctx) => AlertDialog(
+      scrollable: true,
       title: Text(title, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 18)),
       content: Text(message, style: const TextStyle(color: AppColors.textSecondary)),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(ctx, false),
-          child: const Text('Đóng', style: TextStyle(color: AppColors.textSecondary)),
+          child: Text(ctx.tr('common.close'), style: const TextStyle(color: AppColors.textSecondary)),
         ),
         FilledButton(
           style: FilledButton.styleFrom(
@@ -51,7 +54,7 @@ Future<bool> showConfirmDialog(
             minimumSize: const Size(96, 44),
           ),
           onPressed: () => Navigator.pop(ctx, true),
-          child: Text(confirmLabel),
+          child: Text(resolvedConfirm),
         ),
       ],
     ),

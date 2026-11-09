@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/view_status.dart';
 import '../../../../shared/widgets/app_feedback.dart';
@@ -39,13 +40,20 @@ class AiPhotoScanScreen extends StatelessWidget {
               extra: RecognitionResultArgs(result: state.result!, imageBytes: state.imageBytes!),
             );
           } else if (state.status.isFailure) {
-            showAppSnackBar(context, state.errorMessage ?? 'Không nhận diện được ảnh.', type: SnackType.error);
+            showAppSnackBar(
+              context,
+              state.errorMessage ?? context.tr('ai.scan_error'),
+              type: SnackType.error,
+            );
           }
         },
         builder: (context, state) {
           final cubit = context.read<AiScanCubit>();
           return TopographicScaffold(
-            appBar: const CustomAppBar(title: 'Nhận diện địa danh', subtitle: 'AI Photo Recognition'),
+            appBar: CustomAppBar(
+              title: context.tr('ai.scan_tool_title'),
+              subtitle: context.tr('ai.scan_subtitle'),
+            ),
             body: ListView(
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
               children: [
@@ -55,11 +63,10 @@ class AiPhotoScanScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 if (state.imageBytes == null) ...[
-                  const Text(
-                    'Hướng camera về phía công trình, hang động hoặc cảnh quan bạn muốn tìm hiểu. '
-                    'AI sẽ cho biết tên địa danh kèm độ tin cậy và thông tin liên quan.',
+                  Text(
+                    context.tr('ai.scan_instruction'),
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: AppColors.textSecondary, height: 1.5),
+                    style: const TextStyle(color: AppColors.textSecondary, height: 1.5),
                   ),
                   const SizedBox(height: 20),
                 ],
@@ -67,7 +74,7 @@ class AiPhotoScanScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: CustomButton(
-                        label: 'Chụp ảnh',
+                        label: context.tr('ai.take_photo'),
                         icon: Icons.photo_camera_rounded,
                         onPressed: state.status.isLoading ? null : () => _pick(context, ImageSource.camera),
                       ),
@@ -78,7 +85,7 @@ class AiPhotoScanScreen extends StatelessWidget {
                         style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(54)),
                         onPressed: state.status.isLoading ? null : () => _pick(context, ImageSource.gallery),
                         icon: const Icon(Icons.photo_library_rounded),
-                        label: const Text('Tải ảnh lên'),
+                        label: Text(context.tr('ai.upload_photo')),
                       ),
                     ),
                   ],
@@ -86,7 +93,7 @@ class AiPhotoScanScreen extends StatelessWidget {
                 if (state.imageBytes != null) ...[
                   const SizedBox(height: 12),
                   CustomButton(
-                    label: state.status.isLoading ? 'AI đang phân tích...' : 'Nhận diện ngay',
+                    label: state.status.isLoading ? context.tr('ai.analyzing') : context.tr('ai.recognize_now'),
                     icon: Icons.auto_awesome_rounded,
                     gold: true,
                     isLoading: state.status.isLoading,
@@ -113,9 +120,7 @@ class AiPhotoScanScreen extends StatelessWidget {
       if (context.mounted) {
         showAppSnackBar(
           context,
-          source == ImageSource.camera
-              ? 'Không mở được camera. Vui lòng cấp quyền hoặc chọn ảnh từ thư viện.'
-              : 'Không mở được thư viện ảnh.',
+          source == ImageSource.camera ? context.tr('ai.camera_error') : context.tr('ai.gallery_error'),
           type: SnackType.warning,
         );
       }
@@ -159,12 +164,15 @@ class _ScanFrameState extends State<_ScanFrame> with SingleTickerProviderStateMi
                 border: Border.all(color: AppColors.cardBorder),
                 borderRadius: BorderRadius.circular(28),
               ),
-              child: const Column(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.add_a_photo_rounded, size: 56, color: AppColors.primaryPastel),
-                  SizedBox(height: 12),
-                  Text('Chưa có ảnh', style: TextStyle(fontWeight: FontWeight.w700, color: AppColors.textSecondary)),
+                  const Icon(Icons.add_a_photo_rounded, size: 56, color: AppColors.primaryPastel),
+                  const SizedBox(height: 12),
+                  Text(
+                    context.tr('ai.no_photo'),
+                    style: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.textSecondary),
+                  ),
                 ],
               ),
             ),
@@ -188,11 +196,11 @@ class _ScanFrameState extends State<_ScanFrame> with SingleTickerProviderStateMi
                 ),
               ),
             ),
-            const Align(
-              alignment: Alignment(0, 0.85),
+            Align(
+              alignment: const Alignment(0, 0.85),
               child: Chip(
-                avatar: Icon(Icons.auto_awesome_rounded, size: 16, color: AppColors.accentSoftGold),
-                label: Text('Đang so khớp với cơ sở dữ liệu địa danh...'),
+                avatar: const Icon(Icons.auto_awesome_rounded, size: 16, color: AppColors.accentSoftGold),
+                label: Text(context.tr('ai.matching_database')),
               ),
             ),
           ],
@@ -245,16 +253,14 @@ class _TipsCard extends StatelessWidget {
         color: AppColors.backgroundSecondary,
         borderRadius: BorderRadius.circular(18),
       ),
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Mẹo để AI nhận diện chính xác hơn', style: TextStyle(fontWeight: FontWeight.w800)),
-          SizedBox(height: 8),
-          Text('• Chụp ở nơi đủ sáng, giữ máy ổn định.', style: TextStyle(color: AppColors.textSecondary, height: 1.6)),
-          Text('• Lấy trọn chủ thể chính (cổng chùa, cửa động, tượng...).',
-              style: TextStyle(color: AppColors.textSecondary, height: 1.6)),
-          Text('• Tránh để người hoặc vật che khuất quá nhiều.',
-              style: TextStyle(color: AppColors.textSecondary, height: 1.6)),
+          Text(context.tr('ai.scan_tips_title'), style: const TextStyle(fontWeight: FontWeight.w800)),
+          const SizedBox(height: 8),
+          Text(context.tr('ai.scan_tip_1'), style: const TextStyle(color: AppColors.textSecondary, height: 1.6)),
+          Text(context.tr('ai.scan_tip_2'), style: const TextStyle(color: AppColors.textSecondary, height: 1.6)),
+          Text(context.tr('ai.scan_tip_3'), style: const TextStyle(color: AppColors.textSecondary, height: 1.6)),
         ],
       ),
     );

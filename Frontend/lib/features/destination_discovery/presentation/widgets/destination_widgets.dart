@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../shared/widgets/app_card.dart';
 import '../../../../shared/widgets/app_feedback.dart';
@@ -32,7 +33,9 @@ class FavoriteButton extends StatelessWidget {
           if (context.mounted) {
             showAppSnackBar(
               context,
-              added ? 'Đã lưu vào danh sách yêu thích.' : 'Đã bỏ khỏi danh sách yêu thích.',
+              added
+                  ? context.tr('destinations.favorite_added')
+                  : context.tr('destinations.favorite_removed'),
               type: added ? SnackType.success : SnackType.info,
             );
           }
@@ -125,7 +128,7 @@ class DestinationFeatureCard extends StatelessWidget {
                       const SizedBox(width: 4),
                       Flexible(
                         child: Text(
-                          destination.category.label,
+                          destination.category.localizedLabel(context),
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(color: AppColors.textSecondary, fontSize: 12),
                         ),
@@ -257,13 +260,18 @@ class CategoryFilterBar extends StatelessWidget {
     final chips = <Widget>[
       if (showAll)
         _chip(
-          label: 'Tất cả',
+          label: context.tr('destinations.filter_all'),
           icon: Icons.apps_rounded,
           isSelected: selected == null,
           onTap: () => onSelected(null),
         ),
       for (final c in DestinationCategory.values)
-        _chip(label: c.label, icon: c.icon, isSelected: selected == c, onTap: () => onSelected(c)),
+        _chip(
+          label: c.localizedLabel(context),
+          icon: c.icon,
+          isSelected: selected == c,
+          onTap: () => onSelected(c),
+        ),
     ];
     return SizedBox(
       height: 44,
@@ -328,7 +336,7 @@ class RoundedSearchField extends StatelessWidget {
     this.onTap,
     this.readOnly = false,
     this.autofocus = false,
-    this.hint = 'Tìm hang động, chùa, bãi biển...',
+    this.hint,
   });
 
   final TextEditingController? controller;
@@ -336,7 +344,7 @@ class RoundedSearchField extends StatelessWidget {
   final VoidCallback? onTap;
   final bool readOnly;
   final bool autofocus;
-  final String hint;
+  final String? hint;
 
   @override
   Widget build(BuildContext context) {
@@ -350,7 +358,7 @@ class RoundedSearchField extends StatelessWidget {
         autofocus: autofocus,
         textInputAction: TextInputAction.search,
         decoration: InputDecoration(
-          hintText: hint,
+          hintText: hint ?? context.tr('home.search_hint'),
           prefixIcon: const Icon(Icons.search_rounded, color: AppColors.primaryTeal),
           suffixIcon: const Icon(Icons.tune_rounded, color: AppColors.textMuted),
           border: OutlineInputBorder(

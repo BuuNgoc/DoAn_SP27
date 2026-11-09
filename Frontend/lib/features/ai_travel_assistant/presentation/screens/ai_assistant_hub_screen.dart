@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_dimensions.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../shared/widgets/app_card.dart';
 import '../../../../shared/widgets/custom_app_bar.dart';
@@ -17,11 +18,17 @@ class AiAssistantHubScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final quickQuestions = [
+      (context.tr('ai.quick_q1'), Icons.schedule_rounded),
+      (context.tr('ai.quick_q2'), Icons.ramen_dining_rounded),
+      (context.tr('ai.quick_q3'), Icons.health_and_safety_rounded),
+    ];
+
     return TopographicScaffold(
       seed: 11,
-      appBar: const CustomAppBar(
-        title: 'Trợ lý AI SmartTravel',
-        subtitle: 'Nhận diện địa danh · Lịch trình thông minh',
+      appBar: CustomAppBar(
+        title: context.tr('ai.hub_title'),
+        subtitle: context.tr('ai.hub_subtitle'),
         showBackButton: false,
       ),
       body: ListView(
@@ -44,13 +51,13 @@ class AiAssistantHubScreen extends StatelessWidget {
                         background: Colors.white,
                       ),
                       const SizedBox(height: 12),
-                      const Text(
-                        'Lên lịch trình Ngũ Hành Sơn chỉ trong 30 giây',
-                        style: TextStyle(color: Colors.white, fontSize: 19, fontWeight: FontWeight.w800, height: 1.3),
+                      Text(
+                        context.tr('ai.planner_banner_title'),
+                        style: const TextStyle(color: Colors.white, fontSize: 19, fontWeight: FontWeight.w800, height: 1.3),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Cho AI biết thời gian rảnh, ngân sách và sở thích – nhận ngay lộ trình theo giờ.',
+                        context.tr('ai.planner_banner_subtitle'),
                         style: TextStyle(color: Colors.white.withValues(alpha: 0.9), height: 1.45),
                       ),
                       const SizedBox(height: 14),
@@ -62,7 +69,7 @@ class AiAssistantHubScreen extends StatelessWidget {
                         ),
                         onPressed: () => context.push(RouteNames.aiPlanner),
                         icon: const Icon(Icons.route_rounded),
-                        label: const Text('Tạo lịch trình'),
+                        label: Text(context.tr('ai.create_itinerary_btn')),
                       ),
                     ],
                   ),
@@ -79,8 +86,8 @@ class AiAssistantHubScreen extends StatelessWidget {
                 child: _ToolCard(
                   icon: Icons.document_scanner_rounded,
                   color: AppColors.primaryTeal,
-                  title: 'Nhận diện địa danh',
-                  subtitle: 'Chụp ảnh để AI cho biết bạn đang ở đâu',
+                  title: context.tr('ai.scan_tool_title'),
+                  subtitle: context.tr('ai.scan_tool_subtitle'),
                   onTap: () => context.push(RouteNames.aiScan),
                 ),
               ),
@@ -89,21 +96,20 @@ class AiAssistantHubScreen extends StatelessWidget {
                 child: _ToolCard(
                   icon: Icons.forum_rounded,
                   color: AppColors.accentSoftGold,
-                  title: 'Hỏi đáp du lịch',
-                  subtitle: 'Giá vé, giờ mở cửa, ẩm thực, an toàn',
+                  title: context.tr('ai.chat_tool_title'),
+                  subtitle: context.tr('ai.chat_tool_subtitle'),
                   onTap: () => context.push(RouteNames.aiChat),
                 ),
               ),
             ],
           ),
           const SizedBox(height: 24),
-          const SectionHeader(title: 'Gợi ý nhanh', subtitle: 'Chạm để hỏi trợ lý AI'),
+          SectionHeader(
+            title: context.tr('ai.quick_suggestions_title'),
+            subtitle: context.tr('ai.quick_suggestions_subtitle'),
+          ),
           const SizedBox(height: 10),
-          for (final q in const [
-            ('Nên tham quan Ngũ Hành Sơn vào giờ nào?', Icons.schedule_rounded),
-            ('Gợi ý món ăn ngon gần làng đá Non Nước', Icons.ramen_dining_rounded),
-            ('Lưu ý an toàn khi tắm biển Sơn Thủy', Icons.health_and_safety_rounded),
-          ])
+          for (final q in quickQuestions)
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
               child: AppCard(
@@ -123,16 +129,15 @@ class AiAssistantHubScreen extends StatelessWidget {
           AppCard(
             color: AppColors.backgroundSecondary,
             showShadow: false,
-            child: const Row(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.info_outline_rounded, color: AppColors.textSecondary, size: 20),
-                SizedBox(width: 10),
+                const Icon(Icons.info_outline_rounded, color: AppColors.textSecondary, size: 20),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    'Kết quả do AI tạo ra chỉ mang tính tham khảo. Vui lòng kiểm tra lại giờ mở cửa, '
-                    'giá vé và thông tin an toàn tại điểm đến trước khi tham quan.',
-                    style: TextStyle(color: AppColors.textSecondary, fontSize: 12.5, height: 1.45),
+                    context.tr('ai.hub_disclaimer'),
+                    style: const TextStyle(color: AppColors.textSecondary, fontSize: 12.5, height: 1.45),
                   ),
                 ),
               ],

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../shared/widgets/app_feedback.dart';
 import '../../../../shared/widgets/custom_app_bar.dart';
@@ -51,17 +52,22 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       context: context,
       barrierDismissible: false,
       builder: (dialogCtx) => AlertDialog(
+        scrollable: true,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Row(
+        title: Row(
           children: [
-            Icon(Icons.check_circle_rounded, color: AppColors.success, size: 28),
-            SizedBox(width: 10),
-            Text('Đã gửi email khôi phục', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+            const Icon(Icons.check_circle_rounded, color: AppColors.success, size: 28),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                context.tr('auth.reset_email_sent_title'),
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+              ),
+            ),
           ],
         ),
         content: Text(
-          'Liên kết đặt lại mật khẩu đã được gửi đến địa chỉ email:\n\n${_email.text.trim()}\n\n'
-          'Vui lòng kiểm tra hộp thư đến (và thư mục Spam/Quảng cáo nếu cần) để hoàn tất việc đổi mật khẩu.',
+          context.tr('auth.reset_email_sent_body', params: {'email': _email.text.trim()}),
           style: const TextStyle(fontSize: 14, height: 1.45),
         ),
         actions: [
@@ -71,7 +77,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               Navigator.pop(dialogCtx);
               context.pop();
             },
-            child: const Text('Đã hiểu, quay lại đăng nhập'),
+            child: Text(context.tr('auth.back_to_login_understood')),
           ),
         ],
       ),
@@ -89,9 +95,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
         child: Column(
           children: [
-            const AuthBrandHeader(
-              title: 'Quên mật khẩu',
-              subtitle: 'Nhập email đã đăng ký tài khoản, chúng tôi sẽ gửi liên kết khôi phục mật khẩu.',
+            AuthBrandHeader(
+              title: context.tr('auth.forgot_password_title'),
+              subtitle: context.tr('auth.forgot_password_subtitle'),
             ),
             const SizedBox(height: 24),
             GlassCard(
@@ -103,18 +109,21 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         children: [
                           const Icon(Icons.mark_email_read_rounded, size: 58, color: AppColors.success),
                           const SizedBox(height: 14),
-                          const Text(
-                            'Email khôi phục đã được gửi!',
-                            style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17),
+                          Text(
+                            context.tr('auth.reset_email_sent_heading'),
+                            style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 17),
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Vui lòng làm theo hướng dẫn trong email gửi tới ${_email.text.trim()}.',
+                            context.tr('auth.reset_email_follow_instructions', params: {'email': _email.text.trim()}),
                             textAlign: TextAlign.center,
                             style: const TextStyle(color: AppColors.textSecondary, height: 1.4),
                           ),
                           const SizedBox(height: 20),
-                          CustomButton(label: 'Quay lại màn hình đăng nhập', onPressed: () => context.pop()),
+                          CustomButton(
+                            label: context.tr('auth.back_to_login_screen'),
+                            onPressed: () => context.pop(),
+                          ),
                         ],
                       )
                     : Form(
@@ -125,14 +134,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                               controller: _email,
                               keyboardType: TextInputType.emailAddress,
                               validator: Validators.email,
-                              decoration: const InputDecoration(
-                                labelText: 'Email đã đăng ký',
-                                prefixIcon: Icon(Icons.alternate_email_rounded),
+                              decoration: InputDecoration(
+                                labelText: context.tr('auth.registered_email'),
+                                prefixIcon: const Icon(Icons.alternate_email_rounded),
                               ),
                             ),
                             const SizedBox(height: 20),
                             CustomButton(
-                              label: 'Gửi liên kết khôi phục',
+                              label: context.tr('auth.send_reset_link'),
                               icon: Icons.send_rounded,
                               isLoading: isSubmitting,
                               onPressed: _submit,
@@ -183,7 +192,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       return;
     }
 
-    showAppSnackBar(context, 'Đổi mật khẩu thành công.', type: SnackType.success);
+    showAppSnackBar(context, context.tr('auth.change_password_success'), type: SnackType.success);
     context.pop();
   }
 
@@ -192,7 +201,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     final isSubmitting = context.select((AuthCubit c) => c.state.isSubmitting);
 
     return TopographicScaffold(
-      appBar: const CustomAppBar(title: 'Đổi mật khẩu'),
+      appBar: CustomAppBar(title: context.tr('auth.change_password_title')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: GlassCard(
@@ -202,31 +211,31 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               children: [
                 PasswordField(
                   controller: _current,
-                  label: 'Mật khẩu hiện tại',
+                  label: context.tr('auth.current_password'),
                   validator: Validators.password,
                   textInputAction: TextInputAction.next,
                 ),
                 const SizedBox(height: 14),
                 PasswordField(
                   controller: _next,
-                  label: 'Mật khẩu mới',
+                  label: context.tr('auth.new_password'),
                   textInputAction: TextInputAction.next,
                   validator: (v) {
                     final base = Validators.password(v);
                     if (base != null) return base;
-                    if (v == _current.text) return 'Mật khẩu mới phải khác mật khẩu hiện tại.';
+                    if (v == _current.text) return context.tr('auth.new_password_must_differ');
                     return null;
                   },
                 ),
                 const SizedBox(height: 14),
                 PasswordField(
                   controller: _confirm,
-                  label: 'Xác nhận lại mật khẩu mới',
-                  validator: (v) => v != _next.text ? 'Mật khẩu xác nhận không trùng khớp.' : null,
+                  label: context.tr('auth.confirm_new_password'),
+                  validator: (v) => v != _next.text ? context.tr('core.validation.password_mismatch') : null,
                 ),
                 const SizedBox(height: 22),
                 CustomButton(
-                  label: 'Cập nhật mật khẩu',
+                  label: context.tr('auth.update_password_button'),
                   icon: Icons.check_circle_outline_rounded,
                   isLoading: isSubmitting,
                   onPressed: _submit,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/constants/app_colors.dart';
+import '../../core/localization/app_localizations.dart';
 
 /// AppBar trong suốt (lộ nền vân địa hình) với nút quay lại dạng tròn.
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -35,7 +36,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               padding: const EdgeInsets.only(left: 12),
               child: CircleIconButton(
                 icon: Icons.arrow_back_ios_new_rounded,
-                tooltip: 'Quay lại',
+                tooltip: context.tr('common.back'),
                 onPressed: () => Navigator.of(context).maybePop(),
               ),
             )

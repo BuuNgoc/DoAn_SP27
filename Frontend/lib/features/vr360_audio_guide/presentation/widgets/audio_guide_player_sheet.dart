@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/utils/view_status.dart';
 import '../../../../shared/widgets/loading_indicator.dart';
 import '../../domain/entities/vr360_audio_entities.dart';
@@ -22,7 +23,9 @@ class AudioGuidePlayerSheet extends StatelessWidget {
   static Future<void> show(BuildContext context, {required String destinationId}) {
     return showModalBottomSheet<void>(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
+      useSafeArea: true,
       backgroundColor: Colors.transparent,
       builder: (_) => BlocProvider(
         create: (_) => sl<AudioGuideCubit>()..load(destinationId),
@@ -36,42 +39,52 @@ class AudioGuidePlayerSheet extends StatelessWidget {
     return DraggableScrollableSheet(
       initialChildSize: 0.78,
       minChildSize: 0.45,
-      maxChildSize: 0.95,
+      maxChildSize: 0.9,
       expand: false,
       builder: (context, controller) => Container(
         decoration: const BoxDecoration(
           color: AppColors.surfaceWhite,
           borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
         ),
-        child: BlocBuilder<AudioGuideCubit, AudioGuideState>(
-          builder: (context, state) {
-            if (state.status.isLoading || state.status == ViewStatus.initial) {
-              return const LoadingIndicator(message: 'Đang tải bài thuyết minh...');
-            }
-            if (state.status.isFailure || state.guide == null) {
-              return ErrorViewWidget(message: state.errorMessage ?? 'Không tải được thuyết minh.');
-            }
-            return ListView(
-              controller: controller,
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 28),
-              children: [
-                Center(
-                  child: Container(
-                    width: 44,
-                    height: 5,
-                    decoration: BoxDecoration(
-                      color: AppColors.cardBorder,
-                      borderRadius: BorderRadius.circular(4),
+        child: SafeArea(
+          top: false,
+          child: BlocBuilder<AudioGuideCubit, AudioGuideState>(
+            builder: (context, state) {
+              if (state.status.isLoading || state.status == ViewStatus.initial) {
+                return SingleChildScrollView(
+                  controller: controller,
+                  padding: const EdgeInsets.symmetric(vertical: 32),
+                  child: LoadingIndicator(message: context.tr('audio_guide.loading')),
+                );
+              }
+              if (state.status.isFailure || state.guide == null) {
+                return SingleChildScrollView(
+                  controller: controller,
+                  child: ErrorViewWidget(message: state.errorMessage ?? context.tr('audio_guide.load_error')),
+                );
+              }
+              return ListView(
+                controller: controller,
+                padding: const EdgeInsets.fromLTRB(20, 10, 20, 28),
+                children: [
+                  Center(
+                    child: Container(
+                      width: 44,
+                      height: 5,
+                      decoration: BoxDecoration(
+                        color: AppColors.cardBorder,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                AudioGuidePlayerPanel(state: state),
-                const SizedBox(height: 20),
-                AudioTranscriptCard(state: state),
-              ],
-            );
-          },
+                  const SizedBox(height: 16),
+                  AudioGuidePlayerPanel(state: state),
+                  const SizedBox(height: 20),
+                  AudioTranscriptCard(state: state),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
@@ -119,7 +132,10 @@ class AudioGuidePlayerPanel extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 18),
-        const Text('Ngôn ngữ thuyết minh', style: TextStyle(fontWeight: FontWeight.w700, color: AppColors.textSecondary)),
+        Text(
+          context.tr('audio_guide.language_label'),
+          style: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.textSecondary),
+        ),
         const SizedBox(height: 8),
         Wrap(
           spacing: 8,
@@ -147,7 +163,7 @@ class AudioGuidePlayerPanel extends StatelessWidget {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'Bản ${state.language.label} đang được cập nhật – tạm thời hiển thị bản Tiếng Việt.',
+                    context.tr('audio_guide.fallback_notice', params: {'lang': state.language.label}),
                     style: const TextStyle(fontSize: 12.5, color: AppColors.textSecondary),
                   ),
                 ),
@@ -185,7 +201,7 @@ class AudioGuidePlayerPanel extends StatelessWidget {
             ),
             IconButton(
               iconSize: 32,
-              tooltip: 'Lùi 15 giây',
+              tooltip: context.tr('audio_guide.rewind_15s'),
               onPressed: () => cubit.skip(-15),
               icon: const Icon(Icons.replay_10_rounded, color: AppColors.textPrimary),
             ),
@@ -209,13 +225,13 @@ class AudioGuidePlayerPanel extends StatelessWidget {
                   state.isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
                   color: Colors.white,
                   size: 40,
-                  semanticLabel: state.isPlaying ? 'Tạm dừng' : 'Phát',
+                  semanticLabel: state.isPlaying ? context.tr('audio_guide.pause') : context.tr('audio_guide.play'),
                 ),
               ),
             ),
             IconButton(
               iconSize: 32,
-              tooltip: 'Tới 15 giây',
+              tooltip: context.tr('audio_guide.forward_15s'),
               onPressed: () => cubit.skip(15),
               icon: const Icon(Icons.forward_10_rounded, color: AppColors.textPrimary),
             ),
@@ -226,8 +242,10 @@ class AudioGuidePlayerPanel extends StatelessWidget {
         Center(
           child: Text(
             state.isPlaying
-                ? 'Đang phát'
-                : (state.positionSeconds > 0 && !state.isFinished ? 'Đã tạm dừng – nhấn để tiếp tục' : 'Nhấn để bắt đầu nghe'),
+                ? context.tr('audio_guide.status_playing')
+                : (state.positionSeconds > 0 && !state.isFinished
+                    ? context.tr('audio_guide.status_paused')
+                    : context.tr('audio_guide.status_idle')),
             style: const TextStyle(color: AppColors.textMuted, fontSize: 12),
           ),
         ),
@@ -254,11 +272,11 @@ class AudioTranscriptCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(Icons.notes_rounded, color: AppColors.primaryTeal, size: 20),
-              SizedBox(width: 8),
-              Text('Nội dung thuyết minh', style: TextStyle(fontWeight: FontWeight.w800)),
+              const Icon(Icons.notes_rounded, color: AppColors.primaryTeal, size: 20),
+              const SizedBox(width: 8),
+              Text(context.tr('audio_guide.transcript_title'), style: const TextStyle(fontWeight: FontWeight.w800)),
             ],
           ),
           const SizedBox(height: 10),

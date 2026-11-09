@@ -1,14 +1,18 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-enum EventKind {
-  event('event', 'Sự kiện', Icons.celebration_rounded),
-  workshop('workshop', 'Workshop', Icons.handyman_rounded);
+import '../../../../core/localization/app_localizations.dart';
 
-  const EventKind(this.code, this.label, this.icon);
+enum EventKind {
+  event('event', 'events.kind_event', Icons.celebration_rounded),
+  workshop('workshop', 'events.kind_workshop', Icons.handyman_rounded);
+
+  const EventKind(this.code, this.labelKey, this.icon);
   final String code;
-  final String label;
+  final String labelKey;
   final IconData icon;
+
+  String get label => AppLocalizations.trStatic(labelKey);
 
   static EventKind fromCode(String code) => values.firstWhere((e) => e.code == code, orElse: () => EventKind.event);
 }
@@ -119,12 +123,14 @@ class ArtisanWork extends Equatable {
 }
 
 enum ContestStatus {
-  upcoming('Sắp diễn ra'),
-  voting('Đang bình chọn'),
-  ended('Đã kết thúc');
+  upcoming('contest.status_upcoming'),
+  voting('contest.status_voting'),
+  ended('contest.status_ended');
 
-  const ContestStatus(this.label);
-  final String label;
+  const ContestStatus(this.labelKey);
+  final String labelKey;
+
+  String get label => AppLocalizations.trStatic(labelKey);
 }
 
 /// [FE-16] Cuộc thi điêu khắc đá.

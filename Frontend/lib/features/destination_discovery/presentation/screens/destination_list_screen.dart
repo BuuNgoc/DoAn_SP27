@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/utils/view_status.dart';
 import '../../../../shared/widgets/custom_app_bar.dart';
 import '../../../../shared/widgets/loading_indicator.dart';
@@ -53,7 +54,9 @@ class _DestinationListViewState extends State<_DestinationListView> {
         return TopographicScaffold(
           appBar: CustomAppBar(
             title: categoryTitle(state.category),
-            subtitle: state.status.isSuccess ? '${state.items.length} địa điểm' : null,
+            subtitle: state.status.isSuccess
+                ? context.tr('destinations.place_count', params: {'count': '${state.items.length}'})
+                : null,
           ),
           body: Column(
             children: [
@@ -76,7 +79,9 @@ class _DestinationListViewState extends State<_DestinationListView> {
   }
 
   Widget _buildBody(BuildContext context, DestinationListState state) {
-    if (state.status.isLoading) return const LoadingIndicator(message: 'Đang tải điểm đến...');
+    if (state.status.isLoading) {
+      return LoadingIndicator(message: context.tr('destinations.loading_list'));
+    }
     if (state.status.isFailure) {
       return ErrorViewWidget(
         message: state.errorMessage ?? '',
@@ -84,10 +89,10 @@ class _DestinationListViewState extends State<_DestinationListView> {
       );
     }
     if (state.items.isEmpty) {
-      return const EmptyStateWidget(
+      return EmptyStateWidget(
         icon: Icons.travel_explore_rounded,
-        title: 'Không tìm thấy điểm đến phù hợp',
-        message: 'Hãy thử từ khóa khác, ví dụ: "hang động", "chùa", "biển".',
+        title: context.tr('destinations.empty_title'),
+        message: context.tr('destinations.empty_message'),
       );
     }
     return ListView.separated(

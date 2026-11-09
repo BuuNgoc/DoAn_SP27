@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/date_formatter.dart';
 import '../../../../core/utils/view_status.dart';
@@ -40,11 +41,11 @@ class _LoyaltyRewardsScreenState extends State<LoyaltyRewardsScreen> {
     return TopographicScaffold(
       seed: 47,
       appBar: CustomAppBar(
-        title: 'Đổi điểm lấy quà',
+        title: context.tr('loyalty.rewards_screen_title'),
         actions: [
           CircleIconButton(
             icon: Icons.receipt_long_rounded,
-            tooltip: 'Lịch sử đổi thưởng',
+            tooltip: context.tr('loyalty.redemption_history_title'),
             onPressed: () => context.push(RouteNames.redemptionHistory),
           ),
           const SizedBox(width: 12),
@@ -70,13 +71,15 @@ class _LoyaltyRewardsScreenState extends State<LoyaltyRewardsScreen> {
                             children: [
                               const Icon(Icons.info_outline_rounded, color: AppColors.primaryTeal),
                               const SizedBox(width: 10),
-                              const Expanded(
-                                child: Text('Đăng nhập để xem điểm tích lũy và đổi quà.',
-                                    style: TextStyle(fontWeight: FontWeight.w600)),
+                              Expanded(
+                                child: Text(
+                                  context.tr('loyalty.login_to_redeem_hint'),
+                                  style: const TextStyle(fontWeight: FontWeight.w600),
+                                ),
                               ),
                               TextButton(
                                 onPressed: () => context.push('${RouteNames.login}?from=${RouteNames.rewards}'),
-                                child: const Text('Đăng nhập'),
+                                child: Text(context.tr('auth.login')),
                               ),
                             ],
                           ),
@@ -88,7 +91,7 @@ class _LoyaltyRewardsScreenState extends State<LoyaltyRewardsScreen> {
                         spacing: 8,
                         children: [
                           ChoiceChip(
-                            label: const Text('Tất cả'),
+                            label: Text(context.tr('common.all')),
                             selected: _category == null,
                             onSelected: (_) => setState(() => _category = null),
                           ),
@@ -175,28 +178,34 @@ class RewardDetailScreen extends StatelessWidget {
   final String rewardId;
 
   Future<void> _redeem(BuildContext context, Reward reward) async {
-    final user = await requireLogin(context, reason: 'Vui lòng đăng nhập để đổi quà.');
+    final user = await requireLogin(context, reason: context.tr('loyalty.login_to_redeem_reason'));
     if (user == null || !context.mounted) return;
     final available = context.read<LoyaltyCubit>().state.summary.availablePoints;
     if (available < reward.pointsCost) {
       showAppSnackBar(
         context,
-        'Bạn cần thêm ${CurrencyFormatter.points(reward.pointsCost - available)} điểm để đổi quà này.',
+        context.tr(
+          'loyalty.not_enough_points_warning',
+          params: {'points': CurrencyFormatter.points(reward.pointsCost - available)},
+        ),
         type: SnackType.warning,
       );
       return;
     }
     final ok = await showConfirmDialog(
       context,
-      title: 'Xác nhận đổi quà',
-      message: 'Dùng ${CurrencyFormatter.points(reward.pointsCost)} điểm để đổi “${reward.title}”?',
-      confirmLabel: 'Đổi quà',
+      title: context.tr('loyalty.confirm_redeem_title'),
+      message: context.tr(
+        'loyalty.confirm_redeem_message',
+        params: {'points': CurrencyFormatter.points(reward.pointsCost), 'title': reward.title},
+      ),
+      confirmLabel: context.tr('loyalty.action_redeem'),
     );
     if (!ok || !context.mounted) return;
     final outcome = await context.read<LoyaltyCubit>().redeem(reward.id);
     if (!context.mounted) return;
     if (outcome.redemption == null) {
-      showAppSnackBar(context, outcome.error ?? 'Đổi quà không thành công.', type: SnackType.error);
+      showAppSnackBar(context, outcome.error ?? context.tr('loyalty.redeem_error'), type: SnackType.error);
       return;
     }
     await RedemptionCodeSheet.show(context, outcome.redemption!);
@@ -209,13 +218,13 @@ class RewardDetailScreen extends StatelessWidget {
         final reward = state.rewards.where((r) => r.id == rewardId).firstOrNull;
         if (reward == null) {
           return TopographicScaffold(
-            appBar: const CustomAppBar(title: 'Chi tiết quà tặng'),
+            appBar: CustomAppBar(title: context.tr('loyalty.reward_detail_title')),
             body: state.status.isLoading
                 ? const LoadingIndicator()
-                : const EmptyStateWidget(
+                : EmptyStateWidget(
                     icon: Icons.redeem_rounded,
-                    title: 'Không tìm thấy quà tặng',
-                    message: 'Quà tặng có thể đã ngừng chương trình.',
+                    title: context.tr('loyalty.reward_not_found_title'),
+                    message: context.tr('loyalty.reward_not_found_message'),
                   ),
           );
         }
@@ -224,16 +233,18 @@ class RewardDetailScreen extends StatelessWidget {
         return TopographicScaffold(
           seed: 53,
           appBar: CustomAppBar(
-            title: 'Chi tiết quà tặng',
+            title: context.tr('loyalty.reward_detail_title'),
             actions: [
               CircleIconButton(
                 icon: Icons.ios_share_rounded,
-                tooltip: 'Chia sẻ',
+                tooltip: context.tr('common.share'),
                 onPressed: () => SocialShareSheet.show(
                   context,
                   title: reward.title,
-                  message: 'Đổi điểm SmartTravel lấy “${reward.title}” – ${reward.partner}. '
-                      'Check-in khám phá Ngũ Hành Sơn để tích điểm nhé! #SmartTravel #NguHanhSon',
+                  message: context.tr(
+                    'loyalty.share_reward_message',
+                    params: {'title': reward.title, 'partner': reward.partner},
+                  ),
                 ),
               ),
               const SizedBox(width: 12),
@@ -250,7 +261,9 @@ class RewardDetailScreen extends StatelessWidget {
                 children: [
                   PillBadge(label: reward.category.label, icon: reward.category.icon),
                   PillBadge(
-                    label: reward.inStock ? 'Còn ${reward.stock} phần quà' : 'Tạm hết quà',
+                    label: reward.inStock
+                        ? context.tr('loyalty.in_stock_count', params: {'count': '${reward.stock}'})
+                        : context.tr('loyalty.out_of_stock'),
                     icon: Icons.inventory_2_rounded,
                     color: reward.inStock ? AppColors.success : AppColors.error,
                   ),
@@ -263,9 +276,10 @@ class RewardDetailScreen extends StatelessWidget {
                 children: [
                   const Icon(Icons.stars_rounded, color: AppColors.accentSoftGold),
                   const SizedBox(width: 6),
-                  Text('${CurrencyFormatter.points(reward.pointsCost)} điểm',
-                      style: const TextStyle(
-                          color: AppColors.accentSoftGold, fontWeight: FontWeight.w800, fontSize: 18)),
+                  Text(
+                    context.tr('loyalty.points_with_unit', params: {'points': CurrencyFormatter.points(reward.pointsCost)}),
+                    style: const TextStyle(color: AppColors.accentSoftGold, fontWeight: FontWeight.w800, fontSize: 18),
+                  ),
                 ],
               ),
               const SizedBox(height: 14),
@@ -274,15 +288,15 @@ class RewardDetailScreen extends StatelessWidget {
               AppCard(
                 child: Column(
                   children: [
-                    _InfoRow(icon: Icons.storefront_rounded, label: 'Đối tác', value: reward.partner),
+                    _InfoRow(icon: Icons.storefront_rounded, label: context.tr('loyalty.partner_label'), value: reward.partner),
                     const Divider(height: 20),
-                    _InfoRow(icon: Icons.place_rounded, label: 'Nơi nhận quà', value: reward.pickupLocation),
+                    _InfoRow(icon: Icons.place_rounded, label: context.tr('loyalty.pickup_location_label'), value: reward.pickupLocation),
                   ],
                 ),
               ),
               if (reward.terms.isNotEmpty) ...[
                 const SizedBox(height: 16),
-                const Text('Điều kiện áp dụng', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
+                Text(context.tr('loyalty.terms_title'), style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
                 const SizedBox(height: 8),
                 for (final t in reward.terms)
                   Padding(
@@ -316,7 +330,7 @@ class RewardDetailScreen extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Điểm của bạn', style: TextStyle(color: AppColors.textMuted, fontSize: 12)),
+                        Text(context.tr('loyalty.your_points_label'), style: const TextStyle(color: AppColors.textMuted, fontSize: 12)),
                         Text(CurrencyFormatter.points(available),
                             style: TextStyle(
                               fontWeight: FontWeight.w800,
@@ -327,7 +341,7 @@ class RewardDetailScreen extends StatelessWidget {
                     ),
                   ),
                   CustomButton(
-                    label: reward.inStock ? 'Đổi quà ngay' : 'Tạm hết quà',
+                    label: reward.inStock ? context.tr('loyalty.redeem_now_btn') : context.tr('loyalty.out_of_stock'),
                     icon: Icons.redeem_rounded,
                     gold: true,
                     expanded: false,
@@ -372,7 +386,9 @@ class RedemptionCodeSheet extends StatelessWidget {
 
   static Future<void> show(BuildContext context, Redemption redemption) => showModalBottomSheet<void>(
         context: context,
+        useRootNavigator: true,
         isScrollControlled: true,
+        useSafeArea: true,
         showDragHandle: true,
         backgroundColor: AppColors.surfaceWhite,
         builder: (_) => RedemptionCodeSheet(redemption: redemption),
@@ -382,59 +398,70 @@ class RedemptionCodeSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final r = redemption;
     return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(r.rewardTitle,
-                textAlign: TextAlign.center, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
-            const SizedBox(height: 6),
-            PillBadge(label: r.status.label, color: r.status.color),
-            const SizedBox(height: 16),
-            Container(
-              padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppColors.cardBorder),
-              ),
-              child: QrImageView(
-                data: 'SMARTTRAVEL|REDEEM|${r.code}',
-                size: 180,
-                eyeStyle: const QrEyeStyle(eyeShape: QrEyeShape.square, color: AppColors.textPrimary),
-                dataModuleStyle:
-                    const QrDataModuleStyle(dataModuleShape: QrDataModuleShape.square, color: AppColors.textPrimary),
-              ),
-            ),
-            const SizedBox(height: 12),
-            InkWell(
-              borderRadius: BorderRadius.circular(12),
-              onTap: () {
-                Clipboard.setData(ClipboardData(text: r.code));
-                showAppSnackBar(context, 'Đã sao chép mã nhận quà.', type: SnackType.success);
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(r.code,
-                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800, letterSpacing: 2)),
-                    const SizedBox(width: 8),
-                    const Icon(Icons.copy_rounded, size: 18, color: AppColors.primaryTeal),
-                  ],
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.sizeOf(context).height * 0.8,
+        ),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(r.rewardTitle,
+                  textAlign: TextAlign.center, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+              const SizedBox(height: 6),
+              PillBadge(label: r.status.label, color: r.status.color),
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: AppColors.cardBorder),
+                ),
+                child: QrImageView(
+                  data: 'SMARTTRAVEL|REDEEM|${r.code}',
+                  size: 180,
+                  eyeStyle: const QrEyeStyle(eyeShape: QrEyeShape.square, color: AppColors.textPrimary),
+                  dataModuleStyle:
+                      const QrDataModuleStyle(dataModuleShape: QrDataModuleShape.square, color: AppColors.textPrimary),
                 ),
               ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'Xuất trình mã tại: ${r.pickupLocation}\nHạn nhận quà: ${DateFormatter.formatDateOnly(r.expiresAt)}',
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: AppColors.textSecondary, height: 1.5),
-            ),
-            const SizedBox(height: 18),
-            CustomButton(label: 'Hoàn tất', onPressed: () => Navigator.pop(context)),
-          ],
+              const SizedBox(height: 12),
+              InkWell(
+                borderRadius: BorderRadius.circular(12),
+                onTap: () {
+                  Clipboard.setData(ClipboardData(text: r.code));
+                  showAppSnackBar(context, context.tr('loyalty.copied_redemption_code'), type: SnackType.success);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(r.code,
+                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800, letterSpacing: 2)),
+                      const SizedBox(width: 8),
+                      const Icon(Icons.copy_rounded, size: 18, color: AppColors.primaryTeal),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                context.tr(
+                  'loyalty.present_code_instructions',
+                  params: {
+                    'location': r.pickupLocation,
+                    'date': DateFormatter.formatDateOnly(r.expiresAt),
+                  },
+                ),
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: AppColors.textSecondary, height: 1.5),
+              ),
+              const SizedBox(height: 18),
+              CustomButton(label: context.tr('loyalty.done_btn'), onPressed: () => Navigator.pop(context)),
+            ],
+          ),
         ),
       ),
     );
@@ -449,16 +476,16 @@ class RedemptionHistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return TopographicScaffold(
       seed: 59,
-      appBar: const CustomAppBar(title: 'Lịch sử đổi thưởng'),
+      appBar: CustomAppBar(title: context.tr('loyalty.redemption_history_title')),
       body: BlocBuilder<LoyaltyCubit, LoyaltyState>(
         builder: (context, state) {
           if (state.status.isLoading && state.redemptions.isEmpty) return const LoadingIndicator();
           if (state.redemptions.isEmpty) {
             return EmptyStateWidget(
               icon: Icons.redeem_rounded,
-              title: 'Bạn chưa đổi quà nào',
-              message: 'Tích điểm qua check-in QR và đổi lấy quà lưu niệm đá Non Nước hoặc voucher hấp dẫn.',
-              actionLabel: 'Xem quà tặng',
+              title: context.tr('loyalty.no_redemptions_title'),
+              message: context.tr('loyalty.no_redemptions_message'),
+              actionLabel: context.tr('loyalty.view_rewards_btn'),
               onAction: () => context.push(RouteNames.rewards),
             );
           }
@@ -470,10 +497,12 @@ class RedemptionHistoryScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     Expanded(
-                      child: _Stat(label: 'Lượt đổi quà', value: '${state.redemptions.length}'),
+                      child: _Stat(label: context.tr('loyalty.redemption_count_label'), value: '${state.redemptions.length}'),
                     ),
                     Container(width: 1, height: 36, color: AppColors.cardBorder),
-                    Expanded(child: _Stat(label: 'Điểm đã dùng', value: CurrencyFormatter.points(spent))),
+                    Expanded(
+                      child: _Stat(label: context.tr('loyalty.points_spent_label'), value: CurrencyFormatter.points(spent)),
+                    ),
                   ],
                 ),
               ),
@@ -495,8 +524,13 @@ class RedemptionHistoryScreen extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(fontWeight: FontWeight.w700)),
                             const SizedBox(height: 4),
-                            Text('Mã: ${r.code} · ${DateFormatter.formatDateOnly(r.redeemedAt)}',
-                                style: const TextStyle(color: AppColors.textMuted, fontSize: 12.5)),
+                            Text(
+                              context.tr(
+                                'loyalty.code_and_date',
+                                params: {'code': r.code, 'date': DateFormatter.formatDateOnly(r.redeemedAt)},
+                              ),
+                              style: const TextStyle(color: AppColors.textMuted, fontSize: 12.5),
+                            ),
                             const SizedBox(height: 6),
                             PillBadge(label: r.status.label, color: r.status.color, fontSize: 10.5),
                           ],

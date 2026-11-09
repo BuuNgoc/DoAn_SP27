@@ -28,3 +28,22 @@ class GetFavoriteIdsUseCase {
   final DestinationRepository _repository;
   Future<Set<String>> call() => _repository.getFavoriteIds();
 }
+
+/// [FE-02] Recently viewed destinations (offline-first via Hive).
+class GetRecentlyViewedIdsUseCase {
+  const GetRecentlyViewedIdsUseCase(this._repository);
+  final DestinationRepository _repository;
+  Future<List<String>> call() => _repository.getRecentlyViewedIds();
+}
+
+class AddRecentlyViewedUseCase {
+  const AddRecentlyViewedUseCase(this._repository);
+  final DestinationRepository _repository;
+  Future<List<String>> call(String id) => _repository.addRecentlyViewed(id);
+}
+
+class ClearRecentlyViewedUseCase {
+  const ClearRecentlyViewedUseCase(this._repository);
+  final DestinationRepository _repository;
+  Future<void> call() => _repository.clearRecentlyViewed();
+}

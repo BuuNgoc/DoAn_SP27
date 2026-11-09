@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/view_status.dart';
 import '../../../../shared/widgets/app_card.dart';
@@ -32,10 +33,10 @@ class AirportArrivalPromoScreen extends StatelessWidget {
         seed: 83,
         body: BlocBuilder<AirportWelcomeCubit, AirportWelcomeState>(
           builder: (context, state) {
-            if (state.status.isLoading) return const LoadingIndicator(message: 'Xin chào! Đang chuẩn bị gợi ý...');
+            if (state.status.isLoading) return LoadingIndicator(message: context.tr('zones.airport_loading'));
             if (state.status.isFailure || state.content == null) {
               return ErrorViewWidget(
-                message: state.errorMessage ?? 'Không tải được nội dung.',
+                message: state.errorMessage ?? context.tr('common.load_error'),
                 onRetry: () => context.read<AirportWelcomeCubit>().load(campaignId: campaignId),
               );
             }
@@ -58,7 +59,7 @@ class AirportArrivalPromoScreen extends StatelessWidget {
                                   CircleAvatar(
                                     radius: 22,
                                     backgroundColor: AppColors.primaryTeal.withValues(alpha: 0.1),
-                                    child: Icon(f.icon, color: AppColors.primaryTeal),
+                                  child: Icon(f.icon, color: AppColors.primaryTeal),
                                   ),
                                   const SizedBox(height: 6),
                                   Text(f.value, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
@@ -80,8 +81,10 @@ class AirportArrivalPromoScreen extends StatelessWidget {
                                 const Icon(Icons.flight_land_rounded, color: AppColors.primaryTeal),
                                 const SizedBox(width: 8),
                                 Expanded(
-                                  child: Text('Từ sân bay đến Ngũ Hành Sơn\n${c.distanceFromAirport}',
-                                      style: const TextStyle(fontWeight: FontWeight.w800, height: 1.4)),
+                                  child: Text(
+                                    context.tr('zones.airport_to_nhs', params: {'distance': c.distanceFromAirport}),
+                                    style: const TextStyle(fontWeight: FontWeight.w800, height: 1.4),
+                                  ),
                                 ),
                               ],
                             ),
@@ -108,8 +111,8 @@ class AirportArrivalPromoScreen extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                            const Text('* Giá và tuyến xe mang tính tham khảo.',
-                                style: TextStyle(fontSize: 11.5, color: AppColors.textMuted)),
+                            Text(context.tr('zones.fare_reference_note'),
+                                style: const TextStyle(fontSize: 11.5, color: AppColors.textMuted)),
                           ],
                         ),
                       ),
@@ -132,8 +135,8 @@ class AirportArrivalPromoScreen extends StatelessWidget {
                       if (state.destinations.isNotEmpty) ...[
                         const SizedBox(height: 24),
                         SectionHeader(
-                          title: 'Điểm đến không thể bỏ lỡ',
-                          actionLabel: 'Xem thêm',
+                          title: context.tr('zones.must_visit_destinations'),
+                          actionLabel: context.tr('common.see_more'),
                           onAction: () => context.push(RouteNames.destinations),
                         ),
                         const SizedBox(height: 10),
@@ -150,8 +153,8 @@ class AirportArrivalPromoScreen extends StatelessWidget {
                       if (state.events.isNotEmpty) ...[
                         const SizedBox(height: 24),
                         SectionHeader(
-                          title: 'Sự kiện đặc sắc',
-                          actionLabel: 'Tất cả',
+                          title: context.tr('zones.featured_events'),
+                          actionLabel: context.tr('common.all'),
                           onAction: () => context.push(RouteNames.events),
                         ),
                         const SizedBox(height: 10),
@@ -159,13 +162,13 @@ class AirportArrivalPromoScreen extends StatelessWidget {
                       ],
                       const SizedBox(height: 20),
                       CustomButton(
-                        label: 'Bắt đầu khám phá',
+                        label: context.tr('zones.start_exploring_btn'),
                         icon: Icons.explore_rounded,
                         onPressed: () => context.go(RouteNames.explore),
                       ),
                       const SizedBox(height: 12),
                       CustomButton(
-                        label: 'Lên lịch trình bằng AI',
+                        label: context.tr('zones.plan_with_ai_btn'),
                         icon: Icons.auto_awesome_rounded,
                         gold: true,
                         onPressed: () => context.push(RouteNames.aiPlanner),
@@ -220,7 +223,7 @@ class _WelcomeHero extends StatelessWidget {
             left: 12,
             child: CircleIconButton(
               icon: Icons.close_rounded,
-              tooltip: 'Đóng',
+              tooltip: context.tr('common.close'),
               onPressed: () => context.canPop() ? context.pop() : context.go(RouteNames.explore),
             ),
           ),
@@ -238,13 +241,13 @@ class _WelcomeHero extends StatelessWidget {
                     borderRadius: BorderRadius.circular(999),
                     border: Border.all(color: Colors.white38),
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.flight_rounded, color: Colors.white, size: 16),
-                      SizedBox(width: 6),
-                      Text('Sân bay Quốc tế Đà Nẵng',
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12.5)),
+                      const Icon(Icons.flight_rounded, color: Colors.white, size: 16),
+                      const SizedBox(width: 6),
+                      Text(context.tr('zones.danang_intl_airport'),
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12.5)),
                     ],
                   ),
                 ),

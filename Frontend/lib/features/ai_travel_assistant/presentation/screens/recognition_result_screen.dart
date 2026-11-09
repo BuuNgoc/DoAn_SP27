@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../shared/widgets/app_card.dart';
 import '../../../../shared/widgets/custom_app_bar.dart';
@@ -28,19 +29,19 @@ class RecognitionResultScreen extends StatelessWidget {
     final a = args;
     if (a == null) {
       return TopographicScaffold(
-        appBar: const CustomAppBar(title: 'Kết quả nhận diện'),
+        appBar: CustomAppBar(title: context.tr('ai.result_title')),
         body: EmptyStateWidget(
           icon: Icons.image_search_rounded,
-          title: 'Chưa có kết quả',
-          message: 'Hãy chụp hoặc tải ảnh lên để AI nhận diện địa danh.',
-          actionLabel: 'Quét ảnh',
+          title: context.tr('ai.no_result_title'),
+          message: context.tr('ai.no_result_message'),
+          actionLabel: context.tr('destinations.scan_card_title'),
           onAction: () => context.pushReplacement(RouteNames.aiScan),
         ),
       );
     }
     final r = a.result;
     return TopographicScaffold(
-      appBar: const CustomAppBar(title: 'Kết quả nhận diện'),
+      appBar: CustomAppBar(title: context.tr('ai.result_title')),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
         children: [
@@ -69,11 +70,11 @@ class RecognitionResultScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Row(
+                  Row(
                     children: [
-                      Icon(Icons.lightbulb_rounded, color: AppColors.accentSoftGold),
-                      SizedBox(width: 8),
-                      Text('Có thể bạn chưa biết', style: TextStyle(fontWeight: FontWeight.w800)),
+                      const Icon(Icons.lightbulb_rounded, color: AppColors.accentSoftGold),
+                      const SizedBox(width: 8),
+                      Text(context.tr('ai.did_you_know'), style: const TextStyle(fontWeight: FontWeight.w800)),
                     ],
                   ),
                   const SizedBox(height: 8),
@@ -88,7 +89,10 @@ class RecognitionResultScreen extends StatelessWidget {
           ],
           if (r.alternatives.isNotEmpty) ...[
             const SizedBox(height: 20),
-            const SectionHeader(title: 'Khả năng khác', subtitle: 'Các địa danh có đặc điểm tương tự'),
+            SectionHeader(
+              title: context.tr('ai.other_possibilities_title'),
+              subtitle: context.tr('ai.other_possibilities_subtitle'),
+            ),
             const SizedBox(height: 8),
             for (final c in r.alternatives)
               ListTile(
@@ -103,7 +107,7 @@ class RecognitionResultScreen extends StatelessWidget {
           if (r.destinationId != null) ...[
             const SizedBox(height: 16),
             CustomButton(
-              label: 'Xem chi tiết điểm đến',
+              label: context.tr('ai.view_destination_detail'),
               icon: Icons.arrow_forward_rounded,
               onPressed: () => context.push(RouteNames.destinationDetail(r.destinationId!)),
             ),
@@ -113,11 +117,14 @@ class RecognitionResultScreen extends StatelessWidget {
             onPressed: () => context.pop(),
             style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(50)),
             icon: const Icon(Icons.refresh_rounded),
-            label: const Text('Quét ảnh khác'),
+            label: Text(context.tr('ai.scan_another_photo')),
           ),
           if (r.relatedDestinationIds.isNotEmpty) ...[
             const SizedBox(height: 24),
-            const SectionHeader(title: 'Nội dung liên quan', subtitle: 'Gợi ý điểm đến gần đó'),
+            SectionHeader(
+              title: context.tr('ai.related_content_title'),
+              subtitle: context.tr('ai.related_content_subtitle'),
+            ),
             const SizedBox(height: 10),
             _RelatedDestinations(ids: r.relatedDestinationIds),
           ],
@@ -152,7 +159,7 @@ class ConfidenceBadge extends StatelessWidget {
           Icon(Icons.verified_rounded, color: color, size: 18),
           const SizedBox(width: 6),
           Text(
-            'Độ tin cậy ${(confidence * 100).round()}%',
+            context.tr('ai.confidence_badge', params: {'percent': '${(confidence * 100).round()}'}),
             style: TextStyle(color: color, fontWeight: FontWeight.w800, fontSize: 13),
           ),
         ],
@@ -170,8 +177,8 @@ class _ConfidenceMeter extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = ConfidenceBadge.colorOf(result.confidence);
     final label = result.confidence >= 0.8
-        ? 'Độ tin cậy cao'
-        : (result.isLowConfidence ? 'Độ tin cậy thấp' : 'Độ tin cậy trung bình');
+        ? context.tr('ai.confidence_high')
+        : (result.isLowConfidence ? context.tr('ai.confidence_low') : context.tr('ai.confidence_medium'));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -225,11 +232,9 @@ class _ReferenceNotice extends StatelessWidget {
           Expanded(
             child: Text(
               lowConfidence
-                  ? 'AI chưa chắc chắn về địa danh này. Kết quả chỉ mang tính gợi ý – bạn hãy chụp lại rõ hơn '
-                      'hoặc đối chiếu với biển chỉ dẫn tại chỗ.'
-                  : 'Kết quả nhận diện bằng AI chỉ mang tính tham khảo và có thể chưa chính xác tuyệt đối. '
-                      'Vui lòng đối chiếu với biển chỉ dẫn tại điểm đến.',
-              style: TextStyle(color: AppColors.textSecondary, fontSize: 12.5, height: 1.45),
+                  ? context.tr('ai.low_confidence_notice')
+                  : context.tr('ai.reference_notice'),
+              style: const TextStyle(color: AppColors.textSecondary, fontSize: 12.5, height: 1.45),
             ),
           ),
         ],

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/date_formatter.dart';
 import '../../../../core/utils/view_status.dart';
@@ -23,22 +24,28 @@ import '../bloc/events_cubits.dart';
 /// Gửi bình chọn kèm kiểm tra đăng nhập – dùng chung cho danh sách và chi tiết.
 Future<void> voteForEntry(BuildContext context, ContestEntry entry) async {
   final cubit = context.read<ContestCubit>();
-  final user = await requireLogin(context, reason: 'Vui lòng đăng nhập để bình chọn tác phẩm yêu thích.');
+  final user = await requireLogin(context, reason: context.tr('contest.login_to_vote_reason'));
   if (user == null || !context.mounted) return;
   final error = await cubit.vote(entry.id, user.uid);
   if (!context.mounted) return;
   if (error != null) {
     showAppSnackBar(context, error, type: SnackType.warning);
   } else {
-    showAppSnackBar(context, 'Cảm ơn bạn đã bình chọn cho “${entry.title}”!', type: SnackType.success);
+    showAppSnackBar(
+      context,
+      context.tr('contest.vote_thanks', params: {'title': entry.title}),
+      type: SnackType.success,
+    );
   }
 }
 
 void shareEntry(BuildContext context, ContestEntry entry) => SocialShareSheet.show(
       context,
       title: entry.title,
-      message: 'Hãy cùng bình chọn tác phẩm “${entry.title}” của ${entry.artistName} tại '
-          'Cuộc thi Điêu khắc đá Non Nước 2026 trên ứng dụng SmartTravel! #HonDaXuQuang #SmartTravel',
+      message: context.tr(
+        'contest.share_entry_message',
+        params: {'title': entry.title, 'artist': entry.artistName},
+      ),
     );
 
 /// [FE-16] Cuộc thi điêu khắc đá: thông tin, tác phẩm dự thi, bình chọn, bảng xếp hạng.
@@ -54,18 +61,22 @@ class StoneCarvingContestScreen extends StatelessWidget {
         length: 3,
         child: TopographicScaffold(
           seed: 17,
-          appBar: const CustomAppBar(
-            title: 'Cuộc thi Điêu khắc đá',
-            subtitle: 'Hồn đá xứ Quảng · 2026',
+          appBar: CustomAppBar(
+            title: context.tr('contest.title'),
+            subtitle: context.tr('contest.subtitle'),
             bottom: TabBar(
-              tabs: [Tab(text: 'Tác phẩm'), Tab(text: 'Xếp hạng'), Tab(text: 'Thể lệ')],
+              tabs: [
+                Tab(text: context.tr('contest.tab_entries')),
+                Tab(text: context.tr('contest.tab_leaderboard')),
+                Tab(text: context.tr('contest.tab_rules')),
+              ],
             ),
           ),
           body: BlocBuilder<ContestCubit, ContestState>(
             builder: (context, state) {
               if (state.status.isFailure && state.contest == null) {
                 return ErrorViewWidget(
-                  message: state.errorMessage ?? 'Không tải được cuộc thi.',
+                  message: state.errorMessage ?? context.tr('contest.load_error'),
                   onRetry: () => context.read<ContestCubit>().load(userId: userId),
                 );
               }
@@ -109,13 +120,21 @@ class _ContestHeader extends StatelessWidget {
                   background: Colors.white,
                 ),
                 const SizedBox(height: 10),
-                Text('Chủ đề: “${c.theme}”',
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 16)),
+                Text(
+                  context.tr('contest.theme_prefix', params: {'theme': c.theme}),
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 16),
+                ),
                 const SizedBox(height: 6),
                 Text(
                   c.canVote
-                      ? 'Còn $daysLeft ngày · kết thúc ${DateFormatter.formatDateOnly(c.votingEndsAt)}'
-                      : 'Bình chọn đã đóng',
+                      ? context.tr(
+                          'contest.days_left_ends',
+                          params: {
+                            'days': '$daysLeft',
+                            'date': DateFormatter.formatDateOnly(c.votingEndsAt),
+                          },
+                        )
+                      : context.tr('contest.voting_closed'),
                   style: TextStyle(color: Colors.white.withValues(alpha: 0.9), fontSize: 13),
                 ),
               ],
@@ -125,7 +144,10 @@ class _ContestHeader extends StatelessWidget {
             children: [
               Text(CurrencyFormatter.points(state.totalVotes),
                   style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w800)),
-              Text('lượt bình chọn', style: TextStyle(color: Colors.white.withValues(alpha: 0.85), fontSize: 12)),
+              Text(
+                context.tr('contest.votes_label'),
+                style: TextStyle(color: Colors.white.withValues(alpha: 0.85), fontSize: 12),
+              ),
             ],
           ),
         ],
@@ -230,7 +252,7 @@ class _EntryCard extends StatelessWidget {
                   ? OutlinedButton.icon(
                       onPressed: null,
                       icon: const Icon(Icons.check_rounded, size: 18),
-                      label: const Text('Đã bình chọn'),
+                      label: Text(context.tr('contest.voted_btn')),
                     )
                   : FilledButton.icon(
                       onPressed: !canVote || voting ? null : () => voteForEntry(context, entry),
@@ -238,7 +260,7 @@ class _EntryCard extends StatelessWidget {
                           ? const SizedBox(
                               width: 14, height: 14, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
                           : const Icon(Icons.how_to_vote_rounded, size: 18),
-                      label: const Text('Bình chọn'),
+                      label: Text(context.tr('contest.vote_btn')),
                     ),
             ),
           ),
@@ -339,11 +361,14 @@ class _RulesTab extends StatelessWidget {
         const SizedBox(height: 14),
         Text(contest.title, style: Theme.of(context).textTheme.titleLarge),
         const SizedBox(height: 4),
-        Text('Đơn vị tổ chức: ${contest.organizer}', style: const TextStyle(color: AppColors.textMuted, fontSize: 12.5)),
+        Text(
+          context.tr('contest.organizer_prefix', params: {'organizer': contest.organizer}),
+          style: const TextStyle(color: AppColors.textMuted, fontSize: 12.5),
+        ),
         const SizedBox(height: 10),
         Text(contest.description, style: const TextStyle(color: AppColors.textSecondary, height: 1.6)),
         const SizedBox(height: 18),
-        const Text('Cơ cấu giải thưởng', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
+        Text(context.tr('contest.prize_structure_title'), style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
         const SizedBox(height: 6),
         for (final p in contest.prizes)
           ListTile(
@@ -353,7 +378,7 @@ class _RulesTab extends StatelessWidget {
             title: Text(p),
           ),
         const SizedBox(height: 10),
-        const Text('Thể lệ bình chọn', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
+        Text(context.tr('contest.voting_rules_title'), style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
         const SizedBox(height: 6),
         for (final r in contest.rules)
           ListTile(

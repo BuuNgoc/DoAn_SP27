@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/view_status.dart';
 import '../../../../shared/widgets/app_feedback.dart';
@@ -39,7 +40,7 @@ class _ReviewsView extends StatelessWidget {
   final String destinationId;
 
   Future<void> _write(BuildContext context, List<Review> reviews) async {
-    final user = await requireLogin(context, reason: 'Vui lòng đăng nhập để viết đánh giá.');
+    final user = await requireLogin(context, reason: context.tr('reviews.login_to_write'));
     if (user == null || !context.mounted) return;
     final mine = reviews.where((r) => r.userId == user.uid).firstOrNull;
     final route = mine == null
@@ -50,7 +51,7 @@ class _ReviewsView extends StatelessWidget {
   }
 
   Future<void> _report(BuildContext context, Review review) async {
-    final user = await requireLogin(context, reason: 'Vui lòng đăng nhập để báo cáo đánh giá.');
+    final user = await requireLogin(context, reason: context.tr('reviews.login_to_report'));
     if (user == null || !context.mounted) return;
     final result = await showReportReviewDialog(context);
     if (result == null || !context.mounted) return;
@@ -58,7 +59,7 @@ class _ReviewsView extends StatelessWidget {
     if (!context.mounted) return;
     showAppSnackBar(
       context,
-      error ?? 'Cảm ơn bạn! Báo cáo đã được gửi đến Ban quản trị.',
+      error ?? context.tr('reviews.report_thanks'),
       type: error == null ? SnackType.success : SnackType.warning,
     );
   }
@@ -66,15 +67,15 @@ class _ReviewsView extends StatelessWidget {
   Future<void> _delete(BuildContext context, String userId, Review review) async {
     final ok = await showConfirmDialog(
       context,
-      title: 'Xóa đánh giá?',
-      message: 'Đánh giá của bạn sẽ bị xóa vĩnh viễn và không thể khôi phục.',
-      confirmLabel: 'Xóa',
+      title: context.tr('reviews.delete_confirm_title'),
+      message: context.tr('reviews.delete_confirm_msg'),
+      confirmLabel: context.tr('common.delete'),
       destructive: true,
     );
     if (!ok || !context.mounted) return;
     final error = await context.read<DestinationReviewsCubit>().delete(userId, review);
     if (!context.mounted) return;
-    showAppSnackBar(context, error ?? 'Đã xóa đánh giá.', type: error == null ? SnackType.success : SnackType.error);
+    showAppSnackBar(context, error ?? context.tr('reviews.deleted_success'), type: error == null ? SnackType.success : SnackType.error);
   }
 
   @override
@@ -86,19 +87,19 @@ class _ReviewsView extends StatelessWidget {
         final hasMine = userId != null && state.reviews.any((r) => r.userId == userId);
         return TopographicScaffold(
           seed: 61,
-          appBar: CustomAppBar(title: 'Đánh giá', subtitle: name),
+          appBar: CustomAppBar(title: context.tr('reviews.title'), subtitle: name),
           floatingActionButton: state.status.isSuccess
               ? FloatingActionButton.extended(
                   onPressed: () => _write(context, state.reviews),
                   icon: Icon(hasMine ? Icons.edit_rounded : Icons.rate_review_rounded),
-                  label: Text(hasMine ? 'Sửa đánh giá của bạn' : 'Viết đánh giá'),
+                  label: Text(hasMine ? context.tr('reviews.edit_your_review') : context.tr('reviews.write_review')),
                 )
               : null,
           body: () {
-            if (state.status.isLoading) return const LoadingIndicator(message: 'Đang tải đánh giá...');
+            if (state.status.isLoading) return LoadingIndicator(message: context.tr('reviews.loading_reviews'));
             if (state.status.isFailure) {
               return ErrorViewWidget(
-                message: state.errorMessage ?? 'Không tải được đánh giá.',
+                message: state.errorMessage ?? context.tr('reviews.load_error'),
                 onRetry: () => context.read<DestinationReviewsCubit>().load(destinationId),
               );
             }
@@ -136,7 +137,7 @@ class _ReviewsView extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: InputChip(
-                        label: Text('Chỉ hiện ${state.starFilter} sao'),
+                        label: Text(context.tr('reviews.only_star_filter', params: {'star': '${state.starFilter}'})),
                         onDeleted: () => context.read<DestinationReviewsCubit>().setStarFilter(state.starFilter),
                       ),
                     ),
@@ -147,10 +148,10 @@ class _ReviewsView extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 24),
                       child: EmptyStateWidget(
                         icon: Icons.rate_review_outlined,
-                        title: state.reviews.isEmpty ? 'Chưa có đánh giá nào' : 'Không có đánh giá phù hợp',
+                        title: state.reviews.isEmpty ? context.tr('reviews.empty_title') : context.tr('reviews.empty_filtered_title'),
                         message: state.reviews.isEmpty
-                            ? 'Hãy là người đầu tiên chia sẻ trải nghiệm tại đây.'
-                            : 'Thử bỏ bộ lọc để xem thêm đánh giá.',
+                            ? context.tr('reviews.empty_message')
+                            : context.tr('reviews.empty_filtered_message'),
                       ),
                     ),
                   for (final r in visible) ...[

@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/date_formatter.dart';
 import '../../../../core/utils/view_status.dart';
@@ -33,10 +34,10 @@ class BeachTourismScreen extends StatelessWidget {
         seed: 79,
         body: BlocBuilder<ZoneCubit, ZoneState>(
           builder: (context, state) {
-            if (state.status.isLoading) return const LoadingIndicator(message: 'Đang tải thông tin bãi biển...');
+            if (state.status.isLoading) return LoadingIndicator(message: context.tr('zones.loading_beach'));
             if (state.status.isFailure || state.overview == null) {
               return ErrorViewWidget(
-                message: state.errorMessage ?? 'Không tải được dữ liệu.',
+                message: state.errorMessage ?? context.tr('common.load_error'),
                 onRetry: () => context.read<ZoneCubit>().load(ZoneType.beach),
               );
             }
@@ -52,7 +53,10 @@ class BeachTourismScreen extends StatelessWidget {
                       const SizedBox(height: 20),
                       Text(o.introduction, style: const TextStyle(height: 1.6, color: AppColors.textSecondary)),
                       const SizedBox(height: 24),
-                      const SectionHeader(title: 'Các bãi tắm', subtitle: 'Giờ cứu hộ & tiện ích'),
+                      SectionHeader(
+                        title: context.tr('zones.beaches_title'),
+                        subtitle: context.tr('zones.beaches_subtitle'),
+                      ),
                       const SizedBox(height: 10),
                       SizedBox(
                         height: 268,
@@ -64,27 +68,30 @@ class BeachTourismScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 24),
-                      const SectionHeader(title: 'Hoạt động & dịch vụ', subtitle: 'Thể thao biển · Tiện ích bãi tắm'),
+                      SectionHeader(
+                        title: context.tr('zones.activities_services_title'),
+                        subtitle: context.tr('zones.activities_services_sub'),
+                      ),
                       const SizedBox(height: 10),
                       ZoneCategoryChips(state: state),
                       const SizedBox(height: 12),
                       for (final s in state.visibleSpots) ...[ZoneSpotCard(spot: s), const SizedBox(height: 12)],
                       const SizedBox(height: 12),
                       SectionHeader(
-                        title: 'Bản đồ dải biển',
-                        actionLabel: 'Bản đồ đầy đủ',
+                        title: context.tr('zones.coastline_map'),
+                        actionLabel: context.tr('zones.full_map'),
                         onAction: () => context.go(RouteNames.map),
                       ),
                       const SizedBox(height: 10),
                       ZoneMiniMap(spots: o.spots, showSea: true),
                       if (state.events.isNotEmpty) ...[
                         const SizedBox(height: 24),
-                        const SectionHeader(title: 'Sự kiện bên bờ biển'),
+                        SectionHeader(title: context.tr('zones.beach_events')),
                         const SizedBox(height: 10),
                         for (final e in state.events) ...[EventCard(event: e), const SizedBox(height: 12)],
                       ],
                       const SizedBox(height: 12),
-                      ZoneTipsCard(tips: o.tips, title: 'Kinh nghiệm đi biển'),
+                      ZoneTipsCard(tips: o.tips, title: context.tr('zones.beach_tips_title')),
                     ],
                   ),
                 ),
@@ -111,7 +118,13 @@ class _BeachSafetyCardState extends State<BeachSafetyCard> {
 
   Future<void> _call(String phone) async {
     final ok = await launchUrl(Uri(scheme: 'tel', path: phone.replaceAll(' ', '')));
-    if (!ok && mounted) showAppSnackBar(context, 'Không thể gọi $phone trên thiết bị này.', type: SnackType.error);
+    if (!ok && mounted) {
+      showAppSnackBar(
+        context,
+        context.tr('zones.call_error', params: {'phone': phone}),
+        type: SnackType.error,
+      );
+    }
   }
 
   @override
@@ -146,8 +159,8 @@ class _BeachSafetyCardState extends State<BeachSafetyCard> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('THÔNG TIN AN TOÀN BÃI BIỂN',
-                          style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 0.6, color: AppColors.textSecondary)),
+                      Text(context.tr('zones.beach_safety_header'),
+                          style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 0.6, color: AppColors.textSecondary)),
                       const SizedBox(height: 2),
                       Text(level.label, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800, color: level.color)),
                     ],
@@ -163,20 +176,22 @@ class _BeachSafetyCardState extends State<BeachSafetyCard> {
               children: [
                 Text(info.headline, style: const TextStyle(fontWeight: FontWeight.w700, height: 1.45)),
                 const SizedBox(height: 4),
-                Text('Cập nhật ${DateFormatter.relative(info.updatedAt)} · Ban quản lý bãi biển',
-                    style: const TextStyle(fontSize: 12, color: AppColors.textMuted)),
+                Text(
+                  context.tr('zones.updated_by_board', params: {'time': DateFormatter.relative(info.updatedAt)}),
+                  style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
+                ),
                 const SizedBox(height: 14),
                 Row(
                   children: [
-                    _Condition(icon: Icons.waves_rounded, label: 'Sóng', value: info.waveHeight),
-                    _Condition(icon: Icons.air_rounded, label: 'Gió', value: info.windSpeed),
+                    _Condition(icon: Icons.waves_rounded, label: context.tr('zones.condition_waves'), value: info.waveHeight),
+                    _Condition(icon: Icons.air_rounded, label: context.tr('zones.condition_wind'), value: info.windSpeed),
                   ],
                 ),
                 const SizedBox(height: 10),
                 Row(
                   children: [
-                    _Condition(icon: Icons.thermostat_rounded, label: 'Nhiệt độ nước', value: info.waterTemperature),
-                    _Condition(icon: Icons.wb_sunny_rounded, label: 'Chỉ số UV', value: info.uvIndex),
+                    _Condition(icon: Icons.thermostat_rounded, label: context.tr('zones.condition_water_temp'), value: info.waterTemperature),
+                    _Condition(icon: Icons.wb_sunny_rounded, label: context.tr('zones.condition_uv'), value: info.uvIndex),
                   ],
                 ),
                 const SizedBox(height: 12),
@@ -197,7 +212,7 @@ class _BeachSafetyCardState extends State<BeachSafetyCard> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Quy tắc an toàn', style: TextStyle(fontWeight: FontWeight.w800)),
+                        Text(context.tr('zones.safety_rules_title'), style: const TextStyle(fontWeight: FontWeight.w800)),
                         const SizedBox(height: 8),
                         for (final t in info.tips)
                           Padding(
@@ -212,7 +227,7 @@ class _BeachSafetyCardState extends State<BeachSafetyCard> {
                             ),
                           ),
                         const SizedBox(height: 8),
-                        const Text('Số điện thoại khẩn cấp', style: TextStyle(fontWeight: FontWeight.w800)),
+                        Text(context.tr('zones.emergency_phones_title'), style: const TextStyle(fontWeight: FontWeight.w800)),
                         const SizedBox(height: 4),
                         for (final c in info.contacts)
                           ListTile(
@@ -237,7 +252,7 @@ class _BeachSafetyCardState extends State<BeachSafetyCard> {
             child: TextButton.icon(
               onPressed: () => setState(() => _expanded = !_expanded),
               icon: Icon(_expanded ? Icons.expand_less_rounded : Icons.expand_more_rounded),
-              label: Text(_expanded ? 'Thu gọn' : 'Quy tắc an toàn & số khẩn cấp'),
+              label: Text(_expanded ? context.tr('common.collapse') : context.tr('zones.safety_and_emergency_btn')),
             ),
           ),
         ],
@@ -327,8 +342,10 @@ class _BeachCard extends StatelessWidget {
                     children: [
                       const Icon(Icons.support_rounded, size: 15, color: AppColors.primaryTeal),
                       const SizedBox(width: 4),
-                      Text('Cứu hộ: ${beach.lifeguardHours}',
-                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
+                      Text(
+                        context.tr('zones.lifeguard_hours', params: {'hours': beach.lifeguardHours}),
+                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 6),

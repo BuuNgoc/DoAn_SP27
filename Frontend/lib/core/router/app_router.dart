@@ -41,6 +41,7 @@ import '../../features/specialized_zones/presentation/screens/an_thuong_experien
 import '../../features/specialized_zones/presentation/screens/beach_tourism_screen.dart';
 import '../../features/vr360_audio_guide/presentation/screens/audio_guide_screen.dart';
 import '../../features/vr360_audio_guide/presentation/screens/vr360_panorama_screen.dart';
+import '../localization/app_localizations.dart';
 import 'main_navigation_shell.dart';
 import 'route_names.dart';
 
@@ -279,11 +280,20 @@ class _NotFoundScreen extends StatelessWidget {
             children: [
               const Icon(Icons.travel_explore_rounded, size: 56),
               const SizedBox(height: 12),
-              const Text('Không tìm thấy trang', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+              Text(
+                context.tr('core.not_found_title'),
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+              ),
               const SizedBox(height: 6),
-              const Text('Đường dẫn có thể đã thay đổi hoặc không còn tồn tại.', textAlign: TextAlign.center),
+              Text(
+                context.tr('core.not_found_message'),
+                textAlign: TextAlign.center,
+              ),
               const SizedBox(height: 16),
-              FilledButton(onPressed: () => context.go(RouteNames.explore), child: const Text('Về trang Khám phá')),
+              FilledButton(
+                onPressed: () => context.go(RouteNames.explore),
+                child: Text(context.tr('core.back_to_explore')),
+              ),
             ],
           ),
         ),

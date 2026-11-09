@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/date_formatter.dart';
 import '../../../../shared/widgets/app_card.dart';
@@ -49,13 +50,13 @@ class PointsSummaryCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 14),
-          const Text('Điểm khả dụng', style: TextStyle(color: Colors.white70, fontSize: 13)),
+          Text(context.tr('loyalty.available_points_label'), style: const TextStyle(color: Colors.white70, fontSize: 13)),
           TweenAnimationBuilder<double>(
             tween: Tween(begin: 0, end: summary.availablePoints.toDouble()),
             duration: const Duration(milliseconds: 900),
             curve: Curves.easeOutCubic,
             builder: (_, v, _) => Text(
-              '${CurrencyFormatter.points(v.round())} điểm',
+              context.tr('loyalty.points_with_unit', params: {'points': CurrencyFormatter.points(v.round())}),
               style: const TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w800),
             ),
           ),
@@ -72,8 +73,14 @@ class PointsSummaryCard extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             next == null
-                ? 'Bạn đã đạt hạng cao nhất. Cảm ơn bạn đã đồng hành!'
-                : 'Tích thêm ${CurrencyFormatter.points(summary.pointsToNextTier)} điểm để lên hạng ${next.label}',
+                ? context.tr('loyalty.highest_tier_reached')
+                : context.tr(
+                    'loyalty.points_to_next_tier',
+                    params: {
+                      'points': CurrencyFormatter.points(summary.pointsToNextTier),
+                      'tier': next.label,
+                    },
+                  ),
             style: const TextStyle(color: Colors.white, fontSize: 12.5),
           ),
         ],
@@ -126,8 +133,10 @@ class RewardCard extends StatelessWidget {
                         borderRadius: const BorderRadius.vertical(top: Radius.circular(18)),
                       ),
                       alignment: Alignment.center,
-                      child: const Text('Tạm hết quà',
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800)),
+                      child: Text(
+                        context.tr('loyalty.out_of_stock'),
+                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
+                      ),
                     ),
                 ],
               ),

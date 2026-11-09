@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/constants/app_colors.dart';
+import '../../core/localization/app_localizations.dart';
 import '../../core/router/route_names.dart';
 import '../../features/auth/domain/entities/app_user.dart';
 import '../../features/auth/presentation/bloc/auth_cubit.dart';
@@ -16,12 +17,19 @@ Future<AppUser?> requireLogin(BuildContext context, {required String reason}) as
   final go = await showDialog<bool>(
     context: context,
     builder: (ctx) => AlertDialog(
+      scrollable: true,
       icon: const Icon(Icons.lock_outline_rounded, color: AppColors.primaryTeal, size: 32),
-      title: const Text('Cần đăng nhập'),
+      title: Text(ctx.tr('core.login_required_title')),
       content: Text(reason, textAlign: TextAlign.center),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Để sau')),
-        FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Đăng nhập')),
+        TextButton(
+          onPressed: () => Navigator.pop(ctx, false),
+          child: Text(ctx.tr('common.later')),
+        ),
+        FilledButton(
+          onPressed: () => Navigator.pop(ctx, true),
+          child: Text(ctx.tr('auth.login')),
+        ),
       ],
     ),
   );

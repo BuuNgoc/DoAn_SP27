@@ -2,19 +2,21 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/errors/failures.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/utils/view_status.dart';
 import '../../domain/entities/review.dart';
 import '../../domain/usecases/review_usecases.dart';
 
 enum ReviewSort {
-  newest('Mới nhất'),
-  highest('Điểm cao nhất'),
-  lowest('Điểm thấp nhất'),
-  helpful('Hữu ích nhất'),
-  withPhotos('Có hình ảnh');
+  newest('reviews.sort_newest'),
+  highest('reviews.sort_highest'),
+  lowest('reviews.sort_lowest'),
+  helpful('reviews.sort_helpful'),
+  withPhotos('reviews.sort_with_photos');
 
-  const ReviewSort(this.label);
-  final String label;
+  const ReviewSort(this.labelKey);
+  final String labelKey;
+  String get label => AppLocalizations.trStatic(labelKey);
 }
 
 class ReviewListState extends Equatable {
@@ -152,7 +154,7 @@ class MyReviewsCubit extends Cubit<ReviewListState> {
 
   Future<String?> delete(Review review) async {
     final userId = _userId;
-    if (userId == null) return 'Vui lòng đăng nhập.';
+    if (userId == null) return AppLocalizations.trStatic('core.unauthenticated_error');
     try {
       await _delete(userId: userId, destinationId: review.destinationId, reviewId: review.id);
       emit(state.copyWith(reviews: state.reviews.where((r) => r.id != review.id).toList()));
@@ -194,7 +196,7 @@ class WriteReviewCubit extends Cubit<WriteReviewState> {
     try {
       final r = await _getReview(destinationId, reviewId);
       if (r == null) {
-        emit(const WriteReviewState(status: ViewStatus.failure, errorMessage: 'Không tìm thấy đánh giá cần sửa.'));
+        emit(WriteReviewState(status: ViewStatus.failure, errorMessage: AppLocalizations.trStatic('reviews.not_found_to_edit')));
         return;
       }
       emit(WriteReviewState(status: ViewStatus.success, existing: r));

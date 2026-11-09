@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/view_status.dart';
 import '../../../../shared/widgets/custom_app_bar.dart';
@@ -20,7 +21,10 @@ class SavedFavoritesScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) => sl<DestinationListCubit>()..load(),
       child: TopographicScaffold(
-        appBar: const CustomAppBar(title: 'Địa điểm yêu thích', subtitle: 'Xem được cả khi ngoại tuyến'),
+        appBar: CustomAppBar(
+          title: context.tr('destinations.favorites_title'),
+          subtitle: context.tr('destinations.favorites_subtitle'),
+        ),
         body: BlocBuilder<DestinationListCubit, DestinationListState>(
           builder: (context, listState) {
             final favoriteIds = context.watch<FavoritesCubit>().state;
@@ -35,9 +39,9 @@ class SavedFavoritesScreen extends StatelessWidget {
             if (items.isEmpty) {
               return EmptyStateWidget(
                 icon: Icons.favorite_border_rounded,
-                title: 'Chưa có địa điểm yêu thích',
-                message: 'Chạm vào biểu tượng trái tim ở mỗi điểm đến để lưu lại cho chuyến đi của bạn.',
-                actionLabel: 'Khám phá ngay',
+                title: context.tr('destinations.favorites_empty_title'),
+                message: context.tr('destinations.favorites_empty_message'),
+                actionLabel: context.tr('destinations.explore_now'),
                 onAction: () => context.push(RouteNames.destinations),
               );
             }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/constants/app_colors.dart';
+import '../../core/localization/app_localizations.dart';
 import 'custom_button.dart';
 
 class LoadingIndicator extends StatelessWidget {
@@ -40,9 +41,9 @@ class ErrorViewWidget extends StatelessWidget {
     return EmptyStateWidget(
       icon: Icons.cloud_off_rounded,
       iconColor: AppColors.error,
-      title: 'Không tải được dữ liệu',
+      title: context.tr('common.load_failed_title'),
       message: message,
-      actionLabel: onRetry == null ? null : 'Thử lại',
+      actionLabel: onRetry == null ? null : context.tr('common.retry'),
       onAction: onRetry,
     );
   }

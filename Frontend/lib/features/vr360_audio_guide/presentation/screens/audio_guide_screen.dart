@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/utils/view_status.dart';
 import '../../../../shared/widgets/app_card.dart';
 import '../../../../shared/widgets/custom_app_bar.dart';
@@ -21,12 +22,15 @@ class AudioGuideScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) => sl<AudioGuideCubit>()..load(destinationId),
       child: TopographicScaffold(
-        appBar: const CustomAppBar(title: 'Thuyết minh tự động', subtitle: 'Audio Guide đa ngôn ngữ'),
+        appBar: CustomAppBar(
+          title: context.tr('audio_guide.title'),
+          subtitle: context.tr('audio_guide.subtitle'),
+        ),
         body: BlocBuilder<AudioGuideCubit, AudioGuideState>(
           builder: (context, state) {
             if (state.status.isFailure) {
               return ErrorViewWidget(
-                message: state.errorMessage ?? 'Không tải được thuyết minh.',
+                message: state.errorMessage ?? context.tr('audio_guide.load_error'),
                 onRetry: () => context.read<AudioGuideCubit>().load(destinationId),
               );
             }

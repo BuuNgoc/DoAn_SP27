@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/constants/app_colors.dart';
+import '../../core/localization/app_localizations.dart';
 
 /// Hiển thị số sao (hỗ trợ nửa sao) màu Soft Gold.
 class RatingStars extends StatelessWidget {
@@ -49,7 +50,13 @@ class StarRatingInput extends StatelessWidget {
   final ValueChanged<int> onChanged;
   final double size;
 
-  static const _labels = ['Rất tệ', 'Chưa hài lòng', 'Bình thường', 'Hài lòng', 'Tuyệt vời'];
+  static const _labelKeys = [
+    'core.rating_1',
+    'core.rating_2',
+    'core.rating_3',
+    'core.rating_4',
+    'core.rating_5',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +81,7 @@ class StarRatingInput extends StatelessWidget {
           }),
         ),
         Text(
-          value == 0 ? 'Chạm để chấm điểm' : _labels[value - 1],
+          value == 0 ? context.tr('core.rating_tap_hint') : context.tr(_labelKeys[value - 1]),
           style: const TextStyle(color: AppColors.textSecondary, fontWeight: FontWeight.w600),
         ),
       ],

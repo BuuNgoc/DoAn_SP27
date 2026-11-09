@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/localization/app_localizations.dart';
+
 /// [FE-07] Dịch vụ/sự kiện/workshop có thể đặt chỗ.
 class BookableService extends Equatable {
   const BookableService({
@@ -36,15 +38,17 @@ class BookableService extends Equatable {
 }
 
 enum BookingStatus {
-  pending('Chờ xác nhận', Color(0xFFF2A65A), Icons.hourglass_top_rounded),
-  confirmed('Đã xác nhận', Color(0xFF4CAF7A), Icons.check_circle_rounded),
-  completed('Đã hoàn thành', Color(0xFF58B4BC), Icons.verified_rounded),
-  cancelled('Đã hủy', Color(0xFFE56B6B), Icons.cancel_rounded);
+  pending('booking.status_pending', Color(0xFFF2A65A), Icons.hourglass_top_rounded),
+  confirmed('booking.status_confirmed', Color(0xFF4CAF7A), Icons.check_circle_rounded),
+  completed('booking.status_completed', Color(0xFF58B4BC), Icons.verified_rounded),
+  cancelled('booking.status_cancelled', Color(0xFFE56B6B), Icons.cancel_rounded);
 
-  const BookingStatus(this.label, this.color, this.icon);
-  final String label;
+  const BookingStatus(this.labelKey, this.color, this.icon);
+  final String labelKey;
   final Color color;
   final IconData icon;
+
+  String get label => AppLocalizations.trStatic(labelKey);
 
   static BookingStatus fromName(String? name) =>
       values.firstWhere((s) => s.name == name, orElse: () => BookingStatus.pending);

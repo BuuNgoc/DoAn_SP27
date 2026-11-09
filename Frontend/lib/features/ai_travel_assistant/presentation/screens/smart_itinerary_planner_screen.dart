@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/date_formatter.dart';
 import '../../../../core/utils/view_status.dart';
@@ -29,7 +30,11 @@ class SmartItineraryPlannerScreen extends StatelessWidget {
       child: BlocConsumer<ItineraryCubit, ItineraryState>(
         listener: (context, state) {
           if (state.status.isFailure) {
-            showAppSnackBar(context, state.errorMessage ?? 'Không tạo được lịch trình.', type: SnackType.error);
+            showAppSnackBar(
+              context,
+              state.errorMessage ?? context.tr('ai.itinerary_generate_error'),
+              type: SnackType.error,
+            );
           }
         },
         builder: (context, state) {
@@ -37,17 +42,19 @@ class SmartItineraryPlannerScreen extends StatelessWidget {
           return TopographicScaffold(
             seed: 5,
             appBar: CustomAppBar(
-              title: showResult ? 'Lịch trình của bạn' : 'Lịch trình thông minh',
-              subtitle: showResult ? 'Được tạo bởi SmartTravel AI' : 'RAG · cá nhân hóa theo sở thích',
+              title: showResult ? context.tr('ai.your_itinerary_title') : context.tr('ai.smart_itinerary_title'),
+              subtitle: showResult
+                  ? context.tr('ai.created_by_ai')
+                  : context.tr('ai.personalized_subtitle'),
               actions: [
                 if (showResult)
                   CircleIconButton(
                     icon: Icons.ios_share_rounded,
-                    tooltip: 'Chia sẻ lịch trình',
+                    tooltip: context.tr('ai.share_itinerary'),
                     onPressed: () => SocialShareSheet.show(
                       context,
                       title: state.itinerary!.title,
-                      message: _shareText(state.itinerary!),
+                      message: _shareText(context, state.itinerary!),
                     ),
                   ),
               ],
@@ -68,12 +75,12 @@ class SmartItineraryPlannerScreen extends StatelessWidget {
     );
   }
 
-  static String _shareText(GeneratedItinerary it) {
+  static String _shareText(BuildContext context, GeneratedItinerary it) {
     final b = StringBuffer('🗺️ ${it.title}\n');
     for (final s in it.stops) {
       b.writeln('${s.time} – ${s.title}');
     }
-    b.write('\nTạo bởi ứng dụng SmartTravel – Ngũ Hành Sơn #SmartTravel');
+    b.write('\n${context.tr('ai.share_footer')}');
     return b.toString();
   }
 }
@@ -105,7 +112,7 @@ class _PlannerFormState extends State<_PlannerForm> {
 
   void _submit() {
     if (_interests.isEmpty) {
-      showAppSnackBar(context, 'Vui lòng chọn ít nhất một sở thích.', type: SnackType.warning);
+      showAppSnackBar(context, context.tr('ai.select_at_least_one_interest'), type: SnackType.warning);
       return;
     }
     context.read<ItineraryCubit>().generate(ItineraryRequest(
@@ -121,23 +128,26 @@ class _PlannerFormState extends State<_PlannerForm> {
 
   @override
   Widget build(BuildContext context) {
+    final hoursLabel = context.tr('destinations.duration_hours', params: {'hours': '${_hours.round()}'});
     return ListView(
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
       children: [
         _Section(
           icon: Icons.schedule_rounded,
-          title: 'Thời gian rảnh',
+          title: context.tr('ai.free_time_label'),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  Text('${_hours.round()} giờ',
-                      style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: AppColors.primaryTeal)),
+                  Text(
+                    hoursLabel,
+                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: AppColors.primaryTeal),
+                  ),
                   const Spacer(),
                   ActionChip(
                     avatar: const Icon(Icons.wb_sunny_outlined, size: 18),
-                    label: Text('Bắt đầu ${_start.format(context)}'),
+                    label: Text(context.tr('ai.start_at_time', params: {'time': _start.format(context)})),
                     onPressed: () async {
                       final t = await showTimePicker(context: context, initialTime: _start);
                       if (t != null) setState(() => _start = t);
@@ -150,7 +160,7 @@ class _PlannerFormState extends State<_PlannerForm> {
                 min: 2,
                 max: 12,
                 divisions: 10,
-                label: '${_hours.round()} giờ',
+                label: hoursLabel,
                 onChanged: (v) => setState(() => _hours = v),
               ),
             ],
@@ -158,7 +168,7 @@ class _PlannerFormState extends State<_PlannerForm> {
         ),
         _Section(
           icon: Icons.account_balance_wallet_rounded,
-          title: 'Ngân sách',
+          title: context.tr('ai.budget_label'),
           child: Column(
             children: [
               for (final b in TravelBudget.values)
@@ -178,7 +188,7 @@ class _PlannerFormState extends State<_PlannerForm> {
         ),
         _Section(
           icon: Icons.commute_rounded,
-          title: 'Phương tiện',
+          title: context.tr('ai.transport_label'),
           child: Wrap(
             spacing: 8,
             runSpacing: 8,
@@ -195,15 +205,18 @@ class _PlannerFormState extends State<_PlannerForm> {
         ),
         _Section(
           icon: Icons.favorite_rounded,
-          title: 'Sở thích',
-          trailing: Text('${_interests.length} đã chọn', style: const TextStyle(color: AppColors.textMuted, fontSize: 12)),
+          title: context.tr('ai.interests_label'),
+          trailing: Text(
+            context.tr('ai.selected_count', params: {'count': '${_interests.length}'}),
+            style: const TextStyle(color: AppColors.textMuted, fontSize: 12),
+          ),
           child: Wrap(
             spacing: 8,
             runSpacing: 8,
             children: [
               for (final i in kTravelInterests)
                 FilterChip(
-                  label: Text(i),
+                  label: Text(localizedTravelInterest(context, i)),
                   selected: _interests.contains(i),
                   onSelected: (on) => setState(() => on ? _interests.add(i) : _interests.remove(i)),
                 ),
@@ -212,7 +225,7 @@ class _PlannerFormState extends State<_PlannerForm> {
         ),
         _Section(
           icon: Icons.groups_rounded,
-          title: 'Số người',
+          title: context.tr('ai.group_size_label'),
           child: Row(
             children: [
               IconButton.filledTonal(
@@ -229,9 +242,11 @@ class _PlannerFormState extends State<_PlannerForm> {
                 icon: const Icon(Icons.add_rounded),
               ),
               const SizedBox(width: 12),
-              const Expanded(
-                child: Text('Chi phí ước tính sẽ nhân theo số người.',
-                    style: TextStyle(color: AppColors.textMuted, fontSize: 12)),
+              Expanded(
+                child: Text(
+                  context.tr('ai.group_cost_note'),
+                  style: const TextStyle(color: AppColors.textMuted, fontSize: 12),
+                ),
               ),
             ],
           ),
@@ -239,15 +254,15 @@ class _PlannerFormState extends State<_PlannerForm> {
         TextField(
           controller: _note,
           maxLines: 2,
-          decoration: const InputDecoration(
-            labelText: 'Ghi chú thêm (không bắt buộc)',
-            hintText: 'Ví dụ: đi cùng trẻ nhỏ, muốn tránh leo nhiều bậc thang...',
-            prefixIcon: Icon(Icons.edit_note_rounded),
+          decoration: InputDecoration(
+            labelText: context.tr('ai.extra_note_label'),
+            hintText: context.tr('ai.extra_note_hint'),
+            prefixIcon: const Icon(Icons.edit_note_rounded),
           ),
         ),
         const SizedBox(height: 20),
         CustomButton(
-          label: widget.loading ? 'AI đang lên lịch trình...' : 'Tạo lịch trình với AI',
+          label: widget.loading ? context.tr('ai.generating_itinerary') : context.tr('ai.generate_with_ai_btn'),
           icon: Icons.auto_awesome_rounded,
           gold: true,
           isLoading: widget.loading,
@@ -317,13 +332,15 @@ class _ItineraryTimeline extends StatelessWidget {
                 runSpacing: 8,
                 children: [
                   PillBadge(
-                    label: '${it.stops.length} điểm dừng',
+                    label: context.tr('ai.stops_count', params: {'count': '${it.stops.length}'}),
                     icon: Icons.place_rounded,
                     color: Colors.white,
                     background: Colors.white.withValues(alpha: 0.18),
                   ),
                   PillBadge(
-                    label: mins == 0 ? '$hours giờ' : '$hours giờ $mins phút',
+                    label: mins == 0
+                        ? context.tr('destinations.duration_hours', params: {'hours': '$hours'})
+                        : context.tr('destinations.duration_hours_minutes', params: {'hours': '$hours', 'minutes': '$mins'}),
                     icon: Icons.timelapse_rounded,
                     color: Colors.white,
                     background: Colors.white.withValues(alpha: 0.18),
@@ -349,7 +366,7 @@ class _ItineraryTimeline extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Lưu ý hữu ích', style: TextStyle(fontWeight: FontWeight.w800)),
+              Text(context.tr('ai.helpful_tips_title'), style: const TextStyle(fontWeight: FontWeight.w800)),
               const SizedBox(height: 8),
               for (final t in it.tips)
                 Padding(
@@ -370,7 +387,7 @@ class _ItineraryTimeline extends StatelessWidget {
         ExpansionTile(
           tilePadding: EdgeInsets.zero,
           leading: const Icon(Icons.menu_book_rounded, color: AppColors.accentSoftGold),
-          title: const Text('Nguồn tri thức RAG đã tham khảo', style: TextStyle(fontWeight: FontWeight.w700)),
+          title: Text(context.tr('ai.rag_sources_title'), style: const TextStyle(fontWeight: FontWeight.w700)),
           children: [
             for (final s in it.sources)
               ListTile(
@@ -380,9 +397,9 @@ class _ItineraryTimeline extends StatelessWidget {
               ),
           ],
         ),
-        const Text(
-          'Lịch trình do AI đề xuất chỉ mang tính tham khảo; thời gian và chi phí có thể thay đổi thực tế.',
-          style: TextStyle(color: AppColors.textMuted, fontSize: 12),
+        Text(
+          context.tr('ai.itinerary_disclaimer'),
+          style: const TextStyle(color: AppColors.textMuted, fontSize: 12),
         ),
         const SizedBox(height: 16),
         Row(
@@ -392,7 +409,7 @@ class _ItineraryTimeline extends StatelessWidget {
                 style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(50)),
                 onPressed: () => context.read<ItineraryCubit>().edit(),
                 icon: const Icon(Icons.tune_rounded),
-                label: const Text('Chỉnh sửa'),
+                label: Text(context.tr('common.edit')),
               ),
             ),
             const SizedBox(width: 12),
@@ -401,7 +418,7 @@ class _ItineraryTimeline extends StatelessWidget {
                 style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(50)),
                 onPressed: () => context.push(RouteNames.aiChat),
                 icon: const Icon(Icons.forum_rounded),
-                label: const Text('Hỏi thêm AI'),
+                label: Text(context.tr('ai.ask_more_ai')),
               ),
             ),
           ],
@@ -480,10 +497,15 @@ class _TimelineTile extends StatelessWidget {
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        PillBadge(label: '${stop.durationMinutes} phút', icon: Icons.timer_outlined),
+                        PillBadge(
+                          label: context.tr('destinations.duration_minutes', params: {'minutes': '${stop.durationMinutes}'}),
+                          icon: Icons.timer_outlined,
+                        ),
                         const SizedBox(width: 6),
                         PillBadge(
-                          label: stop.estimatedCost == 0 ? 'Miễn phí' : CurrencyFormatter.vnd(stop.estimatedCost),
+                          label: stop.estimatedCost == 0
+                              ? context.tr('common.free')
+                              : CurrencyFormatter.vnd(stop.estimatedCost),
                           icon: Icons.payments_outlined,
                           color: AppColors.accentSoftGold,
                         ),

@@ -7,6 +7,8 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/app_localizations.dart';
+import '../../../../core/localization/locale_cubit.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../shared/widgets/app_feedback.dart';
 import '../../../../shared/widgets/custom_app_bar.dart';
@@ -14,7 +16,7 @@ import '../../../../shared/widgets/custom_button.dart';
 import '../../../../shared/widgets/glass_card.dart';
 import '../../../../shared/widgets/topographic_scaffold.dart';
 import '../bloc/auth_cubit.dart';
-import 'register_screen.dart' show kNationalities;
+import 'register_screen.dart' show kNationalities, localizedNationality;
 
 /// [FE-01] Màn hình Chỉnh sửa hồ sơ cá nhân & Cập nhật ảnh đại diện
 class EditProfileScreen extends StatefulWidget {
@@ -57,31 +59,39 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Future<void> _chooseAvatarSource() async {
     final source = await showModalBottomSheet<ImageSource>(
       context: context,
+      useRootNavigator: true,
+      isScrollControlled: true,
+      useSafeArea: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (bottomCtx) => SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'Chọn ảnh đại diện',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
-              ),
-              const SizedBox(height: 12),
-              ListTile(
-                leading: const Icon(Icons.photo_library_rounded, color: AppColors.primaryTeal),
-                title: const Text('Chọn từ Thư viện ảnh'),
-                onTap: () => Navigator.pop(bottomCtx, ImageSource.gallery),
-              ),
-              ListTile(
-                leading: const Icon(Icons.camera_alt_rounded, color: AppColors.primaryTeal),
-                title: const Text('Chụp ảnh mới bằng Camera'),
-                onTap: () => Navigator.pop(bottomCtx, ImageSource.camera),
-              ),
-            ],
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.sizeOf(bottomCtx).height * 0.8,
+          ),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  context.tr('auth.choose_avatar'),
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+                ),
+                const SizedBox(height: 12),
+                ListTile(
+                  leading: const Icon(Icons.photo_library_rounded, color: AppColors.primaryTeal),
+                  title: Text(context.tr('auth.choose_from_gallery')),
+                  onTap: () => Navigator.pop(bottomCtx, ImageSource.gallery),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.camera_alt_rounded, color: AppColors.primaryTeal),
+                  title: Text(context.tr('auth.take_new_photo')),
+                  onTap: () => Navigator.pop(bottomCtx, ImageSource.camera),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -104,7 +114,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       }
     } catch (e) {
       if (mounted) {
-        showAppSnackBar(context, 'Không thể chọn ảnh: ${e.toString()}', type: SnackType.error);
+        showAppSnackBar(
+          context,
+          context.tr('auth.pick_image_error', params: {'error': e.toString()}),
+          type: SnackType.error,
+        );
       }
     }
   }
@@ -135,7 +149,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       return;
     }
 
-    showAppSnackBar(context, 'Cập nhật hồ sơ thành công!', type: SnackType.success);
+    await context.read<LocaleCubit>().setLocale(_language);
+    if (!mounted) return;
+
+    showAppSnackBar(context, context.tr('auth.update_profile_success'), type: SnackType.success);
     context.pop();
   }
 
@@ -146,7 +163,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     return TopographicScaffold(
       seed: 97,
-      appBar: const CustomAppBar(title: 'Chỉnh sửa hồ sơ'),
+      appBar: CustomAppBar(title: context.tr('auth.edit_profile_title')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
         child: Form(
@@ -244,40 +261,41 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     TextFormField(
                       controller: _name,
                       textCapitalization: TextCapitalization.words,
-                      decoration: const InputDecoration(
-                        labelText: 'Họ và tên',
-                        prefixIcon: Icon(Icons.person_outline_rounded),
+                      decoration: InputDecoration(
+                        labelText: context.tr('auth.full_name'),
+                        prefixIcon: const Icon(Icons.person_outline_rounded),
                       ),
-                      validator: (v) => Validators.required(v, 'họ và tên'),
+                      validator: (v) => Validators.required(v, context.tr('auth.full_name_lower')),
                     ),
                     const SizedBox(height: 14),
                     TextFormField(
                       controller: _phone,
                       keyboardType: TextInputType.phone,
-                      decoration: const InputDecoration(
-                        labelText: 'Số điện thoại',
-                        prefixIcon: Icon(Icons.phone_outlined),
+                      decoration: InputDecoration(
+                        labelText: context.tr('auth.phone_label'),
+                        prefixIcon: const Icon(Icons.phone_outlined),
                       ),
                       validator: Validators.phone,
                     ),
                     const SizedBox(height: 14),
                     DropdownButtonFormField<String>(
                       initialValue: _nationality,
-                      decoration: const InputDecoration(
-                        labelText: 'Quốc tịch',
-                        prefixIcon: Icon(Icons.public_rounded),
+                      decoration: InputDecoration(
+                        labelText: context.tr('auth.nationality'),
+                        prefixIcon: const Icon(Icons.public_rounded),
                       ),
                       items: [
-                        for (final n in kNationalities) DropdownMenuItem(value: n, child: Text(n)),
+                        for (final n in kNationalities)
+                          DropdownMenuItem(value: n, child: Text(localizedNationality(context, n))),
                       ],
                       onChanged: (v) => setState(() => _nationality = v ?? _nationality),
                     ),
                     const SizedBox(height: 14),
                     DropdownButtonFormField<String>(
                       initialValue: _language,
-                      decoration: const InputDecoration(
-                        labelText: 'Ngôn ngữ thuyết minh ưu tiên',
-                        prefixIcon: Icon(Icons.translate_rounded),
+                      decoration: InputDecoration(
+                        labelText: context.tr('auth.preferred_audio_language'),
+                        prefixIcon: const Icon(Icons.translate_rounded),
                       ),
                       items: [
                         for (final e in _languages.entries)
@@ -290,7 +308,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               const SizedBox(height: 24),
               CustomButton(
-                label: 'Lưu thay đổi',
+                label: context.tr('auth.save_changes'),
                 icon: Icons.check_rounded,
                 isLoading: _saving,
                 onPressed: _save,

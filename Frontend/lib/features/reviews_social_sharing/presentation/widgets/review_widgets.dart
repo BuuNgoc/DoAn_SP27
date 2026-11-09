@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/utils/date_formatter.dart';
 import '../../../../shared/widgets/app_card.dart';
 import '../../../../shared/widgets/cover_image.dart';
 import '../../../../shared/widgets/pill_badge.dart';
 import '../../../../shared/widgets/rating_stars.dart';
+import '../../../auth/presentation/screens/register_screen.dart';
 import '../../domain/entities/review.dart';
 
 /// Thẻ thống kê điểm đánh giá (trung bình + phân bố 5 → 1 sao).
@@ -31,7 +33,7 @@ class RatingSummaryCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 RatingStars(rating: summary.average, size: 15),
                 const SizedBox(height: 6),
-                Text('${summary.total} đánh giá',
+                Text(context.tr('reviews.total_reviews_count', params: {'total': '${summary.total}'}),
                     style: const TextStyle(color: AppColors.textMuted, fontSize: 12.5)),
               ],
             ),
@@ -157,16 +159,16 @@ class ReviewCard extends StatelessWidget {
                         ),
                         if (isMine) ...[
                           const SizedBox(width: 6),
-                          const PillBadge(label: 'Của bạn', fontSize: 10),
+                          PillBadge(label: context.tr('reviews.yours_badge'), fontSize: 10),
                         ],
                       ],
                     ),
                     Text(
                       [
-                        if (r.authorNationality != null) r.authorNationality!,
-                        if (r.visitType != null) r.visitType!,
+                        if (r.authorNationality != null) localizedNationality(context, r.authorNationality!),
+                        if (r.visitType != null) ReviewRules.localizedVisitType(context, r.visitType!),
                         DateFormatter.relative(r.createdAt),
-                        if (r.isEdited) 'đã chỉnh sửa',
+                        if (r.isEdited) context.tr('reviews.edited_label'),
                       ].join(' · '),
                       style: const TextStyle(color: AppColors.textMuted, fontSize: 12),
                     ),
@@ -216,7 +218,7 @@ class ReviewCard extends StatelessWidget {
               children: [
                 const Icon(Icons.thumb_up_alt_outlined, size: 15, color: AppColors.textMuted),
                 const SizedBox(width: 6),
-                Text('${r.helpfulCount} người thấy hữu ích',
+                Text(context.tr('reviews.helpful_count', params: {'count': '${r.helpfulCount}'}),
                     style: const TextStyle(color: AppColors.textMuted, fontSize: 12.5)),
               ],
             ),
@@ -262,25 +264,29 @@ class _ReviewMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     final items = <PopupMenuEntry<String>>[
       if (isMine && onEdit != null)
-        const PopupMenuItem(
+        PopupMenuItem(
           value: 'edit',
-          child: ListTile(leading: Icon(Icons.edit_rounded), title: Text('Chỉnh sửa'), contentPadding: EdgeInsets.zero),
+          child: ListTile(
+            leading: const Icon(Icons.edit_rounded),
+            title: Text(context.tr('common.edit')),
+            contentPadding: EdgeInsets.zero,
+          ),
         ),
       if (isMine && onDelete != null)
-        const PopupMenuItem(
+        PopupMenuItem(
           value: 'delete',
           child: ListTile(
-            leading: Icon(Icons.delete_outline_rounded, color: AppColors.error),
-            title: Text('Xóa đánh giá', style: TextStyle(color: AppColors.error)),
+            leading: const Icon(Icons.delete_outline_rounded, color: AppColors.error),
+            title: Text(context.tr('reviews.delete_review_menu'), style: const TextStyle(color: AppColors.error)),
             contentPadding: EdgeInsets.zero,
           ),
         ),
       if (!isMine && onReport != null)
-        const PopupMenuItem(
+        PopupMenuItem(
           value: 'report',
           child: ListTile(
-            leading: Icon(Icons.flag_outlined, color: AppColors.warning),
-            title: Text('Báo cáo vi phạm'),
+            leading: const Icon(Icons.flag_outlined, color: AppColors.warning),
+            title: Text(context.tr('reviews.report_violation_menu')),
             contentPadding: EdgeInsets.zero,
           ),
         ),
@@ -303,7 +309,9 @@ class _ReviewMenu extends StatelessWidget {
 Future<({ReportReason reason, String? note})?> showReportReviewDialog(BuildContext context) {
   return showModalBottomSheet<({ReportReason reason, String? note})>(
     context: context,
+    useRootNavigator: true,
     isScrollControlled: true,
+    useSafeArea: true,
     showDragHandle: true,
     backgroundColor: AppColors.surfaceWhite,
     builder: (_) => const _ReportSheet(),
@@ -329,54 +337,62 @@ class _ReportSheetState extends State<_ReportSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(20, 0, 20, 20 + MediaQuery.viewInsetsOf(context).bottom),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Báo cáo đánh giá vi phạm', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
-            const SizedBox(height: 4),
-            const Text(
-              'Báo cáo của bạn được gửi ẩn danh đến Ban quản trị để xem xét theo tiêu chuẩn cộng đồng.',
-              style: TextStyle(color: AppColors.textSecondary, fontSize: 13, height: 1.4),
-            ),
-            const SizedBox(height: 10),
-            for (final r in ReportReason.values)
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                dense: true,
-                leading: Icon(
-                  _reason == r ? Icons.radio_button_checked_rounded : Icons.radio_button_off_rounded,
-                  color: _reason == r ? AppColors.primaryTeal : AppColors.textMuted,
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.sizeOf(context).height * 0.8,
+          ),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(context.tr('reviews.report_sheet_title'), style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+                const SizedBox(height: 4),
+                Text(
+                  context.tr('reviews.report_sheet_subtitle'),
+                  style: const TextStyle(color: AppColors.textSecondary, fontSize: 13, height: 1.4),
                 ),
-                title: Text(r.label, style: const TextStyle(fontSize: 14.5)),
-                onTap: () => setState(() => _reason = r),
-              ),
-            const SizedBox(height: 6),
-            TextField(
-              controller: _note,
-              maxLines: 3,
-              maxLength: 300,
-              decoration: const InputDecoration(hintText: 'Mô tả thêm (không bắt buộc)'),
+                const SizedBox(height: 10),
+                for (final r in ReportReason.values)
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                    leading: Icon(
+                      _reason == r ? Icons.radio_button_checked_rounded : Icons.radio_button_off_rounded,
+                      color: _reason == r ? AppColors.primaryTeal : AppColors.textMuted,
+                    ),
+                    title: Text(r.label, style: const TextStyle(fontSize: 14.5)),
+                    onTap: () => setState(() => _reason = r),
+                  ),
+                const SizedBox(height: 6),
+                TextField(
+                  controller: _note,
+                  maxLines: 3,
+                  maxLength: 300,
+                  decoration: InputDecoration(hintText: context.tr('reviews.report_note_hint')),
+                ),
+                const SizedBox(height: 8),
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton.icon(
+                    style: FilledButton.styleFrom(backgroundColor: AppColors.error, minimumSize: const Size.fromHeight(50)),
+                    onPressed: _reason == null
+                        ? null
+                        : () => Navigator.pop(context, (
+                              reason: _reason!,
+                              note: _note.text.trim().isEmpty ? null : _note.text.trim(),
+                            )),
+                    icon: const Icon(Icons.flag_rounded),
+                    label: Text(context.tr('reviews.send_report_btn')),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 8),
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton.icon(
-                style: FilledButton.styleFrom(backgroundColor: AppColors.error, minimumSize: const Size.fromHeight(50)),
-                onPressed: _reason == null
-                    ? null
-                    : () => Navigator.pop(context, (
-                          reason: _reason!,
-                          note: _note.text.trim().isEmpty ? null : _note.text.trim(),
-                        )),
-                icon: const Icon(Icons.flag_rounded),
-                label: const Text('Gửi báo cáo'),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

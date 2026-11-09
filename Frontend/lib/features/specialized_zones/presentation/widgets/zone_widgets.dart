@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/map_launcher.dart';
 import '../../../../shared/widgets/app_card.dart';
@@ -110,7 +111,9 @@ class ZoneSpotSheet extends StatelessWidget {
 
   static Future<void> show(BuildContext context, ZoneSpot spot) => showModalBottomSheet<void>(
         context: context,
+        useRootNavigator: true,
         isScrollControlled: true,
+        useSafeArea: true,
         showDragHandle: true,
         backgroundColor: AppColors.surfaceWhite,
         builder: (_) => ZoneSpotSheet(spot: spot),
@@ -119,11 +122,16 @@ class ZoneSpotSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.sizeOf(context).height * 0.8,
+        ),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
             CoverImage(source: spot.image, height: 170, width: double.infinity, radius: 20),
             const SizedBox(height: 14),
             Text(spot.name, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
@@ -151,11 +159,11 @@ class ZoneSpotSheet extends StatelessWidget {
                     onPressed: () async {
                       final ok = await MapLauncher.openDirections(lat: spot.latitude, lng: spot.longitude);
                       if (!ok && context.mounted) {
-                        showAppSnackBar(context, 'Không mở được ứng dụng bản đồ.', type: SnackType.error);
+                        showAppSnackBar(context, context.tr('destinations.map_open_error'), type: SnackType.error);
                       }
                     },
                     icon: const Icon(Icons.directions_rounded),
-                    label: const Text('Chỉ đường'),
+                    label: Text(context.tr('map.get_directions')),
                   ),
                 ),
                 if (spot.bookableServiceId != null) ...[
@@ -167,7 +175,7 @@ class ZoneSpotSheet extends StatelessWidget {
                         context.push(RouteNames.bookingForm(spot.bookableServiceId!));
                       },
                       icon: const Icon(Icons.event_available_rounded),
-                      label: const Text('Đặt chỗ'),
+                      label: Text(context.tr('booking.form_title')),
                     ),
                   ),
                 ],
@@ -175,6 +183,7 @@ class ZoneSpotSheet extends StatelessWidget {
             ),
           ],
         ),
+      ),
       ),
     );
   }

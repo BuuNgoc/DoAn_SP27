@@ -11,4 +11,13 @@ abstract class DestinationRepository {
 
   /// Trả về trạng thái mới (true = đã lưu).
   Future<bool> toggleFavorite(String destinationId);
+
+  /// Danh sách id điểm đến vừa xem gần đây (mới nhất lên đầu, tối đa 10 mục) – lưu cục bộ trong Hive.
+  Future<List<String>> getRecentlyViewedIds();
+
+  /// Ghi nhận điểm đến vừa mở và trả về danh sách id cập nhật.
+  Future<List<String>> addRecentlyViewed(String destinationId);
+
+  /// Xóa toàn bộ lịch sử xem gần đây trên thiết bị.
+  Future<void> clearRecentlyViewed();
 }

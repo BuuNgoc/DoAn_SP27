@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/localization/app_localizations.dart';
+
 /// [FE-03] Một điểm tương tác (hotspot) trong ảnh 360°.
 class Vr360Hotspot extends Equatable {
   const Vr360Hotspot({
@@ -72,8 +74,8 @@ class AudioGuide extends Equatable {
     required this.durationSeconds,
     required this.transcripts,
     this.audioUrls = const {},
-    this.narrator = 'Thuyết minh viên SmartTravel',
-  });
+    String? narrator,
+  }) : _narrator = narrator;
 
   final String id;
   final String destinationId;
@@ -85,7 +87,12 @@ class AudioGuide extends Equatable {
 
   /// URL tệp âm thanh theo ngôn ngữ (Firebase Storage) – rỗng khi chạy dữ liệu mẫu.
   final Map<String, String> audioUrls;
-  final String narrator;
+  final String? _narrator;
+
+  String get narrator =>
+      (_narrator == null || _narrator == 'Thuyết minh viên SmartTravel')
+          ? AppLocalizations.trStatic('audio_guide.default_narrator')
+          : _narrator;
 
   bool hasLanguage(AudioLanguage lang) => transcripts.containsKey(lang.code);
 

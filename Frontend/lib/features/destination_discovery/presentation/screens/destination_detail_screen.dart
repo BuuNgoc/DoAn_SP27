@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/map_launcher.dart';
 import '../../../../core/utils/view_status.dart';
@@ -33,7 +34,14 @@ class DestinationDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<DestinationDetailCubit>()..load(destinationId),
-      child: BlocBuilder<DestinationDetailCubit, DestinationDetailState>(
+      child: BlocConsumer<DestinationDetailCubit, DestinationDetailState>(
+        listenWhen: (prev, curr) =>
+            curr.status.isSuccess &&
+            curr.destination != null &&
+            prev.destination?.id != curr.destination?.id,
+        listener: (context, state) {
+          context.read<RecentlyViewedCubit>().add(state.destination!.id);
+        },
         builder: (context, state) {
           if (state.status.isLoading) {
             return const TopographicScaffold(appBar: CustomAppBar(title: ''), body: LoadingIndicator());
@@ -42,7 +50,7 @@ class DestinationDetailScreen extends StatelessWidget {
             return TopographicScaffold(
               appBar: const CustomAppBar(title: ''),
               body: ErrorViewWidget(
-                message: state.errorMessage ?? 'Không tìm thấy điểm đến.',
+                message: state.errorMessage ?? context.tr('destinations.not_found'),
                 onRetry: () => context.read<DestinationDetailCubit>().load(destinationId),
               ),
             );
@@ -86,7 +94,7 @@ class _DetailViewState extends State<_DetailView> {
               padding: const EdgeInsets.only(left: 12),
               child: CircleIconButton(
                 icon: Icons.arrow_back_ios_new_rounded,
-                tooltip: 'Quay lại',
+                tooltip: context.tr('common.back'),
                 onPressed: () => Navigator.of(context).maybePop(),
               ),
             ),
@@ -94,7 +102,7 @@ class _DetailViewState extends State<_DetailView> {
             actions: [
               CircleIconButton(
                 icon: Icons.ios_share_rounded,
-                tooltip: 'Chia sẻ',
+                tooltip: context.tr('common.share'),
                 onPressed: () => SocialShareSheet.show(
                   context,
                   title: d.name,
@@ -135,7 +143,10 @@ class _DetailViewState extends State<_DetailView> {
                     child: Row(
                       children: [
                         PillBadge(
-                          label: '${_page + 1}/${media.length} ảnh',
+                          label: context.tr(
+                            'destinations.photo_counter',
+                            params: {'current': '${_page + 1}', 'total': '${media.length}'},
+                          ),
                           icon: Icons.photo_library_rounded,
                           color: Colors.white,
                           background: Colors.black.withValues(alpha: 0.35),
@@ -143,7 +154,7 @@ class _DetailViewState extends State<_DetailView> {
                         if (d.videoCount > 0) ...[
                           const SizedBox(width: 8),
                           PillBadge(
-                            label: '${d.videoCount} video',
+                            label: context.tr('destinations.video_counter', params: {'count': '${d.videoCount}'}),
                             icon: Icons.play_circle_fill_rounded,
                             color: Colors.white,
                             background: Colors.black.withValues(alpha: 0.35),
@@ -183,7 +194,7 @@ class _DetailViewState extends State<_DetailView> {
                           RatingStars(rating: d.ratingAvg, showValue: true),
                           const SizedBox(width: 6),
                           Text(
-                            '· ${d.reviewCount} đánh giá',
+                            context.tr('destinations.review_count', params: {'count': '${d.reviewCount}'}),
                             style: const TextStyle(color: AppColors.primaryTeal, fontWeight: FontWeight.w700),
                           ),
                         ],
@@ -201,7 +212,7 @@ class _DetailViewState extends State<_DetailView> {
                     _SafetyNotice(text: d.beachSafetyInfo!),
                   ],
                   const SizedBox(height: 24),
-                  Text('Giới thiệu', style: textTheme.titleLarge),
+                  Text(context.tr('destinations.overview_title'), style: textTheme.titleLarge),
                   const SizedBox(height: 8),
                   Text(d.overview, style: textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary, height: 1.55)),
                   if (d.highlights.isNotEmpty) ...[
@@ -221,16 +232,16 @@ class _DetailViewState extends State<_DetailView> {
                   const SizedBox(height: 24),
                   _CultureCard(text: d.culturalHistory),
                   const SizedBox(height: 24),
-                  Text('Vị trí', style: textTheme.titleLarge),
+                  Text(context.tr('destinations.location_title'), style: textTheme.titleLarge),
                   const SizedBox(height: 10),
                   _LocationCard(destination: d),
                   const SizedBox(height: 24),
                   Row(
                     children: [
-                      Expanded(child: Text('Đánh giá từ du khách', style: textTheme.titleLarge)),
+                      Expanded(child: Text(context.tr('destinations.visitor_reviews_title'), style: textTheme.titleLarge)),
                       TextButton(
                         onPressed: () => context.push(RouteNames.destinationReviews(d.id)),
-                        child: const Text('Xem tất cả'),
+                        child: Text(context.tr('common.view_all')),
                       ),
                     ],
                   ),
@@ -238,7 +249,7 @@ class _DetailViewState extends State<_DetailView> {
                   OutlinedButton.icon(
                     onPressed: () => context.push(RouteNames.writeReview(d.id)),
                     icon: const Icon(Icons.rate_review_outlined),
-                    label: const Text('Viết đánh giá của bạn'),
+                    label: Text(context.tr('destinations.write_your_review')),
                     style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(50)),
                   ),
                   const SizedBox(height: 40),
@@ -274,7 +285,7 @@ class _ImmersiveButtons extends StatelessWidget {
         if (destination.hasVr360)
           Expanded(
             child: CustomButton(
-              label: 'Xem VR360',
+              label: context.tr('destinations.view_vr360'),
               icon: Icons.threesixty_rounded,
               onPressed: () => context.push(RouteNames.vr360(destination.id)),
             ),
@@ -285,7 +296,7 @@ class _ImmersiveButtons extends StatelessWidget {
             child: OutlinedButton.icon(
               onPressed: () => AudioGuidePlayerSheet.show(context, destinationId: destination.id),
               icon: const Icon(Icons.headphones_rounded),
-              label: const Text('Nghe thuyết minh'),
+              label: Text(context.tr('destinations.listen_audio_guide')),
               style: OutlinedButton.styleFrom(
                 minimumSize: const Size.fromHeight(54),
                 backgroundColor: AppColors.surfaceWhite,
@@ -306,15 +317,31 @@ class _InfoGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final hours = destination.visitDurationMinutes ~/ 60;
     final minutes = destination.visitDurationMinutes % 60;
-    final duration = hours == 0 ? '$minutes phút' : (minutes == 0 ? '$hours giờ' : '$hours giờ $minutes phút');
+    final duration = hours == 0
+        ? context.tr('destinations.duration_minutes', params: {'minutes': '$minutes'})
+        : (minutes == 0
+            ? context.tr('destinations.duration_hours', params: {'hours': '$hours'})
+            : context.tr('destinations.duration_hours_minutes', params: {'hours': '$hours', 'minutes': '$minutes'}));
     return AppCard(
       child: Column(
         children: [
-          _InfoRow(icon: Icons.schedule_rounded, label: 'Giờ mở cửa', value: destination.openingHours),
+          _InfoRow(
+            icon: Icons.schedule_rounded,
+            label: context.tr('destinations.opening_hours'),
+            value: destination.openingHours,
+          ),
           const Divider(height: 22),
-          _InfoRow(icon: Icons.confirmation_number_outlined, label: 'Giá vé', value: destination.ticketInfo),
+          _InfoRow(
+            icon: Icons.confirmation_number_outlined,
+            label: context.tr('destinations.ticket_price'),
+            value: destination.ticketInfo,
+          ),
           const Divider(height: 22),
-          _InfoRow(icon: Icons.timelapse_rounded, label: 'Thời gian tham quan gợi ý', value: duration),
+          _InfoRow(
+            icon: Icons.timelapse_rounded,
+            label: context.tr('destinations.suggested_duration'),
+            value: duration,
+          ),
         ],
       ),
     );
@@ -381,7 +408,10 @@ class _SafetyNotice extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Lưu ý an toàn bãi biển', style: TextStyle(fontWeight: FontWeight.w800)),
+                Text(
+                  context.tr('destinations.beach_safety_notice'),
+                  style: const TextStyle(fontWeight: FontWeight.w800),
+                ),
                 const SizedBox(height: 4),
                 Text(text, style: const TextStyle(color: AppColors.textSecondary, fontSize: 13, height: 1.45)),
               ],
@@ -413,11 +443,14 @@ class _CultureCardState extends State<_CultureCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(Icons.history_edu_rounded, color: AppColors.accentSoftGold),
-              SizedBox(width: 8),
-              Text('Văn hóa & Lịch sử', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
+              const Icon(Icons.history_edu_rounded, color: AppColors.accentSoftGold),
+              const SizedBox(width: 8),
+              Text(
+                context.tr('destinations.culture_history_title'),
+                style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
+              ),
             ],
           ),
           const SizedBox(height: 10),
@@ -435,7 +468,7 @@ class _CultureCardState extends State<_CultureCard> {
           TextButton(
             onPressed: () => setState(() => _expanded = !_expanded),
             style: TextButton.styleFrom(padding: EdgeInsets.zero),
-            child: Text(_expanded ? 'Thu gọn' : 'Đọc thêm'),
+            child: Text(_expanded ? context.tr('common.collapse') : context.tr('common.read_more')),
           ),
         ],
       ),
@@ -466,7 +499,13 @@ class _LocationCard extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            'Tọa độ: ${destination.latitude.toStringAsFixed(4)}, ${destination.longitude.toStringAsFixed(4)}',
+            context.tr(
+              'destinations.coordinates',
+              params: {
+                'lat': destination.latitude.toStringAsFixed(4),
+                'lng': destination.longitude.toStringAsFixed(4),
+              },
+            ),
             style: const TextStyle(color: AppColors.textMuted, fontSize: 12),
           ),
           const SizedBox(height: 14),
@@ -476,7 +515,7 @@ class _LocationCard extends StatelessWidget {
                 child: OutlinedButton.icon(
                   onPressed: () => context.go(RouteNames.map),
                   icon: const Icon(Icons.map_outlined),
-                  label: const Text('Xem bản đồ'),
+                  label: Text(context.tr('common.view_map')),
                 ),
               ),
               const SizedBox(width: 10),
@@ -488,11 +527,11 @@ class _LocationCard extends StatelessWidget {
                       lng: destination.longitude,
                     );
                     if (!ok && context.mounted) {
-                      showAppSnackBar(context, 'Không mở được ứng dụng bản đồ.', type: SnackType.error);
+                      showAppSnackBar(context, context.tr('common.map_launch_error'), type: SnackType.error);
                     }
                   },
                   icon: const Icon(Icons.directions_rounded),
-                  label: const Text('Chỉ đường'),
+                  label: Text(context.tr('common.directions')),
                 ),
               ),
             ],

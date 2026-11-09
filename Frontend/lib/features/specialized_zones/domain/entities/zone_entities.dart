@@ -1,20 +1,23 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/localization/app_localizations.dart';
+
 /// Phân khu trải nghiệm chuyên biệt.
 enum ZoneType { anThuong, beach }
 
 /// Loại địa điểm trong phân khu.
 enum ZoneSpotCategory {
-  food('Ẩm thực', Icons.ramen_dining_rounded),
-  cafe('Cà phê', Icons.local_cafe_rounded),
-  nightlife('Giải trí đêm', Icons.nightlife_rounded),
-  beachActivity('Thể thao biển', Icons.surfing_rounded),
-  beachService('Dịch vụ tiện ích', Icons.room_service_rounded);
+  food('zones.spot_food', Icons.ramen_dining_rounded),
+  cafe('zones.spot_cafe', Icons.local_cafe_rounded),
+  nightlife('zones.spot_nightlife', Icons.nightlife_rounded),
+  beachActivity('zones.spot_beach_activity', Icons.surfing_rounded),
+  beachService('zones.spot_beach_service', Icons.room_service_rounded);
 
-  const ZoneSpotCategory(this.label, this.icon);
-  final String label;
+  const ZoneSpotCategory(this.labelKey, this.icon);
+  final String labelKey;
   final IconData icon;
+  String get label => AppLocalizations.trStatic(labelKey);
 }
 
 /// [FE-12, FE-13] Nhà hàng, quán bar, hoạt động biển, dịch vụ tiện ích...
@@ -59,15 +62,17 @@ class ZoneSpot extends Equatable {
 
 /// Mức an toàn tắm biển (theo cờ hiệu cứu hộ).
 enum SafetyLevel {
-  safe('An toàn – cờ xanh', 'Biển êm, có thể tắm trong khu vực cứu hộ.', Color(0xFF4CAF7A), Icons.verified_user_rounded),
-  caution('Thận trọng – cờ vàng', 'Sóng vừa, chỉ tắm gần bờ, không bơi xa.', Color(0xFFF2A65A), Icons.warning_amber_rounded),
-  danger('Nguy hiểm – cờ đỏ', 'Sóng lớn, dòng rip mạnh. Cấm tắm biển.', Color(0xFFE56B6B), Icons.dangerous_rounded);
+  safe('zones.safety_safe_label', 'zones.safety_safe_advice', Color(0xFF4CAF7A), Icons.verified_user_rounded),
+  caution('zones.safety_caution_label', 'zones.safety_caution_advice', Color(0xFFF2A65A), Icons.warning_amber_rounded),
+  danger('zones.safety_danger_label', 'zones.safety_danger_advice', Color(0xFFE56B6B), Icons.dangerous_rounded);
 
-  const SafetyLevel(this.label, this.advice, this.color, this.icon);
-  final String label;
-  final String advice;
+  const SafetyLevel(this.labelKey, this.adviceKey, this.color, this.icon);
+  final String labelKey;
+  final String adviceKey;
   final Color color;
   final IconData icon;
+  String get label => AppLocalizations.trStatic(labelKey);
+  String get advice => AppLocalizations.trStatic(adviceKey);
 }
 
 /// [FE-13] Bãi tắm.

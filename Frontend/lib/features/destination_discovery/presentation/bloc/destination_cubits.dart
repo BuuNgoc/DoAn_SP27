@@ -135,3 +135,34 @@ class FavoritesCubit extends Cubit<Set<String>> {
     return saved;
   }
 }
+
+// ─────────────────────────── Xem gần đây (offline) ───────────────────────────
+
+/// [FE-02] State = danh sách id điểm đến vừa mở (mới nhất lên đầu, tối đa 10 mục).
+/// Lưu cục bộ bằng Hive (LI-05, LI-07) để hoạt động cả khi ngoại tuyến.
+class RecentlyViewedCubit extends Cubit<List<String>> {
+  RecentlyViewedCubit({
+    required GetRecentlyViewedIdsUseCase getIds,
+    required AddRecentlyViewedUseCase add,
+    required ClearRecentlyViewedUseCase clear,
+  })  : _getIds = getIds,
+        _add = add,
+        _clear = clear,
+        super(const []);
+
+  final GetRecentlyViewedIdsUseCase _getIds;
+  final AddRecentlyViewedUseCase _add;
+  final ClearRecentlyViewedUseCase _clear;
+
+  Future<void> load() async => emit(await _getIds());
+
+  Future<void> add(String id) async {
+    final updated = await _add(id);
+    emit(updated);
+  }
+
+  Future<void> clear() async {
+    await _clear();
+    emit(const []);
+  }
+}

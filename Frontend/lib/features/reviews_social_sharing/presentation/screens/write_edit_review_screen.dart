@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/utils/view_status.dart';
 import '../../../../shared/widgets/app_card.dart';
 import '../../../../shared/widgets/app_feedback.dart';
@@ -38,14 +39,14 @@ class WriteEditReviewScreen extends StatelessWidget {
       child: BlocBuilder<WriteReviewCubit, WriteReviewState>(
         buildWhen: (a, b) => a.status != b.status,
         builder: (context, state) {
-          final title = reviewId == null ? 'Viết đánh giá' : 'Chỉnh sửa đánh giá';
+          final title = reviewId == null ? context.tr('reviews.write_review') : context.tr('reviews.edit_review_title');
           if (state.status.isLoading) {
             return TopographicScaffold(appBar: CustomAppBar(title: title), body: const LoadingIndicator());
           }
           if (state.status.isFailure) {
             return TopographicScaffold(
               appBar: CustomAppBar(title: title),
-              body: ErrorViewWidget(message: state.errorMessage ?? 'Không tải được đánh giá.'),
+              body: ErrorViewWidget(message: state.errorMessage ?? context.tr('reviews.load_error')),
             );
           }
           return _ReviewForm(destinationId: destinationId, existing: state.existing, title: title);
@@ -90,7 +91,11 @@ class _ReviewFormState extends State<_ReviewForm> {
   Future<void> _pickPhotos(ImageSource source) async {
     final remaining = ReviewRules.maxPhotos - _photoCount;
     if (remaining <= 0) {
-      showAppSnackBar(context, 'Chỉ được đính kèm tối đa ${ReviewRules.maxPhotos} ảnh.', type: SnackType.warning);
+      showAppSnackBar(
+        context,
+        context.tr('reviews.max_photos_warning', params: {'max': '${ReviewRules.maxPhotos}'}),
+        type: SnackType.warning,
+      );
       return;
     }
     try {
@@ -105,7 +110,7 @@ class _ReviewFormState extends State<_ReviewForm> {
       setState(() => _newPhotos.addAll(bytes));
     } catch (_) {
       if (mounted) {
-        showAppSnackBar(context, 'Không truy cập được ảnh. Vui lòng kiểm tra quyền truy cập.', type: SnackType.error);
+        showAppSnackBar(context, context.tr('reviews.photo_access_error'), type: SnackType.error);
       }
     }
   }
@@ -114,7 +119,7 @@ class _ReviewFormState extends State<_ReviewForm> {
     final user = context.read<AuthCubit>().state.user;
     if (user == null) return;
     if (_rating == 0) {
-      showAppSnackBar(context, 'Vui lòng chấm số sao cho điểm đến.', type: SnackType.warning);
+      showAppSnackBar(context, context.tr('reviews.rate_star_warning'), type: SnackType.warning);
       return;
     }
     final destinationName =
@@ -141,7 +146,7 @@ class _ReviewFormState extends State<_ReviewForm> {
     }
     showAppSnackBar(
       context,
-      widget.existing == null ? 'Cảm ơn bạn đã chia sẻ đánh giá!' : 'Đã cập nhật đánh giá.',
+      widget.existing == null ? context.tr('reviews.submit_thanks') : context.tr('reviews.update_success'),
       type: SnackType.success,
     );
     context.pop(true);
@@ -182,13 +187,13 @@ class _ReviewFormState extends State<_ReviewForm> {
               ),
             ),
           const SizedBox(height: 18),
-          const Center(
-            child: Text('Trải nghiệm của bạn thế nào?', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
+          Center(
+            child: Text(context.tr('reviews.how_was_experience'), style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
           ),
           const SizedBox(height: 6),
           StarRatingInput(value: _rating, onChanged: (v) => setState(() => _rating = v)),
           const SizedBox(height: 18),
-          const Text('Bạn đi cùng ai?', style: TextStyle(fontWeight: FontWeight.w700)),
+          Text(context.tr('reviews.who_with'), style: const TextStyle(fontWeight: FontWeight.w700)),
           const SizedBox(height: 8),
           Wrap(
             spacing: 8,
@@ -196,31 +201,33 @@ class _ReviewFormState extends State<_ReviewForm> {
             children: [
               for (final t in ReviewRules.visitTypes)
                 ChoiceChip(
-                  label: Text(t),
+                  label: Text(ReviewRules.localizedVisitType(context, t)),
                   selected: _visitType == t,
                   onSelected: (s) => setState(() => _visitType = s ? t : null),
                 ),
             ],
           ),
           const SizedBox(height: 18),
-          const Text('Nội dung đánh giá', style: TextStyle(fontWeight: FontWeight.w700)),
+          Text(context.tr('reviews.review_content_label'), style: const TextStyle(fontWeight: FontWeight.w700)),
           const SizedBox(height: 8),
           TextField(
             controller: _content,
             maxLines: 6,
             maxLength: ReviewRules.maxContentLength,
             textCapitalization: TextCapitalization.sentences,
-            decoration: const InputDecoration(
-              hintText: 'Chia sẻ cảm nhận về cảnh quan, dịch vụ, thời điểm nên đến, mẹo hữu ích cho du khách khác...',
+            decoration: InputDecoration(
+              hintText: context.tr('reviews.review_content_hint'),
             ),
           ),
           if (length > 0 && length < ReviewRules.minContentLength)
-            Text('Cần thêm ${ReviewRules.minContentLength - length} ký tự nữa.',
-                style: const TextStyle(color: AppColors.warning, fontSize: 12.5)),
+            Text(
+              context.tr('reviews.need_more_chars', params: {'count': '${ReviewRules.minContentLength - length}'}),
+              style: const TextStyle(color: AppColors.warning, fontSize: 12.5),
+            ),
           const SizedBox(height: 14),
           Row(
             children: [
-              const Expanded(child: Text('Ảnh thực tế', style: TextStyle(fontWeight: FontWeight.w700))),
+              Expanded(child: Text(context.tr('reviews.real_photos_label'), style: const TextStyle(fontWeight: FontWeight.w700))),
               Text('$_photoCount/${ReviewRules.maxPhotos}', style: const TextStyle(color: AppColors.textMuted)),
             ],
           ),
@@ -231,8 +238,16 @@ class _ReviewFormState extends State<_ReviewForm> {
               scrollDirection: Axis.horizontal,
               children: [
                 if (_photoCount < ReviewRules.maxPhotos) ...[
-                  _AddPhotoTile(icon: Icons.photo_library_rounded, label: 'Thư viện', onTap: () => _pickPhotos(ImageSource.gallery)),
-                  _AddPhotoTile(icon: Icons.photo_camera_rounded, label: 'Chụp ảnh', onTap: () => _pickPhotos(ImageSource.camera)),
+                  _AddPhotoTile(
+                    icon: Icons.photo_library_rounded,
+                    label: context.tr('reviews.gallery_btn'),
+                    onTap: () => _pickPhotos(ImageSource.gallery),
+                  ),
+                  _AddPhotoTile(
+                    icon: Icons.photo_camera_rounded,
+                    label: context.tr('ai.take_photo'),
+                    onTap: () => _pickPhotos(ImageSource.camera),
+                  ),
                 ],
                 for (var i = 0; i < _keptPhotos.length; i++)
                   _PhotoThumb(
@@ -257,16 +272,15 @@ class _ReviewFormState extends State<_ReviewForm> {
               color: AppColors.backgroundSecondary,
               borderRadius: BorderRadius.circular(14),
             ),
-            child: const Row(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.verified_user_outlined, size: 18, color: AppColors.primaryTeal),
-                SizedBox(width: 8),
+                const Icon(Icons.verified_user_outlined, size: 18, color: AppColors.primaryTeal),
+                const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'Vui lòng đánh giá trung thực, lịch sự và không đăng thông tin cá nhân của người khác. '
-                    'Đánh giá vi phạm tiêu chuẩn cộng đồng có thể bị ẩn.',
-                    style: TextStyle(fontSize: 12.5, color: AppColors.textSecondary, height: 1.45),
+                    context.tr('reviews.community_guidelines'),
+                    style: const TextStyle(fontSize: 12.5, color: AppColors.textSecondary, height: 1.45),
                   ),
                 ),
               ],
@@ -274,7 +288,7 @@ class _ReviewFormState extends State<_ReviewForm> {
           ),
           const SizedBox(height: 20),
           CustomButton(
-            label: widget.existing == null ? 'Gửi đánh giá' : 'Lưu thay đổi',
+            label: widget.existing == null ? context.tr('reviews.submit_review_btn') : context.tr('auth.save_changes'),
             icon: Icons.send_rounded,
             isLoading: submitting,
             onPressed: _rating > 0 && length >= ReviewRules.minContentLength ? _submit : null,
