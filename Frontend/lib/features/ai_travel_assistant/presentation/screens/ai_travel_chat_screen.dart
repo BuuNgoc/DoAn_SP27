@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../shared/widgets/app_feedback.dart';
 import '../../../../shared/widgets/custom_app_bar.dart';
 import '../../../../shared/widgets/topographic_scaffold.dart';
@@ -69,7 +70,10 @@ class _ChatViewState extends State<_ChatView> {
   Widget build(BuildContext context) {
     return TopographicScaffold(
       seed: 13,
-      appBar: const CustomAppBar(title: 'Trợ lý du lịch AI', subtitle: 'Hỏi đáp về Ngũ Hành Sơn'),
+      appBar: CustomAppBar(
+        title: context.tr('ai.chat_title'),
+        subtitle: context.tr('ai.chat_subtitle'),
+      ),
       body: BlocConsumer<AiChatCubit, AiChatState>(
         listener: (context, state) {
           _scrollToEnd();
@@ -120,12 +124,12 @@ class _ChatViewState extends State<_ChatView> {
                           onSubmitted: (_) => _send(),
                           minLines: 1,
                           maxLines: 4,
-                          decoration: const InputDecoration(hintText: 'Nhập câu hỏi của bạn...'),
+                          decoration: InputDecoration(hintText: context.tr('ai.chat_input_hint')),
                         ),
                       ),
                       const SizedBox(width: 10),
                       IconButton.filled(
-                        tooltip: 'Gửi',
+                        tooltip: context.tr('ai.send_btn'),
                         onPressed: state.isTyping ? null : _send,
                         icon: const Icon(Icons.send_rounded),
                         style: IconButton.styleFrom(minimumSize: const Size(52, 52)),
@@ -191,7 +195,7 @@ class _MessageBubble extends StatelessWidget {
             if (message.sources.isNotEmpty) ...[
               const SizedBox(height: 8),
               Text(
-                'Nguồn: ${message.sources.join(' · ')}',
+                context.tr('ai.sources_prefix', params: {'sources': message.sources.join(' · ')}),
                 style: const TextStyle(fontSize: 11, color: AppColors.textMuted, fontStyle: FontStyle.italic),
               ),
             ],
@@ -217,12 +221,12 @@ class _TypingBubble extends StatelessWidget {
           border: Border.all(color: AppColors.cardBorder),
           borderRadius: BorderRadius.circular(18),
         ),
-        child: const Row(
+        child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(width: 14, height: 14, child: CircularProgressIndicator(strokeWidth: 2)),
-            SizedBox(width: 10),
-            Text('AI đang soạn câu trả lời...', style: TextStyle(color: AppColors.textSecondary)),
+            const SizedBox(width: 14, height: 14, child: CircularProgressIndicator(strokeWidth: 2)),
+            const SizedBox(width: 10),
+            Text(context.tr('ai.typing_message'), style: const TextStyle(color: AppColors.textSecondary)),
           ],
         ),
       ),

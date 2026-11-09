@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/date_formatter.dart';
 import '../../../../core/utils/view_status.dart';
@@ -28,10 +29,13 @@ class CheckinPointsScreen extends StatelessWidget {
       length: 2,
       child: TopographicScaffold(
         seed: 31,
-        appBar: const CustomAppBar(
-          title: 'Bộ sưu tập check-in',
+        appBar: CustomAppBar(
+          title: context.tr('loyalty.collection_title'),
           bottom: TabBar(
-            tabs: [Tab(text: 'Điểm check-in'), Tab(text: 'Lịch sử')],
+            tabs: [
+              Tab(text: context.tr('loyalty.tab_checkin_points')),
+              Tab(text: context.tr('loyalty.tab_history')),
+            ],
           ),
         ),
         body: BlocBuilder<LoyaltyCubit, LoyaltyState>(
@@ -88,12 +92,17 @@ class _CollectionTab extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Đã sưu tầm ${collected.length}/${state.points.length} địa điểm',
-                            style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15.5)),
+                        Text(
+                          context.tr(
+                            'loyalty.collected_progress_title',
+                            params: {'collected': '${collected.length}', 'total': '${state.points.length}'},
+                          ),
+                          style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15.5),
+                        ),
                         const SizedBox(height: 4),
-                        const Text(
-                          'Hoàn thành bộ sưu tập để nhận huy hiệu “Người giữ hồn đá Ngũ Hành”.',
-                          style: TextStyle(color: AppColors.textSecondary, fontSize: 12.5, height: 1.4),
+                        Text(
+                          context.tr('loyalty.collected_progress_subtitle'),
+                          style: const TextStyle(color: AppColors.textSecondary, fontSize: 12.5, height: 1.4),
                         ),
                       ],
                     ),
@@ -154,9 +163,15 @@ class _CheckinPointCard extends StatelessWidget {
                   top: 8,
                   right: 8,
                   child: collected
-                      ? const PillBadge(label: 'Đã check-in', icon: Icons.verified_rounded, color: AppColors.success, solid: true, fontSize: 10.5)
+                      ? PillBadge(
+                          label: context.tr('loyalty.checked_in_badge'),
+                          icon: Icons.verified_rounded,
+                          color: AppColors.success,
+                          solid: true,
+                          fontSize: 10.5,
+                        )
                       : PillBadge(
-                          label: 'Chưa ghé',
+                          label: context.tr('loyalty.not_visited_badge'),
                           icon: Icons.lock_outline_rounded,
                           color: AppColors.textSecondary,
                           background: Colors.white.withValues(alpha: 0.9),
@@ -180,8 +195,10 @@ class _CheckinPointCard extends StatelessWidget {
                   children: [
                     const Icon(Icons.stars_rounded, size: 16, color: AppColors.accentSoftGold),
                     const SizedBox(width: 4),
-                    Text('+${point.points} điểm',
-                        style: const TextStyle(color: AppColors.accentSoftGold, fontWeight: FontWeight.w800, fontSize: 12.5)),
+                    Text(
+                      context.tr('loyalty.plus_points', params: {'points': '${point.points}'}),
+                      style: const TextStyle(color: AppColors.accentSoftGold, fontWeight: FontWeight.w800, fontSize: 12.5),
+                    ),
                   ],
                 ),
               ],
@@ -195,57 +212,65 @@ class _CheckinPointCard extends StatelessWidget {
   void _showDetail(BuildContext context) {
     showModalBottomSheet<void>(
       context: context,
+      useRootNavigator: true,
+      isScrollControlled: true,
+      useSafeArea: true,
       showDragHandle: true,
       backgroundColor: AppColors.surfaceWhite,
       builder: (ctx) => SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CoverImage(source: point.image, height: 150, width: double.infinity, radius: 18),
-              const SizedBox(height: 14),
-              Text(point.name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
-              const SizedBox(height: 4),
-              Row(
-                children: [
-                  const Icon(Icons.place_rounded, size: 16, color: AppColors.primaryTeal),
-                  const SizedBox(width: 4),
-                  Expanded(child: Text(point.area, style: const TextStyle(color: AppColors.textSecondary))),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Text(point.description, style: const TextStyle(height: 1.5)),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  if (point.destinationId != null)
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.sizeOf(ctx).height * 0.8,
+          ),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CoverImage(source: point.image, height: 150, width: double.infinity, radius: 18),
+                const SizedBox(height: 14),
+                Text(point.name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    const Icon(Icons.place_rounded, size: 16, color: AppColors.primaryTeal),
+                    const SizedBox(width: 4),
+                    Expanded(child: Text(point.area, style: const TextStyle(color: AppColors.textSecondary))),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Text(point.description, style: const TextStyle(height: 1.5)),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    if (point.destinationId != null)
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: () {
+                            Navigator.pop(ctx);
+                            context.push(RouteNames.destinationDetail(point.destinationId!));
+                          },
+                          child: Text(context.tr('loyalty.view_destination')),
+                        ),
+                      ),
+                    if (point.destinationId != null) const SizedBox(width: 12),
                     Expanded(
-                      child: OutlinedButton(
-                        onPressed: () {
-                          Navigator.pop(ctx);
-                          context.push(RouteNames.destinationDetail(point.destinationId!));
-                        },
-                        child: const Text('Xem điểm đến'),
+                      child: FilledButton.icon(
+                        onPressed: collected
+                            ? null
+                            : () {
+                                Navigator.pop(ctx);
+                                context.push(RouteNames.qrScanner);
+                              },
+                        icon: Icon(collected ? Icons.check_rounded : Icons.qr_code_scanner_rounded),
+                        label: Text(collected ? context.tr('loyalty.checked_in_badge') : context.tr('loyalty.scan_qr_btn')),
                       ),
                     ),
-                  if (point.destinationId != null) const SizedBox(width: 12),
-                  Expanded(
-                    child: FilledButton.icon(
-                      onPressed: collected
-                          ? null
-                          : () {
-                              Navigator.pop(ctx);
-                              context.push(RouteNames.qrScanner);
-                            },
-                      icon: Icon(collected ? Icons.check_rounded : Icons.qr_code_scanner_rounded),
-                      label: Text(collected ? 'Đã check-in' : 'Quét mã QR'),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -263,18 +288,18 @@ class _HistoryTab extends StatelessWidget {
     if (!isAuth) {
       return EmptyStateWidget(
         icon: Icons.lock_person_rounded,
-        title: 'Đăng nhập để xem lịch sử',
-        message: 'Lịch sử check-in được lưu theo tài khoản của bạn.',
-        actionLabel: 'Đăng nhập',
+        title: context.tr('loyalty.login_to_view_history_title'),
+        message: context.tr('loyalty.login_to_view_history_message'),
+        actionLabel: context.tr('auth.login'),
         onAction: () => context.push('${RouteNames.login}?from=${RouteNames.checkinPoints}'),
       );
     }
     if (state.history.isEmpty) {
       return EmptyStateWidget(
         icon: Icons.qr_code_2_rounded,
-        title: 'Chưa có lượt check-in nào',
-        message: 'Hãy quét mã QR tại các điểm tham quan để bắt đầu bộ sưu tập.',
-        actionLabel: 'Quét mã ngay',
+        title: context.tr('loyalty.no_checkins_title'),
+        message: context.tr('loyalty.no_checkins_message'),
+        actionLabel: context.tr('loyalty.scan_now_btn'),
         onAction: () => context.push(RouteNames.qrScanner),
       );
     }
@@ -333,16 +358,16 @@ class CheckinConfirmationScreen extends StatelessWidget {
         appBar: const CustomAppBar(title: 'Check-in'),
         body: EmptyStateWidget(
           icon: Icons.qr_code_2_rounded,
-          title: 'Không có dữ liệu check-in',
-          message: 'Vui lòng quét lại mã QR tại điểm đến.',
-          actionLabel: 'Quét mã QR',
+          title: context.tr('loyalty.no_checkin_data_title'),
+          message: context.tr('loyalty.no_checkin_data_message'),
+          actionLabel: context.tr('loyalty.scan_qr_btn'),
           onAction: () => context.pushReplacement(RouteNames.qrScanner),
         ),
       );
     }
     return TopographicScaffold(
       seed: 41,
-      appBar: const CustomAppBar(title: 'Check-in thành công'),
+      appBar: CustomAppBar(title: context.tr('loyalty.checkin_success_title')),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
         children: [
@@ -381,11 +406,18 @@ class CheckinConfirmationScreen extends StatelessWidget {
                       TweenAnimationBuilder<double>(
                         tween: Tween(begin: 0, end: r.record.pointsEarned.toDouble()),
                         duration: const Duration(milliseconds: 900),
-                        builder: (_, v, _) => Text('+${v.round()} điểm thưởng',
-                            style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w800)),
+                        builder: (_, v, _) => Text(
+                          context.tr('loyalty.plus_bonus_points', params: {'points': '${v.round()}'}),
+                          style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w800),
+                        ),
                       ),
-                      Text('Tổng điểm khả dụng: ${CurrencyFormatter.points(r.summary.availablePoints)}',
-                          style: const TextStyle(color: Colors.white)),
+                      Text(
+                        context.tr(
+                          'loyalty.total_available_points',
+                          params: {'points': CurrencyFormatter.points(r.summary.availablePoints)},
+                        ),
+                        style: const TextStyle(color: Colors.white),
+                      ),
                     ],
                   ),
                 ),
@@ -401,7 +433,10 @@ class CheckinConfirmationScreen extends StatelessWidget {
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'Chúc mừng! Bạn đã thăng hạng từ ${r.previousTier.label} lên ${r.summary.tier.label}.',
+                      context.tr(
+                        'loyalty.tier_upgraded_congrats',
+                        params: {'prev': r.previousTier.label, 'next': r.summary.tier.label},
+                      ),
                       style: const TextStyle(fontWeight: FontWeight.w700, height: 1.4),
                     ),
                   ),
@@ -414,8 +449,13 @@ class CheckinConfirmationScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Bộ sưu tập: ${r.collectedCount}/${r.totalPoints} địa điểm',
-                    style: const TextStyle(fontWeight: FontWeight.w800)),
+                Text(
+                  context.tr(
+                    'loyalty.collection_count_summary',
+                    params: {'collected': '${r.collectedCount}', 'total': '${r.totalPoints}'},
+                  ),
+                  style: const TextStyle(fontWeight: FontWeight.w800),
+                ),
                 const SizedBox(height: 10),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
@@ -432,14 +472,20 @@ class CheckinConfirmationScreen extends StatelessWidget {
           ),
           const SizedBox(height: 22),
           CustomButton(
-            label: 'Chia sẻ thành tích',
+            label: context.tr('loyalty.share_achievement_btn'),
             icon: Icons.ios_share_rounded,
             onPressed: () => SocialShareSheet.show(
               context,
-              title: 'Check-in tại ${r.point.name}',
-              message: 'Mình vừa check-in tại ${r.point.name} (Ngũ Hành Sơn, Đà Nẵng) và nhận '
-                  '+${r.record.pointsEarned} điểm trên SmartTravel! '
-                  'Bộ sưu tập: ${r.collectedCount}/${r.totalPoints} địa điểm. #SmartTravel #NguHanhSon',
+              title: context.tr('loyalty.checkin_at_title', params: {'name': r.point.name}),
+              message: context.tr(
+                'loyalty.share_checkin_message',
+                params: {
+                  'name': r.point.name,
+                  'points': '${r.record.pointsEarned}',
+                  'collected': '${r.collectedCount}',
+                  'total': '${r.totalPoints}',
+                },
+              ),
             ),
           ),
           const SizedBox(height: 12),
@@ -448,14 +494,14 @@ class CheckinConfirmationScreen extends StatelessWidget {
               Expanded(
                 child: OutlinedButton(
                   onPressed: () => context.pushReplacement(RouteNames.checkinPoints),
-                  child: const Text('Xem bộ sưu tập'),
+                  child: Text(context.tr('loyalty.view_collection_btn')),
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: OutlinedButton(
                   onPressed: () => context.pushReplacement(RouteNames.rewards),
-                  child: const Text('Đổi quà'),
+                  child: Text(context.tr('loyalty.action_redeem')),
                 ),
               ),
             ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/app_localizations.dart';
 
 /// Logo + tiêu đề thương hiệu ở đầu các màn hình xác thực
 class AuthBrandHeader extends StatelessWidget {
@@ -30,9 +31,9 @@ class AuthBrandHeader extends StatelessWidget {
           child: const Icon(Icons.terrain_rounded, color: Colors.white, size: 40),
         ),
         const SizedBox(height: 16),
-        const Text(
-          'SmartTravel · Ngũ Hành Sơn',
-          style: TextStyle(
+        Text(
+          context.tr('auth.brand_header'),
+          style: const TextStyle(
             color: AppColors.primaryTeal,
             fontWeight: FontWeight.w800,
             letterSpacing: 0.5,
@@ -53,14 +54,14 @@ class PasswordField extends StatefulWidget {
   const PasswordField({
     super.key,
     required this.controller,
-    this.label = 'Mật khẩu',
+    this.label,
     this.validator,
     this.textInputAction = TextInputAction.done,
     this.onSubmitted,
   });
 
   final TextEditingController controller;
-  final String label;
+  final String? label;
   final String? Function(String?)? validator;
   final TextInputAction textInputAction;
   final ValueChanged<String>? onSubmitted;
@@ -81,10 +82,10 @@ class _PasswordFieldState extends State<PasswordField> {
       textInputAction: widget.textInputAction,
       onFieldSubmitted: widget.onSubmitted,
       decoration: InputDecoration(
-        labelText: widget.label,
+        labelText: widget.label ?? context.tr('auth.password'),
         prefixIcon: const Icon(Icons.lock_outline_rounded),
         suffixIcon: IconButton(
-          tooltip: _obscure ? 'Hiện mật khẩu' : 'Ẩn mật khẩu',
+          tooltip: _obscure ? context.tr('auth.show_password') : context.tr('auth.hide_password'),
           icon: Icon(_obscure ? Icons.visibility_outlined : Icons.visibility_off_outlined),
           onPressed: () => setState(() => _obscure = !_obscure),
         ),
@@ -95,9 +96,9 @@ class _PasswordFieldState extends State<PasswordField> {
 
 /// Đường phân cách "Hoặc tiếp tục với"
 class AuthOrDivider extends StatelessWidget {
-  const AuthOrDivider({super.key, this.text = 'Hoặc tiếp tục với'});
+  const AuthOrDivider({super.key, this.text});
 
-  final String text;
+  final String? text;
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +110,7 @@ class AuthOrDivider extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 14),
             child: Text(
-              text,
+              text ?? context.tr('auth.or_continue_with'),
               style: const TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 12.5,
@@ -129,16 +130,17 @@ class GoogleSignInButton extends StatelessWidget {
   const GoogleSignInButton({
     super.key,
     required this.onPressed,
-    this.label = 'Đăng nhập bằng Google',
+    this.label,
     this.isLoading = false,
   });
 
   final VoidCallback? onPressed;
-  final String label;
+  final String? label;
   final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
+    final resolvedLabel = label ?? context.tr('auth.google_login');
     return Material(
       color: Colors.white,
       borderRadius: BorderRadius.circular(16),
@@ -172,13 +174,16 @@ class GoogleSignInButton extends StatelessWidget {
                     children: [
                       const _GoogleIcon(),
                       const SizedBox(width: 12),
-                      Text(
-                        label,
-                        style: const TextStyle(
-                          color: AppColors.textPrimary,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 0.2,
+                      Flexible(
+                        child: Text(
+                          resolvedLabel,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: AppColors.textPrimary,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 0.2,
+                          ),
                         ),
                       ),
                     ],
@@ -207,8 +212,7 @@ class _GoogleIconPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final double w = size.width;
-    final double h = size.height;
-    final center = Offset(w / 2, h / 2);
+    final center = Offset(w / 2, size.height / 2);
     final radius = w / 2;
 
     // Màu sắc chính thức của Google:

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/date_formatter.dart';
 import '../../../../core/utils/validators.dart';
@@ -66,7 +67,7 @@ class _BookingFormViewState extends State<_BookingFormView> {
   void _submit(BookingFormState state) {
     if (!_formKey.currentState!.validate()) return;
     if (state.session == null) {
-      showAppSnackBar(context, 'Vui lòng chọn khung giờ tham gia.', type: SnackType.warning);
+      showAppSnackBar(context, context.tr('booking.select_session_warning'), type: SnackType.warning);
       return;
     }
     final user = context.read<AuthCubit>().state.user;
@@ -94,7 +95,10 @@ class _BookingFormViewState extends State<_BookingFormView> {
         final cubit = context.read<BookingFormCubit>();
         final s = state.selected;
         return TopographicScaffold(
-          appBar: const CustomAppBar(title: 'Đặt chỗ', subtitle: 'Dịch vụ · Sự kiện · Workshop'),
+          appBar: CustomAppBar(
+            title: context.tr('booking.form_title'),
+            subtitle: context.tr('booking.form_subtitle'),
+          ),
           bottomNavigationBar: s == null
               ? null
               : Container(
@@ -109,7 +113,7 @@ class _BookingFormViewState extends State<_BookingFormView> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Tạm tính', style: TextStyle(color: AppColors.textMuted, fontSize: 12)),
+                          Text(context.tr('booking.subtotal_label'), style: const TextStyle(color: AppColors.textMuted, fontSize: 12)),
                           Text(CurrencyFormatter.vnd(state.total),
                               style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 18, color: AppColors.primaryTeal)),
                         ],
@@ -117,7 +121,7 @@ class _BookingFormViewState extends State<_BookingFormView> {
                       const SizedBox(width: 16),
                       Expanded(
                         child: CustomButton(
-                          label: 'Xác nhận đặt chỗ',
+                          label: context.tr('booking.confirm_booking_btn'),
                           icon: Icons.check_circle_rounded,
                           isLoading: state.isSubmitting,
                           onPressed: s.remainingSlots == 0 ? null : () => _submit(state),
@@ -129,18 +133,21 @@ class _BookingFormViewState extends State<_BookingFormView> {
           body: Builder(
             builder: (context) {
               if (state.status.isFailure) {
-                return ErrorViewWidget(message: state.errorMessage ?? 'Không tải được dịch vụ.');
+                return ErrorViewWidget(message: state.errorMessage ?? context.tr('booking.load_service_error'));
               }
               if (state.status.isLoading || state.status == ViewStatus.initial) return const LoadingIndicator();
               if (s == null) {
-                return const EmptyStateWidget(icon: Icons.event_busy_rounded, title: 'Không có dịch vụ khả dụng');
+                return EmptyStateWidget(
+                  icon: Icons.event_busy_rounded,
+                  title: context.tr('booking.no_service_available'),
+                );
               }
               return Form(
                 key: _formKey,
                 child: ListView(
                   padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
                   children: [
-                    const _Label('1. Chọn dịch vụ'),
+                    _Label(context.tr('booking.step_1_select_service')),
                     DropdownButtonFormField<String>(
                       initialValue: s.id,
                       isExpanded: true,
@@ -176,7 +183,9 @@ class _BookingFormViewState extends State<_BookingFormView> {
                                     if (s.durationLabel.isNotEmpty)
                                       PillBadge(label: s.durationLabel, icon: Icons.timer_outlined),
                                     PillBadge(
-                                      label: s.remainingSlots == 0 ? 'Hết chỗ' : 'Còn ${s.remainingSlots} chỗ',
+                                      label: s.remainingSlots == 0
+                                          ? context.tr('booking.sold_out')
+                                          : context.tr('booking.slots_left', params: {'count': '${s.remainingSlots}'}),
                                       icon: Icons.event_seat_rounded,
                                       color: s.remainingSlots == 0 ? AppColors.error : AppColors.success,
                                     ),
@@ -189,10 +198,10 @@ class _BookingFormViewState extends State<_BookingFormView> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    const _Label('2. Chọn ngày giờ'),
+                    _Label(context.tr('booking.step_2_select_datetime')),
                     _SessionPicker(state: state),
                     const SizedBox(height: 20),
-                    const _Label('3. Số người tham gia'),
+                    _Label(context.tr('booking.step_3_participants')),
                     AppCard(
                       child: Row(
                         children: [
@@ -205,8 +214,10 @@ class _BookingFormViewState extends State<_BookingFormView> {
                               children: [
                                 Text('${state.participants}',
                                     style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w800)),
-                                Text('tối đa ${state.maxParticipants} người/lượt',
-                                    style: const TextStyle(color: AppColors.textMuted, fontSize: 11.5)),
+                                Text(
+                                  context.tr('booking.max_participants_hint', params: {'max': '${state.maxParticipants}'}),
+                                  style: const TextStyle(color: AppColors.textMuted, fontSize: 11.5),
+                                ),
                               ],
                             ),
                           ),
@@ -220,34 +231,40 @@ class _BookingFormViewState extends State<_BookingFormView> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    const _Label('4. Thông tin liên hệ'),
+                    _Label(context.tr('booking.step_4_contact_info')),
                     TextFormField(
                       controller: _name,
                       textCapitalization: TextCapitalization.words,
-                      decoration: const InputDecoration(labelText: 'Họ và tên', prefixIcon: Icon(Icons.person_outline)),
-                      validator: (v) => Validators.required(v, 'họ và tên'),
+                      decoration: InputDecoration(
+                        labelText: context.tr('auth.full_name'),
+                        prefixIcon: const Icon(Icons.person_outline),
+                      ),
+                      validator: (v) => Validators.required(v, context.tr('auth.full_name_lower')),
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _phone,
                       keyboardType: TextInputType.phone,
-                      decoration: const InputDecoration(labelText: 'Số điện thoại', prefixIcon: Icon(Icons.phone_outlined)),
-                      validator: (v) => Validators.required(v, 'số điện thoại') ?? Validators.phone(v),
+                      decoration: InputDecoration(
+                        labelText: context.tr('auth.phone_label'),
+                        prefixIcon: const Icon(Icons.phone_outlined),
+                      ),
+                      validator: (v) => Validators.required(v, context.tr('booking.phone_lower')) ?? Validators.phone(v),
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _note,
                       maxLines: 2,
-                      decoration: const InputDecoration(
-                        labelText: 'Ghi chú (không bắt buộc)',
-                        hintText: 'Ví dụ: có trẻ em đi cùng, cần hỗ trợ xe lăn...',
-                        prefixIcon: Icon(Icons.edit_note_rounded),
+                      decoration: InputDecoration(
+                        labelText: context.tr('booking.note_optional_label'),
+                        hintText: context.tr('booking.note_optional_hint'),
+                        prefixIcon: const Icon(Icons.edit_note_rounded),
                       ),
                     ),
                     const SizedBox(height: 16),
-                    const Text(
-                      'Bạn có thể hủy miễn phí trước giờ bắt đầu ít nhất 2 tiếng trong mục “Lịch sử đặt chỗ”.',
-                      style: TextStyle(color: AppColors.textMuted, fontSize: 12),
+                    Text(
+                      context.tr('booking.free_cancellation_note'),
+                      style: const TextStyle(color: AppColors.textMuted, fontSize: 12),
                     ),
                   ],
                 ),
@@ -292,7 +309,7 @@ class _SessionPicker extends StatelessWidget {
               child: Text('${DateFormatter.formatTime(at)} · ${DateFormatter.formatWithWeekday(at)}',
                   style: const TextStyle(fontWeight: FontWeight.w700)),
             ),
-            const PillBadge(label: 'Lịch cố định'),
+            PillBadge(label: context.tr('booking.fixed_schedule')),
           ],
         ),
       );

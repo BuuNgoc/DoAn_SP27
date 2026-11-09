@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/view_status.dart';
 import '../../../../shared/widgets/app_card.dart';
@@ -29,12 +30,15 @@ class CraftWorkshopArtisanScreen extends StatelessWidget {
       create: (_) => sl<ArtisanCubit>()..load(artisanId),
       child: TopographicScaffold(
         seed: 21,
-        appBar: const CustomAppBar(title: 'Nghệ nhân làng đá', subtitle: 'Làng đá mỹ nghệ Non Nước'),
+        appBar: CustomAppBar(
+          title: context.tr('artisan.title'),
+          subtitle: context.tr('artisan.subtitle'),
+        ),
         body: BlocBuilder<ArtisanCubit, DetailState<ArtisanProfile>>(
           builder: (context, state) {
             if (state.status.isFailure) {
               return ErrorViewWidget(
-                message: state.errorMessage ?? 'Không tải được hồ sơ.',
+                message: state.errorMessage ?? context.tr('artisan.load_error'),
                 onRetry: () => context.read<ArtisanCubit>().load(artisanId),
               );
             }
@@ -61,9 +65,9 @@ class CraftWorkshopArtisanScreen extends StatelessWidget {
                       const SizedBox(height: 14),
                       Row(
                         children: [
-                          _Stat(value: '${a.yearsOfExperience}', label: 'Năm kinh nghiệm'),
-                          _Stat(value: a.rating.toStringAsFixed(1), label: 'Đánh giá'),
-                          _Stat(value: '${a.featuredWorks.length}', label: 'Tác phẩm tiêu biểu'),
+                          _Stat(value: '${a.yearsOfExperience}', label: context.tr('artisan.years_experience')),
+                          _Stat(value: a.rating.toStringAsFixed(1), label: context.tr('artisan.rating')),
+                          _Stat(value: '${a.featuredWorks.length}', label: context.tr('artisan.featured_works')),
                         ],
                       ),
                       const SizedBox(height: 12),
@@ -72,7 +76,7 @@ class CraftWorkshopArtisanScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                const SectionHeader(title: 'Câu chuyện nghệ nhân'),
+                SectionHeader(title: context.tr('artisan.story_title')),
                 const SizedBox(height: 8),
                 Text(a.bio, style: const TextStyle(color: AppColors.textSecondary, height: 1.6)),
                 const SizedBox(height: 20),
@@ -82,12 +86,16 @@ class CraftWorkshopArtisanScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Row(
+                      Row(
                         children: [
-                          Icon(Icons.history_edu_rounded, color: AppColors.accentSoftGold),
-                          SizedBox(width: 8),
-                          Text('Lịch sử nghề điêu khắc đá Non Nước',
-                              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15)),
+                          const Icon(Icons.history_edu_rounded, color: AppColors.accentSoftGold),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              context.tr('artisan.craft_history_title'),
+                              style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
+                            ),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 8),
@@ -97,7 +105,7 @@ class CraftWorkshopArtisanScreen extends StatelessWidget {
                 ),
                 if (a.featuredWorks.isNotEmpty) ...[
                   const SizedBox(height: 20),
-                  const SectionHeader(title: 'Tác phẩm tiêu biểu'),
+                  SectionHeader(title: context.tr('artisan.featured_works')),
                   const SizedBox(height: 10),
                   SizedBox(
                     height: 190,
@@ -128,7 +136,7 @@ class CraftWorkshopArtisanScreen extends StatelessWidget {
                 ],
                 if (a.awards.isNotEmpty) ...[
                   const SizedBox(height: 16),
-                  const SectionHeader(title: 'Giải thưởng'),
+                  SectionHeader(title: context.tr('artisan.awards_title')),
                   const SizedBox(height: 6),
                   for (final aw in a.awards)
                     ListTile(
@@ -149,17 +157,19 @@ class CraftWorkshopArtisanScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                const SectionHeader(title: 'Đăng ký học thử', subtitle: 'Workshop do nghệ nhân trực tiếp hướng dẫn'),
+                SectionHeader(
+                  title: context.tr('artisan.trial_class_title'),
+                  subtitle: context.tr('artisan.trial_class_subtitle'),
+                ),
                 const SizedBox(height: 10),
                 if (profile.workshops.isEmpty)
-                  const Text('Hiện chưa có lịch workshop. Vui lòng quay lại sau.',
-                      style: TextStyle(color: AppColors.textMuted))
+                  Text(context.tr('artisan.no_workshops'), style: const TextStyle(color: AppColors.textMuted))
                 else
                   for (final w in profile.workshops) ...[
                     EventCard(event: w),
                     const SizedBox(height: 10),
                     CustomButton(
-                      label: w.isFull ? 'Đã kín chỗ' : 'Đăng ký học thử',
+                      label: w.isFull ? context.tr('events.capacity_full') : context.tr('artisan.trial_class_title'),
                       icon: Icons.handyman_rounded,
                       onPressed: w.isFull ? null : () => context.push(RouteNames.bookingForm(w.id)),
                     ),

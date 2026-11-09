@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../../core/config/app_config.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../shared/models/localized_text_model.dart';
 import '../../domain/entities/destination.dart';
 
 /// [FE-02] Model ánh xạ tài liệu Firestore `destinations/{id}`.
-/// Các trường văn bản lưu dạng map đa ngữ `{vi, en, ko, zh}`.
+/// Các trường văn bản lưu dạng map đa ngữ `{vi, en, ko, zh}` (LI-06).
 class DestinationModel extends Destination {
   const DestinationModel({
     required super.id,
@@ -35,10 +36,14 @@ class DestinationModel extends Destination {
   factory DestinationModel.fromFirestore(
     Map<String, dynamic> data,
     String id, {
-    String lang = AppConfig.defaultLanguage,
+    String? lang,
   }) {
-    String text(String key) =>
-        LocalizedTextModel.fromMap(data[key] as Map<String, dynamic>?).getLocalized(lang);
+    final resolvedLang =
+        lang ?? AppLocalizations.current?.locale.languageCode ?? AppConfig.defaultLanguage;
+    String text(String key) => LocalizedTextModel.fromLocalizedMap(
+          data[key] as Map<String, dynamic>?,
+          languageCode: resolvedLang,
+        );
     final location = data['location'] as Map<String, dynamic>? ?? const {};
     final geo = location['geopoint'] as GeoPoint? ?? const GeoPoint(16.0036, 108.2636);
     final images = List<String>.from(data['images'] as List? ?? const []);

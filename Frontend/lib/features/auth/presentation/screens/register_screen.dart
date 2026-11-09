@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../shared/widgets/app_feedback.dart';
@@ -14,6 +15,19 @@ import '../bloc/auth_cubit.dart';
 import '../widgets/auth_widgets.dart';
 
 const kNationalities = ['Việt Nam', 'Hàn Quốc', 'Trung Quốc', 'Hoa Kỳ', 'Úc', 'Nhật Bản', 'Khác'];
+
+String localizedNationality(BuildContext context, String raw) {
+  return switch (raw) {
+    'Việt Nam' => context.tr('auth.nationalities.vn'),
+    'Hàn Quốc' => context.tr('auth.nationalities.kr'),
+    'Trung Quốc' => context.tr('auth.nationalities.cn'),
+    'Hoa Kỳ' => context.tr('auth.nationalities.us'),
+    'Úc' => context.tr('auth.nationalities.au'),
+    'Nhật Bản' => context.tr('auth.nationalities.jp'),
+    'Khác' => context.tr('auth.nationalities.other'),
+    _ => raw,
+  };
+}
 
 /// [FE-01] Đăng ký tài khoản mới (Email & Google)
 class RegisterScreen extends StatefulWidget {
@@ -47,7 +61,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (!_agreed) {
       showAppSnackBar(
         context,
-        'Vui lòng đồng ý với Điều khoản sử dụng và Chính sách bảo mật.',
+        context.tr('auth.agree_terms_warning'),
         type: SnackType.warning,
       );
       return;
@@ -71,7 +85,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     showAppSnackBar(
       context,
-      'Khởi tạo tài khoản thành công! Chào mừng bạn đến với Ngũ Hành Sơn.',
+      context.tr('auth.register_success'),
       type: SnackType.success,
     );
     context.go(RouteNames.explore);
@@ -95,7 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     showAppSnackBar(
       context,
-      'Đăng ký tài khoản qua Google thành công! Chào mừng bạn đến với SmartTravel.',
+      context.tr('auth.google_register_success'),
       type: SnackType.success,
     );
     context.go(RouteNames.explore);
@@ -112,9 +126,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
         child: Column(
           children: [
-            const AuthBrandHeader(
-              title: 'Tạo tài khoản',
-              subtitle: 'Chỉ mất một phút để bắt đầu hành trình khám phá Ngũ Hành Sơn.',
+            AuthBrandHeader(
+              title: context.tr('auth.register_title'),
+              subtitle: context.tr('auth.register_subtitle'),
             ),
             const SizedBox(height: 24),
             GlassCard(
@@ -127,10 +141,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       controller: _name,
                       textCapitalization: TextCapitalization.words,
                       textInputAction: TextInputAction.next,
-                      validator: (v) => Validators.required(v, 'họ và tên'),
-                      decoration: const InputDecoration(
-                        labelText: 'Họ và tên',
-                        prefixIcon: Icon(Icons.person_outline_rounded),
+                      validator: (v) => Validators.required(v, context.tr('auth.full_name_lower')),
+                      decoration: InputDecoration(
+                        labelText: context.tr('auth.full_name'),
+                        prefixIcon: const Icon(Icons.person_outline_rounded),
                       ),
                     ),
                     const SizedBox(height: 14),
@@ -139,9 +153,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
                       validator: Validators.email,
-                      decoration: const InputDecoration(
-                        labelText: 'Email',
-                        prefixIcon: Icon(Icons.alternate_email_rounded),
+                      decoration: InputDecoration(
+                        labelText: context.tr('auth.email'),
+                        prefixIcon: const Icon(Icons.alternate_email_rounded),
                       ),
                     ),
                     const SizedBox(height: 14),
@@ -150,21 +164,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       keyboardType: TextInputType.phone,
                       textInputAction: TextInputAction.next,
                       validator: Validators.phone,
-                      decoration: const InputDecoration(
-                        labelText: 'Số điện thoại (dùng để liên hệ đặt chỗ)',
-                        prefixIcon: Icon(Icons.phone_outlined),
+                      decoration: InputDecoration(
+                        labelText: context.tr('auth.phone_label'),
+                        prefixIcon: const Icon(Icons.phone_outlined),
                       ),
                     ),
                     const SizedBox(height: 14),
                     DropdownButtonFormField<String>(
                       initialValue: _nationality,
-                      decoration: const InputDecoration(
-                        labelText: 'Quốc tịch',
-                        prefixIcon: Icon(Icons.public_rounded),
+                      decoration: InputDecoration(
+                        labelText: context.tr('auth.nationality'),
+                        prefixIcon: const Icon(Icons.public_rounded),
                       ),
                       borderRadius: BorderRadius.circular(16),
                       items: [
-                        for (final n in kNationalities) DropdownMenuItem(value: n, child: Text(n)),
+                        for (final n in kNationalities)
+                          DropdownMenuItem(
+                            value: n,
+                            child: Text(localizedNationality(context, n)),
+                          ),
                       ],
                       onChanged: (v) => setState(() => _nationality = v ?? _nationality),
                     ),
@@ -177,8 +195,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(height: 14),
                     PasswordField(
                       controller: _confirm,
-                      label: 'Xác nhận lại mật khẩu',
-                      validator: (v) => v != _password.text ? 'Mật khẩu xác nhận không khớp.' : null,
+                      label: context.tr('auth.confirm_password'),
+                      validator: (v) => v != _password.text
+                          ? context.tr('core.validation.password_mismatch')
+                          : null,
                     ),
                     const SizedBox(height: 10),
                     CheckboxListTile(
@@ -187,20 +207,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       contentPadding: EdgeInsets.zero,
                       controlAffinity: ListTileControlAffinity.leading,
                       activeColor: AppColors.primaryTeal,
-                      title: const Text(
-                        'Tôi đồng ý với Điều khoản sử dụng và Chính sách bảo mật của SmartTravel.',
-                        style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
+                      title: Text(
+                        context.tr('auth.agree_terms'),
+                        style: const TextStyle(fontSize: 13, color: AppColors.textSecondary),
                       ),
                     ),
                     const SizedBox(height: 10),
                     CustomButton(
-                      label: 'Đăng ký tài khoản',
+                      label: context.tr('auth.register_button'),
                       isLoading: isSubmitting && !_isGoogleLoading,
                       onPressed: _isGoogleLoading ? null : _submitEmailRegister,
                     ),
-                    const AuthOrDivider(text: 'Hoặc đăng ký nhanh với'),
+                    AuthOrDivider(text: context.tr('auth.or_register_with')),
                     GoogleSignInButton(
-                      label: 'Đăng ký nhanh bằng Google',
+                      label: context.tr('auth.google_register'),
                       isLoading: _isGoogleLoading,
                       onPressed: isSubmitting ? null : _submitGoogleRegister,
                     ),
@@ -212,8 +232,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Đã có tài khoản?', style: TextStyle(color: AppColors.textSecondary)),
-                TextButton(onPressed: () => context.pop(), child: const Text('Đăng nhập ngay')),
+                Text(
+                  context.tr('auth.already_have_account'),
+                  style: const TextStyle(color: AppColors.textSecondary),
+                ),
+                TextButton(
+                  onPressed: () => context.pop(),
+                  child: Text(context.tr('auth.login_now')),
+                ),
               ],
             ),
           ],

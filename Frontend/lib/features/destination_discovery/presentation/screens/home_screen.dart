@@ -4,10 +4,14 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_dimensions.dart';
+import '../../../../core/constants/app_strings.dart';
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/localization/app_localizations.dart';
+import '../../../../core/localization/locale_cubit.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/view_status.dart';
 import '../../../../shared/widgets/app_card.dart';
+import '../../../../shared/widgets/app_feedback.dart';
 import '../../../../shared/widgets/loading_indicator.dart';
 import '../../../../shared/widgets/section_header.dart';
 import '../../../auth/presentation/bloc/auth_cubit.dart';
@@ -24,7 +28,11 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<DestinationListCubit>()..load(),
-      child: const _HomeView(),
+      child: BlocListener<LocaleCubit, Locale>(
+        listenWhen: (prev, curr) => prev.languageCode != curr.languageCode,
+        listener: (context, _) => context.read<DestinationListCubit>().load(),
+        child: const _HomeView(),
+      ),
     );
   }
 }
@@ -35,7 +43,8 @@ class _HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.select((AuthCubit c) => c.state.user);
-    final greetingName = user == null ? 'du khách' : user.fullName.split(' ').last;
+    final greetingName =
+        user == null ? context.tr('home.guest_name') : user.fullName.split(' ').last;
 
     return RefreshIndicator(
       color: AppColors.primaryTeal,
@@ -55,12 +64,12 @@ class _HomeView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Xin chào, $greetingName 👋',
+                            context.tr('home.greeting', params: {'name': greetingName}),
                             style: const TextStyle(color: AppColors.textSecondary, fontWeight: FontWeight.w600),
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            'Hôm nay khám phá\nNgũ Hành Sơn nhé!',
+                            context.tr('home.hero_title'),
                             style: Theme.of(context).textTheme.headlineSmall,
                           ),
                         ],
@@ -68,7 +77,7 @@ class _HomeView extends StatelessWidget {
                     ),
                     _IconAction(
                       icon: Icons.favorite_border_rounded,
-                      tooltip: 'Địa điểm yêu thích',
+                      tooltip: context.tr('home.favorites_tooltip'),
                       onTap: () => context.push(RouteNames.favorites),
                     ),
                   ],
@@ -94,12 +103,13 @@ class _HomeView extends StatelessWidget {
           ),
           const SliverToBoxAdapter(child: SizedBox(height: 20)),
           const SliverToBoxAdapter(child: _AiPromoBanner()),
+          const SliverToBoxAdapter(child: _RecentlyViewedSection()),
           const SliverToBoxAdapter(child: SizedBox(height: 24)),
           SliverToBoxAdapter(
             child: SectionHeader(
-              title: 'Điểm đến nổi bật',
-              subtitle: 'Được du khách đánh giá cao nhất',
-              actionLabel: 'Xem tất cả',
+              title: context.tr('home.featured_title'),
+              subtitle: context.tr('home.featured_subtitle'),
+              actionLabel: context.tr('common.view_all'),
               onAction: () => context.push(RouteNames.destinations),
             ),
           ),
@@ -134,16 +144,19 @@ class _HomeView extends StatelessWidget {
             ),
           ),
           const SliverToBoxAdapter(child: SizedBox(height: 16)),
-          const SliverToBoxAdapter(
-            child: SectionHeader(title: 'Khu trải nghiệm', subtitle: 'Văn hóa, làng nghề, biển và phố đêm'),
+          SliverToBoxAdapter(
+            child: SectionHeader(
+              title: context.tr('home.zones_title'),
+              subtitle: context.tr('home.zones_subtitle'),
+            ),
           ),
           const SliverToBoxAdapter(child: SizedBox(height: 12)),
           const SliverToBoxAdapter(child: _ExperienceZonesGrid()),
           const SliverToBoxAdapter(child: SizedBox(height: 24)),
           SliverToBoxAdapter(
             child: SectionHeader(
-              title: 'Trải nghiệm VR360 & Thuyết minh',
-              actionLabel: 'Xem thêm',
+              title: context.tr('home.immersive_title'),
+              actionLabel: context.tr('common.see_more'),
               onAction: () => context.push(RouteNames.destinations),
             ),
           ),
@@ -223,19 +236,28 @@ class _AiPromoBanner extends StatelessWidget {
                       color: AppColors.accentSoftGold,
                       borderRadius: BorderRadius.circular(999),
                     ),
-                    child: const Text(
-                      '✨ Trợ lý AI',
-                      style: TextStyle(fontWeight: FontWeight.w800, fontSize: 11.5, color: AppColors.textPrimary),
+                    child: Text(
+                      context.tr('home.ai_badge'),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 11.5,
+                        color: AppColors.textPrimary,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    'Lịch trình Ngũ Hành Sơn\ndành riêng cho bạn',
-                    style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w800, height: 1.25),
+                  Text(
+                    context.tr('home.ai_banner_title'),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                      height: 1.25,
+                    ),
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    'Chọn thời gian, ngân sách và sở thích – AI gợi ý lộ trình trong vài giây.',
+                    context.tr('home.ai_banner_subtitle'),
                     style: TextStyle(color: Colors.white.withValues(alpha: 0.88), fontSize: 12.5),
                   ),
                 ],
@@ -267,43 +289,43 @@ class _ExperienceZonesGrid extends StatelessWidget {
     final items = <({IconData icon, String title, String subtitle, Color color, String route})>[
       (
         icon: Icons.event_available_rounded,
-        title: 'Sự kiện & Workshop',
-        subtitle: 'Lễ hội, lớp khắc đá',
+        title: context.tr('home.zone_events_title'),
+        subtitle: context.tr('home.zone_events_subtitle'),
         color: AppColors.primaryTeal,
         route: RouteNames.events,
       ),
       (
         icon: Icons.emoji_events_rounded,
-        title: 'Cuộc thi điêu khắc',
-        subtitle: 'Bình chọn tác phẩm',
+        title: context.tr('home.zone_contest_title'),
+        subtitle: context.tr('home.zone_contest_subtitle'),
         color: AppColors.accentSoftGold,
         route: RouteNames.contest,
       ),
       (
         icon: Icons.nightlife_rounded,
-        title: 'Phố Tây An Thượng',
-        subtitle: 'Ẩm thực & về đêm',
+        title: context.tr('home.zone_an_thuong_title'),
+        subtitle: context.tr('home.zone_an_thuong_subtitle'),
         color: const Color(0xFF8D7BC8),
         route: RouteNames.anThuong,
       ),
       (
         icon: Icons.waves_rounded,
-        title: 'Biển & An toàn',
-        subtitle: 'Sơn Thủy – Tân Trà',
+        title: context.tr('home.zone_beach_title'),
+        subtitle: context.tr('home.zone_beach_subtitle'),
         color: AppColors.primaryPastel,
         route: RouteNames.beach,
       ),
       (
         icon: Icons.flight_land_rounded,
-        title: 'Chào mừng từ sân bay',
-        subtitle: 'Ưu đãi khách mới đến',
+        title: context.tr('home.zone_airport_title'),
+        subtitle: context.tr('home.zone_airport_subtitle'),
         color: AppColors.warning,
         route: RouteNames.airportWelcome,
       ),
       (
         icon: Icons.threesixty_rounded,
-        title: 'Tham quan VR360',
-        subtitle: 'Động Huyền Không',
+        title: context.tr('home.zone_vr360_title'),
+        subtitle: context.tr('home.zone_vr360_subtitle'),
         color: AppColors.success,
         route: RouteNames.vr360('dong_huyen_khong'),
       ),
@@ -368,5 +390,71 @@ class _ExperienceZonesGrid extends StatelessWidget {
   }
 }
 
+/// Dải ngang "Xem gần đây" (FE-02) – hoạt động cả khi ngoại tuyến, ẩn khi rỗng.
+class _RecentlyViewedSection extends StatelessWidget {
+  const _RecentlyViewedSection();
+
+  Future<void> _confirmClearHistory(BuildContext context) async {
+    final confirmed = await showConfirmDialog(
+      context,
+      title: AppStrings.clearHistoryConfirmTitle,
+      message: AppStrings.clearHistoryConfirmMessage,
+      confirmLabel: AppStrings.clearHistoryAction,
+      destructive: true,
+    );
+    if (!confirmed || !context.mounted) return;
+    await context.read<RecentlyViewedCubit>().clear();
+    if (context.mounted) {
+      showAppSnackBar(context, AppStrings.clearHistorySuccess, type: SnackType.info);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final recentIds = context.watch<RecentlyViewedCubit>().state;
+    if (recentIds.isEmpty) return const SizedBox.shrink();
+
+    final items = context.select((DestinationListCubit c) => c.state.items);
+    if (items.isEmpty) return const SizedBox.shrink();
+
+    final byId = {for (final d in items) d.id: d};
+    // Giữ đúng thứ tự mới nhất lên đầu; bỏ qua êm những id đã bị xóa/không còn trong dữ liệu.
+    final recentDestinations = <Destination>[
+      for (final id in recentIds)
+        if (byId[id] != null) byId[id]!,
+    ];
+
+    if (recentDestinations.isEmpty) return const SizedBox.shrink();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 24),
+        SectionHeader(
+          title: AppStrings.recentlyViewedTitle,
+          subtitle: AppStrings.recentlyViewedSubtitle,
+          actionLabel: AppStrings.clearHistoryAction,
+          onAction: () => _confirmClearHistory(context),
+        ),
+        const SizedBox(height: 12),
+        SizedBox(
+          height: 300,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+            itemCount: recentDestinations.length,
+            separatorBuilder: (_, _) => const SizedBox(width: 14),
+            itemBuilder: (_, i) => DestinationFeatureCard(
+              destination: recentDestinations[i],
+              width: 240,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 /// Đặt riêng để các màn hình khác (danh sách) có thể tái sử dụng tiêu đề danh mục.
-String categoryTitle(DestinationCategory? category) => category?.label ?? 'Tất cả điểm đến';
+String categoryTitle(DestinationCategory? category) =>
+    category?.label ?? AppLocalizations.trStatic('destinations.all_destinations');

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_dimensions.dart';
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/map_launcher.dart';
 import '../../../../core/utils/view_status.dart';
@@ -69,7 +70,9 @@ class _MapViewState extends State<_MapView> {
     final cubit = context.read<MapCubit>()..select(poi);
     await showModalBottomSheet<void>(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
+      useSafeArea: true,
       backgroundColor: Colors.transparent,
       builder: (_) => PoiQuickViewSheet(poi: poi),
     );
@@ -80,18 +83,22 @@ class _MapViewState extends State<_MapView> {
   Widget build(BuildContext context) {
     return TopographicScaffold(
       appBar: CustomAppBar(
-        title: 'Bản đồ Ngũ Hành Sơn',
-        subtitle: 'Chạm vào ghim để xem nhanh địa điểm',
+        title: context.tr('map.title'),
+        subtitle: context.tr('map.subtitle'),
         showBackButton: false,
         actions: [
-          CircleIconButton(icon: Icons.center_focus_strong_rounded, tooltip: 'Về trung tâm', onPressed: _resetView),
+          CircleIconButton(
+            icon: Icons.center_focus_strong_rounded,
+            tooltip: context.tr('map.recenter_tooltip'),
+            onPressed: _resetView,
+          ),
         ],
       ),
       body: BlocBuilder<MapCubit, MapState>(
         builder: (context, state) {
           if (state.status.isFailure && state.pois.isEmpty) {
             return ErrorViewWidget(
-              message: state.errorMessage ?? 'Không tải được bản đồ.',
+              message: state.errorMessage ?? context.tr('map.load_error'),
               onRetry: context.read<MapCubit>().load,
             );
           }
@@ -147,7 +154,7 @@ class _MapViewState extends State<_MapView> {
                                 left: 12,
                                 bottom: 12,
                                 child: PillBadge(
-                                  label: '${state.visiblePois.length} địa điểm đang hiển thị',
+                                  label: context.tr('map.visible_places_count', params: {'count': '${state.visiblePois.length}'}),
                                   icon: Icons.place_rounded,
                                   background: AppColors.surfaceWhite.withValues(alpha: 0.92),
                                 ),
@@ -159,13 +166,13 @@ class _MapViewState extends State<_MapView> {
                                   children: [
                                     CircleIconButton(
                                       icon: Icons.add_rounded,
-                                      tooltip: 'Phóng to',
+                                      tooltip: context.tr('map.zoom_in'),
                                       onPressed: () => _zoom(1.3),
                                     ),
                                     const SizedBox(height: 8),
                                     CircleIconButton(
                                       icon: Icons.remove_rounded,
-                                      tooltip: 'Thu nhỏ',
+                                      tooltip: context.tr('map.zoom_out'),
                                       onPressed: () => _zoom(1 / 1.3),
                                     ),
                                   ],
@@ -230,7 +237,7 @@ class _LayerChips extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         children: [
           FilterChip(
-            label: const Text('Tất cả'),
+            label: Text(context.tr('common.all')),
             selected: allOn,
             onSelected: (_) => cubit.showAll(),
           ),
@@ -272,90 +279,100 @@ class PoiQuickViewSheet extends StatelessWidget {
         color: AppColors.surfaceWhite,
         borderRadius: BorderRadius.vertical(top: Radius.circular(AppDimensions.radiusSheet)),
       ),
-      padding: EdgeInsets.fromLTRB(20, 12, 20, MediaQuery.paddingOf(context).bottom + 20),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Center(
-            child: Container(
-              width: 44,
-              height: 5,
-              decoration: BoxDecoration(color: AppColors.cardBorder, borderRadius: BorderRadius.circular(4)),
-            ),
+      child: SafeArea(
+        top: false,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.sizeOf(context).height * 0.8,
           ),
-          const SizedBox(height: 16),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (poi.image != null) ...[
-                CoverImage(source: poi.image!, width: 86, height: 86, radius: 16),
-                const SizedBox(width: 14),
-              ] else ...[
-                Container(
-                  width: 64,
-                  height: 64,
-                  decoration: BoxDecoration(
-                    color: poi.layer.color.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(16),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    width: 44,
+                    height: 5,
+                    decoration: BoxDecoration(color: AppColors.cardBorder, borderRadius: BorderRadius.circular(4)),
                   ),
-                  child: Icon(poi.layer.icon, color: poi.layer.color, size: 30),
                 ),
-                const SizedBox(width: 14),
-              ],
-              Expanded(
-                child: Column(
+                const SizedBox(height: 16),
+                Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    PillBadge(label: poi.layer.label, icon: poi.layer.icon, color: poi.layer.color),
-                    const SizedBox(height: 6),
-                    Text(poi.name, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 17)),
-                    if (poi.rating != null) ...[
-                      const SizedBox(height: 4),
-                      RatingStars(rating: poi.rating!, size: 15, showValue: true),
+                    if (poi.image != null) ...[
+                      CoverImage(source: poi.image!, width: 86, height: 86, radius: 16),
+                      const SizedBox(width: 14),
+                    ] else ...[
+                      Container(
+                        width: 64,
+                        height: 64,
+                        decoration: BoxDecoration(
+                          color: poi.layer.color.withValues(alpha: 0.12),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Icon(poi.layer.icon, color: poi.layer.color, size: 30),
+                      ),
+                      const SizedBox(width: 14),
                     ],
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          PillBadge(label: poi.layer.label, icon: poi.layer.icon, color: poi.layer.color),
+                          const SizedBox(height: 6),
+                          Text(poi.name, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 17)),
+                          if (poi.rating != null) ...[
+                            const SizedBox(height: 4),
+                            RatingStars(rating: poi.rating!, size: 15, showValue: true),
+                          ],
+                        ],
+                      ),
+                    ),
                   ],
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 14),
-          Text(poi.description, style: const TextStyle(color: AppColors.textSecondary, height: 1.5)),
-          const SizedBox(height: 12),
-          _line(Icons.place_outlined, poi.address),
-          if (poi.openingHours != null) _line(Icons.schedule_rounded, poi.openingHours!),
-          if (poi.priceHint != null) _line(Icons.payments_outlined, poi.priceHint!),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              if (detailRoute != null) ...[
-                Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      context.push(detailRoute);
-                    },
-                    icon: const Icon(Icons.info_outline_rounded),
-                    label: const Text('Xem chi tiết'),
-                  ),
+                const SizedBox(height: 14),
+                Text(poi.description, style: const TextStyle(color: AppColors.textSecondary, height: 1.5)),
+                const SizedBox(height: 12),
+                _line(Icons.place_outlined, poi.address),
+                if (poi.openingHours != null) _line(Icons.schedule_rounded, poi.openingHours!),
+                if (poi.priceHint != null) _line(Icons.payments_outlined, poi.priceHint!),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    if (detailRoute != null) ...[
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            context.push(detailRoute);
+                          },
+                          icon: const Icon(Icons.info_outline_rounded),
+                          label: Text(context.tr('common.view_detail')),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                    ],
+                    Expanded(
+                      child: FilledButton.icon(
+                        onPressed: () async {
+                          final ok = await MapLauncher.openDirections(lat: poi.latitude, lng: poi.longitude);
+                          if (!ok && context.mounted) {
+                            showAppSnackBar(context, context.tr('common.map_launch_error'), type: SnackType.error);
+                          }
+                        },
+                        icon: const Icon(Icons.directions_rounded),
+                        label: Text(context.tr('common.directions')),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 10),
               ],
-              Expanded(
-                child: FilledButton.icon(
-                  onPressed: () async {
-                    final ok = await MapLauncher.openDirections(lat: poi.latitude, lng: poi.longitude);
-                    if (!ok && context.mounted) {
-                      showAppSnackBar(context, 'Không mở được ứng dụng bản đồ.', type: SnackType.error);
-                    }
-                  },
-                  icon: const Icon(Icons.directions_rounded),
-                  label: const Text('Chỉ đường'),
-                ),
-              ),
-            ],
+            ),
           ),
-        ],
+        ),
       ),
     );
   }

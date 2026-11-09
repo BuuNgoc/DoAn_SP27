@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/view_status.dart';
 import '../../../../shared/widgets/app_card.dart';
@@ -45,37 +46,37 @@ class _PersonalReviewsView extends StatelessWidget {
   Future<void> _delete(BuildContext context, Review r) async {
     final ok = await showConfirmDialog(
       context,
-      title: 'Xóa đánh giá?',
-      message: 'Đánh giá cho “${r.destinationName}” sẽ bị xóa vĩnh viễn.',
-      confirmLabel: 'Xóa',
+      title: context.tr('reviews.delete_confirm_title'),
+      message: context.tr('reviews.delete_for_dest_msg', params: {'name': r.destinationName}),
+      confirmLabel: context.tr('common.delete'),
       destructive: true,
     );
     if (!ok || !context.mounted) return;
     final error = await context.read<MyReviewsCubit>().delete(r);
     if (!context.mounted) return;
-    showAppSnackBar(context, error ?? 'Đã xóa đánh giá.', type: error == null ? SnackType.success : SnackType.error);
+    showAppSnackBar(context, error ?? context.tr('reviews.deleted_success'), type: error == null ? SnackType.success : SnackType.error);
   }
 
   @override
   Widget build(BuildContext context) {
     return TopographicScaffold(
       seed: 71,
-      appBar: const CustomAppBar(title: 'Đánh giá của tôi'),
+      appBar: CustomAppBar(title: context.tr('reviews.my_reviews_title')),
       body: BlocBuilder<MyReviewsCubit, ReviewListState>(
         builder: (context, state) {
           if (state.status.isLoading) return const LoadingIndicator();
           if (state.status.isFailure) {
             return ErrorViewWidget(
-              message: state.errorMessage ?? 'Không tải được đánh giá.',
+              message: state.errorMessage ?? context.tr('reviews.load_error'),
               onRetry: () => context.read<MyReviewsCubit>().refresh(),
             );
           }
           if (state.reviews.isEmpty) {
             return EmptyStateWidget(
               icon: Icons.rate_review_outlined,
-              title: 'Bạn chưa có đánh giá nào',
-              message: 'Chia sẻ trải nghiệm tại các điểm đến để giúp du khách khác có chuyến đi trọn vẹn hơn.',
-              actionLabel: 'Khám phá điểm đến',
+              title: context.tr('reviews.my_empty_title'),
+              message: context.tr('reviews.my_empty_message'),
+              actionLabel: context.tr('reviews.explore_destinations_btn'),
               onAction: () => context.push(RouteNames.destinations),
             );
           }
@@ -89,9 +90,9 @@ class _PersonalReviewsView extends StatelessWidget {
                 AppCard(
                   child: Row(
                     children: [
-                      _Stat(value: '${state.reviews.length}', label: 'Đánh giá'),
-                      _Stat(value: avg.toStringAsFixed(1), label: 'Điểm trung bình'),
-                      _Stat(value: '$photoCount', label: 'Ảnh đã đăng'),
+                      _Stat(value: '${state.reviews.length}', label: context.tr('reviews.title')),
+                      _Stat(value: avg.toStringAsFixed(1), label: context.tr('reviews.avg_rating_label')),
+                      _Stat(value: '$photoCount', label: context.tr('reviews.photos_posted_label')),
                     ],
                   ),
                 ),

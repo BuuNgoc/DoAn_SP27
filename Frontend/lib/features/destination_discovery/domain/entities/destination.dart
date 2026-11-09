@@ -1,18 +1,26 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/localization/app_localizations.dart';
+
 /// Danh mục điểm đến tại Ngũ Hành Sơn (bộ lọc ngang trên Trang chủ).
 enum DestinationCategory {
-  mountainCave('mountain_cave', 'Núi & Hang động', Icons.terrain_rounded),
-  pagoda('pagoda', 'Chùa tâm linh', Icons.temple_buddhist_rounded),
-  craftVillage('craft_village', 'Làng đá Non Nước', Icons.handyman_rounded),
-  beach('beach', 'Biển Sơn Thủy', Icons.beach_access_rounded),
-  anThuong('an_thuong', 'Phố Tây An Thượng', Icons.nightlife_rounded);
+  mountainCave('mountain_cave', 'destinations.category_mountain_cave', Icons.terrain_rounded),
+  pagoda('pagoda', 'destinations.category_pagoda', Icons.temple_buddhist_rounded),
+  craftVillage('craft_village', 'destinations.category_craft_village', Icons.handyman_rounded),
+  beach('beach', 'destinations.category_beach', Icons.beach_access_rounded),
+  anThuong('an_thuong', 'destinations.category_an_thuong', Icons.nightlife_rounded);
 
-  const DestinationCategory(this.code, this.label, this.icon);
+  const DestinationCategory(this.code, this.labelKey, this.icon);
   final String code;
-  final String label;
+  final String labelKey;
   final IconData icon;
+
+  /// Nhãn đa ngôn ngữ theo ngôn ngữ hiện hành.
+  String get label => AppLocalizations.trStatic(labelKey);
+
+  /// Nhãn đa ngôn ngữ đọc trực tiếp từ `BuildContext`.
+  String localizedLabel(BuildContext context) => context.tr(labelKey);
 
   static DestinationCategory? fromCode(String? code) {
     for (final c in DestinationCategory.values) {
@@ -75,5 +83,5 @@ class Destination extends Equatable {
   final String? beachSafetyInfo;
 
   @override
-  List<Object?> get props => [id, ratingAvg, reviewCount];
+  List<Object?> get props => [id, name, shortDescription, ratingAvg, reviewCount];
 }

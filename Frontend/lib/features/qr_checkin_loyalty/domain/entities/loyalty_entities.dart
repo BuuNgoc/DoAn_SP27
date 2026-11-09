@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/localization/app_localizations.dart';
+
 /// [FE-08] Điểm check-in QR tại điểm đến.
 class CheckinPoint extends Equatable {
   const CheckinPoint({
@@ -49,16 +51,18 @@ class CheckinRecord extends Equatable {
 
 /// Hạng thành viên theo tổng điểm tích lũy trọn đời.
 enum MemberTier {
-  traveler('Lữ khách', 0, Icons.hiking_rounded, Color(0xFF94AEB2)),
-  explorer('Nhà thám hiểm', 500, Icons.explore_rounded, Color(0xFF58B4BC)),
-  ambassador('Sứ giả Ngũ Hành', 1500, Icons.workspace_premium_rounded, Color(0xFF24838B)),
-  legend('Huyền thoại Non Nước', 3000, Icons.diamond_rounded, Color(0xFFE4B363));
+  traveler('loyalty.tier_traveler', 0, Icons.hiking_rounded, Color(0xFF94AEB2)),
+  explorer('loyalty.tier_explorer', 500, Icons.explore_rounded, Color(0xFF58B4BC)),
+  ambassador('loyalty.tier_ambassador', 1500, Icons.workspace_premium_rounded, Color(0xFF24838B)),
+  legend('loyalty.tier_legend', 3000, Icons.diamond_rounded, Color(0xFFE4B363));
 
-  const MemberTier(this.label, this.minPoints, this.icon, this.color);
-  final String label;
+  const MemberTier(this.labelKey, this.minPoints, this.icon, this.color);
+  final String labelKey;
   final int minPoints;
   final IconData icon;
   final Color color;
+
+  String get label => AppLocalizations.trStatic(labelKey);
 
   static MemberTier of(int lifetimePoints) =>
       values.lastWhere((t) => lifetimePoints >= t.minPoints, orElse: () => MemberTier.traveler);
@@ -89,12 +93,14 @@ class LoyaltySummary extends Equatable {
 }
 
 enum RewardCategory {
-  souvenir('Quà lưu niệm đá', Icons.redeem_rounded),
-  voucher('Voucher', Icons.confirmation_number_rounded);
+  souvenir('loyalty.category_souvenir', Icons.redeem_rounded),
+  voucher('loyalty.category_voucher', Icons.confirmation_number_rounded);
 
-  const RewardCategory(this.label, this.icon);
-  final String label;
+  const RewardCategory(this.labelKey, this.icon);
+  final String labelKey;
   final IconData icon;
+
+  String get label => AppLocalizations.trStatic(labelKey);
 }
 
 /// [FE-09] Phần thưởng đổi điểm.
@@ -130,13 +136,15 @@ class Reward extends Equatable {
 }
 
 enum RedemptionStatus {
-  ready('Chờ nhận quà', Color(0xFF4CAF7A)),
-  used('Đã sử dụng', Color(0xFF94AEB2)),
-  expired('Hết hạn', Color(0xFFE56B6B));
+  ready('loyalty.status_ready', Color(0xFF4CAF7A)),
+  used('loyalty.status_used', Color(0xFF94AEB2)),
+  expired('loyalty.status_expired', Color(0xFFE56B6B));
 
-  const RedemptionStatus(this.label, this.color);
-  final String label;
+  const RedemptionStatus(this.labelKey, this.color);
+  final String labelKey;
   final Color color;
+
+  String get label => AppLocalizations.trStatic(labelKey);
 }
 
 class Redemption extends Equatable {

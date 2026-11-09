@@ -54,6 +54,7 @@ import '../../features/vr360_audio_guide/domain/repositories/vr360_audio_reposit
 import '../../features/vr360_audio_guide/domain/usecases/vr360_audio_usecases.dart';
 import '../../features/vr360_audio_guide/presentation/bloc/vr360_audio_cubits.dart';
 import '../config/app_config.dart';
+import '../localization/locale_cubit.dart';
 import '../network/connectivity_cubit.dart';
 import '../network/network_info.dart';
 
@@ -62,13 +63,14 @@ final GetIt sl = GetIt.instance;
 
 /// Đăng ký phụ thuộc theo Clean Architecture:
 /// DataSource (lazySingleton – giữ trạng thái dữ liệu mẫu) → Repository → UseCase → Cubit (factory).
-/// Các Cubit toàn cục (Auth, Favorites, Loyalty, Connectivity) là lazySingleton.
+/// Các Cubit toàn cục (Auth, Favorites, Loyalty, Connectivity, Locale) là lazySingleton.
 Future<void> initDependencyInjection() async {
   const mock = AppConfig.useMockBackend;
 
   // ── Core ──────────────────────────────────────────────────────────────
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl());
   sl.registerLazySingleton(() => ConnectivityCubit(sl()));
+  sl.registerLazySingleton(() => LocaleCubit());
 
   // ── FE-01 Auth ────────────────────────────────────────────────────────
   sl.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn(scopes: ['email', 'profile']));
@@ -111,14 +113,20 @@ Future<void> initDependencyInjection() async {
   sl.registerLazySingleton<DestinationRemoteDataSource>(
       () => mock ? MockDestinationRemoteDataSource() : FirestoreDestinationRemoteDataSource());
   sl.registerLazySingleton(() => FavoritesLocalDataSource());
-  sl.registerLazySingleton<DestinationRepository>(() => DestinationRepositoryImpl(remote: sl(), favorites: sl()));
+  sl.registerLazySingleton(() => RecentlyViewedLocalDataSource());
+  sl.registerLazySingleton<DestinationRepository>(
+      () => DestinationRepositoryImpl(remote: sl(), favorites: sl(), recentlyViewed: sl()));
   sl.registerLazySingleton(() => GetDestinationsUseCase(sl()));
   sl.registerLazySingleton(() => GetDestinationDetailUseCase(sl()));
   sl.registerLazySingleton(() => ToggleFavoriteUseCase(sl()));
   sl.registerLazySingleton(() => GetFavoriteIdsUseCase(sl()));
+  sl.registerLazySingleton(() => GetRecentlyViewedIdsUseCase(sl()));
+  sl.registerLazySingleton(() => AddRecentlyViewedUseCase(sl()));
+  sl.registerLazySingleton(() => ClearRecentlyViewedUseCase(sl()));
   sl.registerFactory(() => DestinationListCubit(sl()));
   sl.registerFactory(() => DestinationDetailCubit(sl()));
   sl.registerLazySingleton(() => FavoritesCubit(getIds: sl(), toggle: sl()));
+  sl.registerLazySingleton(() => RecentlyViewedCubit(getIds: sl(), add: sl(), clear: sl()));
 
   // ── FE-03 VR360 & Audio Guide ─────────────────────────────────────────
   sl.registerLazySingleton<Vr360AudioRemoteDataSource>(() => MockVr360AudioRemoteDataSource());

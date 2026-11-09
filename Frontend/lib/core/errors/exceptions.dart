@@ -14,7 +14,7 @@ class CacheException implements Exception {
 
 class NetworkException implements Exception {
   final String message;
-  const NetworkException([this.message = 'Mất kết nối mạng internet']);
+  const NetworkException([this.message = '']);
 }
 
 class AuthException implements Exception {
@@ -24,5 +24,5 @@ class AuthException implements Exception {
 
 class PermissionException implements Exception {
   final String message;
-  const PermissionException([this.message = 'Bạn không có quyền thực hiện thao tác này']);
+  const PermissionException([this.message = '']);
 }

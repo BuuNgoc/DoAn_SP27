@@ -4,6 +4,7 @@ import 'package:panorama_viewer/panorama_viewer.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/utils/view_status.dart';
 import '../../../../shared/widgets/custom_app_bar.dart';
 import '../../../../shared/widgets/loading_indicator.dart';
@@ -27,16 +28,16 @@ class Vr360PanoramaScreen extends StatelessWidget {
         builder: (context, state) {
           if (state.status.isFailure || (state.status.isSuccess && state.scenes.isEmpty)) {
             return TopographicScaffold(
-              appBar: const CustomAppBar(title: 'VR360'),
+              appBar: CustomAppBar(title: context.tr('vr360.title')),
               body: state.status.isFailure
                   ? ErrorViewWidget(
-                      message: state.errorMessage ?? 'Không tải được ảnh 360°.',
+                      message: state.errorMessage ?? context.tr('vr360.load_error'),
                       onRetry: () => context.read<Vr360Cubit>().load(destinationId),
                     )
-                  : const EmptyStateWidget(
+                  : EmptyStateWidget(
                       icon: Icons.threesixty_rounded,
-                      title: 'Chưa có ảnh 360°',
-                      message: 'Điểm đến này chưa hỗ trợ trải nghiệm VR360.',
+                      title: context.tr('vr360.empty_title'),
+                      message: context.tr('vr360.empty_message'),
                     ),
             );
           }
@@ -97,7 +98,7 @@ class _PanoramaView extends StatelessWidget {
               children: [
                 CircleIconButton(
                   icon: Icons.close_rounded,
-                  tooltip: 'Đóng',
+                  tooltip: context.tr('common.close'),
                   background: Colors.black.withValues(alpha: 0.4),
                   color: Colors.white,
                   onPressed: () => Navigator.of(context).maybePop(),
@@ -129,7 +130,7 @@ class _PanoramaView extends StatelessWidget {
                 const SizedBox(width: 10),
                 CircleIconButton(
                   icon: state.gyroEnabled ? Icons.screen_rotation_rounded : Icons.touch_app_rounded,
-                  tooltip: state.gyroEnabled ? 'Đang xoay theo cảm biến' : 'Đang xoay bằng thao tác chạm',
+                  tooltip: state.gyroEnabled ? context.tr('vr360.gyro_on_tooltip') : context.tr('vr360.gyro_off_tooltip'),
                   background: state.gyroEnabled ? AppColors.primaryTeal : Colors.black.withValues(alpha: 0.4),
                   color: Colors.white,
                   onPressed: cubit.toggleGyro,
@@ -137,7 +138,7 @@ class _PanoramaView extends StatelessWidget {
                 const SizedBox(width: 8),
                 CircleIconButton(
                   icon: Icons.headphones_rounded,
-                  tooltip: 'Nghe thuyết minh',
+                  tooltip: context.tr('destinations.listen_audio_guide'),
                   background: Colors.black.withValues(alpha: 0.4),
                   color: Colors.white,
                   onPressed: () => AudioGuidePlayerSheet.show(context, destinationId: destinationId),
@@ -175,8 +176,8 @@ class _PanoramaView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text('Chọn góc nhìn',
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 13)),
+                  Text(context.tr('vr360.choose_viewpoint'),
+                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 13)),
                   const SizedBox(height: 10),
                   SizedBox(
                     height: 64,
@@ -221,9 +222,9 @@ class _PanoramaView extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'Kéo để xoay 360° · Chụm hai ngón để phóng to · Chạm vào điểm sáng để xem thông tin',
-                    style: TextStyle(color: Colors.white60, fontSize: 11),
+                  Text(
+                    context.tr('vr360.gesture_hint'),
+                    style: const TextStyle(color: Colors.white60, fontSize: 11),
                   ),
                 ],
               ),
@@ -305,7 +306,7 @@ class _HotspotInfoCard extends StatelessWidget {
                 Expanded(
                   child: Text(hotspot.label, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15)),
                 ),
-                IconButton(onPressed: onClose, icon: const Icon(Icons.close_rounded), tooltip: 'Đóng'),
+                IconButton(onPressed: onClose, icon: const Icon(Icons.close_rounded), tooltip: context.tr('common.close')),
               ],
             ),
             Padding(
@@ -318,7 +319,7 @@ class _HotspotInfoCard extends StatelessWidget {
               FilledButton.icon(
                 onPressed: onFollow,
                 icon: const Icon(Icons.double_arrow_rounded, size: 18),
-                label: const Text('Di chuyển tới góc nhìn này'),
+                label: Text(context.tr('vr360.move_to_viewpoint')),
               ),
             ],
           ],

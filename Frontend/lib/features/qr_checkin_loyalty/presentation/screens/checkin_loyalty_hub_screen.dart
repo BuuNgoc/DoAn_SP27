@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_dimensions.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/view_status.dart';
 import '../../../../shared/widgets/app_card.dart';
@@ -26,16 +27,16 @@ class CheckinLoyaltyHubScreen extends StatelessWidget {
     final isAuth = context.select((AuthCubit c) => c.state.isAuthenticated);
     return TopographicScaffold(
       seed: 23,
-      appBar: const CustomAppBar(
-        title: 'Check-in & Quà tặng',
-        subtitle: 'Khám phá Ngũ Hành Sơn – tích điểm đổi quà',
+      appBar: CustomAppBar(
+        title: context.tr('loyalty.hub_title'),
+        subtitle: context.tr('loyalty.hub_subtitle'),
         showBackButton: false,
       ),
       body: BlocBuilder<LoyaltyCubit, LoyaltyState>(
         builder: (context, state) {
           if (state.status.isFailure && state.points.isEmpty) {
             return ErrorViewWidget(
-              message: state.errorMessage ?? 'Không tải được dữ liệu.',
+              message: state.errorMessage ?? context.tr('loyalty.load_error'),
               onRetry: () => context.read<LoyaltyCubit>().load(context.read<AuthCubit>().state.user?.uid),
             );
           }
@@ -53,25 +54,27 @@ class CheckinLoyaltyHubScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Tích điểm cùng SmartTravel',
-                          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w800)),
+                      Text(
+                        context.tr('loyalty.guest_banner_title'),
+                        style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w800),
+                      ),
                       const SizedBox(height: 6),
-                      const Text(
-                        'Đăng nhập để quét mã QR tại các điểm đến, nhận điểm thưởng và đổi quà lưu niệm đá Non Nước.',
-                        style: TextStyle(color: Colors.white, height: 1.45),
+                      Text(
+                        context.tr('loyalty.guest_banner_subtitle'),
+                        style: const TextStyle(color: Colors.white, height: 1.45),
                       ),
                       const SizedBox(height: 12),
                       FilledButton(
                         style: FilledButton.styleFrom(backgroundColor: Colors.white, foregroundColor: AppColors.accentSoftGold),
                         onPressed: () => context.push('${RouteNames.login}?from=${RouteNames.checkin}'),
-                        child: const Text('Đăng nhập ngay'),
+                        child: Text(context.tr('auth.login_now')),
                       ),
                     ],
                   ),
                 ),
               const SizedBox(height: 16),
               CustomButton(
-                label: 'Quét mã QR check-in',
+                label: context.tr('loyalty.scan_qr_checkin_btn'),
                 icon: Icons.qr_code_scanner_rounded,
                 onPressed: () => context.push(RouteNames.qrScanner),
               ),
@@ -80,27 +83,30 @@ class CheckinLoyaltyHubScreen extends StatelessWidget {
                 children: [
                   _QuickAction(
                     icon: Icons.collections_bookmark_rounded,
-                    label: 'Bộ sưu tập',
+                    label: context.tr('loyalty.action_collection'),
                     onTap: () => context.push(RouteNames.checkinPoints),
                   ),
                   _QuickAction(
                     icon: Icons.redeem_rounded,
-                    label: 'Đổi quà',
+                    label: context.tr('loyalty.action_redeem'),
                     color: AppColors.accentSoftGold,
                     onTap: () => context.push(RouteNames.rewards),
                   ),
                   _QuickAction(
                     icon: Icons.receipt_long_rounded,
-                    label: 'Lịch sử đổi',
+                    label: context.tr('loyalty.action_history'),
                     onTap: () => context.push(RouteNames.redemptionHistory),
                   ),
                 ],
               ),
               const SizedBox(height: 24),
               SectionHeader(
-                title: 'Bộ sưu tập Ngũ Hành Sơn',
-                subtitle: 'Đã check-in ${collected.length}/${state.points.length} địa điểm',
-                actionLabel: 'Xem tất cả',
+                title: context.tr('loyalty.collection_section_title'),
+                subtitle: context.tr(
+                  'loyalty.collection_section_subtitle',
+                  params: {'collected': '${collected.length}', 'total': '${state.points.length}'},
+                ),
+                actionLabel: context.tr('common.view_all'),
                 onAction: () => context.push(RouteNames.checkinPoints),
               ),
               const SizedBox(height: 10),
@@ -165,9 +171,9 @@ class CheckinLoyaltyHubScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               SectionHeader(
-                title: 'Quà tặng nổi bật',
-                subtitle: 'Quà lưu niệm đá Non Nước & voucher',
-                actionLabel: 'Tất cả',
+                title: context.tr('loyalty.featured_rewards_title'),
+                subtitle: context.tr('loyalty.featured_rewards_subtitle'),
+                actionLabel: context.tr('common.all'),
                 onAction: () => context.push(RouteNames.rewards),
               ),
               const SizedBox(height: 10),

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/utils/date_formatter.dart';
 import '../../../../core/utils/view_status.dart';
 import '../../../../shared/widgets/app_card.dart';
@@ -31,16 +32,19 @@ class ContestEntryDetailScreen extends StatelessWidget {
         builder: (context, state) {
           if (state.status.isFailure && state.contest == null) {
             return TopographicScaffold(
-              appBar: const CustomAppBar(title: 'Tác phẩm dự thi'),
-              body: ErrorViewWidget(message: state.errorMessage ?? 'Không tải được tác phẩm.'),
+              appBar: CustomAppBar(title: context.tr('contest.entry_detail_title')),
+              body: ErrorViewWidget(message: state.errorMessage ?? context.tr('contest.load_entry_error')),
             );
           }
           final index = state.entries.indexWhere((e) => e.id == entryId);
           if (state.contest == null || index < 0) {
             return TopographicScaffold(
-              appBar: const CustomAppBar(title: 'Tác phẩm dự thi'),
+              appBar: CustomAppBar(title: context.tr('contest.entry_detail_title')),
               body: state.status.isSuccess
-                  ? const EmptyStateWidget(icon: Icons.search_off_rounded, title: 'Không tìm thấy tác phẩm')
+                  ? EmptyStateWidget(
+                      icon: Icons.search_off_rounded,
+                      title: context.tr('contest.entry_not_found'),
+                    )
                   : const LoadingIndicator(),
             );
           }
@@ -48,9 +52,13 @@ class ContestEntryDetailScreen extends StatelessWidget {
           final voting = state.votingEntryId == e.id;
           return TopographicScaffold(
             appBar: CustomAppBar(
-              title: 'Tác phẩm dự thi',
+              title: context.tr('contest.entry_detail_title'),
               actions: [
-                CircleIconButton(icon: Icons.ios_share_rounded, tooltip: 'Chia sẻ', onPressed: () => shareEntry(context, e)),
+                CircleIconButton(
+                  icon: Icons.ios_share_rounded,
+                  tooltip: context.tr('common.share'),
+                  onPressed: () => shareEntry(context, e),
+                ),
               ],
             ),
             body: ListView(
@@ -80,8 +88,10 @@ class ContestEntryDetailScreen extends StatelessWidget {
                         gradient: index == 0 ? AppColors.goldGradient : AppColors.primaryGradient,
                         borderRadius: BorderRadius.circular(999),
                       ),
-                      child: Text('Hạng ${index + 1}',
-                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800)),
+                      child: Text(
+                        context.tr('contest.rank_badge', params: {'rank': '${index + 1}'}),
+                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
+                      ),
                     ),
                   ],
                 ),
@@ -91,11 +101,11 @@ class ContestEntryDetailScreen extends StatelessWidget {
                 AppCard(
                   child: Row(
                     children: [
-                      _Fact(icon: Icons.texture_rounded, label: 'Chất liệu', value: e.material),
-                      _Fact(icon: Icons.straighten_rounded, label: 'Kích thước', value: e.dimensions),
+                      _Fact(icon: Icons.texture_rounded, label: context.tr('contest.material_label'), value: e.material),
+                      _Fact(icon: Icons.straighten_rounded, label: context.tr('contest.dimensions_label'), value: e.dimensions),
                       _Fact(
                         icon: Icons.favorite_rounded,
-                        label: 'Bình chọn',
+                        label: context.tr('contest.vote_btn'),
                         value: CurrencyFormatter.points(e.voteCount),
                         color: AppColors.error,
                       ),
@@ -103,15 +113,19 @@ class ContestEntryDetailScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                const Text('Về tác phẩm', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17)),
+                Text(context.tr('contest.about_entry_title'), style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 17)),
                 const SizedBox(height: 6),
                 Text(e.description, style: const TextStyle(color: AppColors.textSecondary, height: 1.6)),
                 const SizedBox(height: 24),
                 if (e.hasVoted)
-                  const CustomButton(label: 'Bạn đã bình chọn tác phẩm này', icon: Icons.check_circle_rounded, onPressed: null)
+                  CustomButton(
+                    label: context.tr('contest.already_voted_entry'),
+                    icon: Icons.check_circle_rounded,
+                    onPressed: null,
+                  )
                 else
                   CustomButton(
-                    label: state.contest!.canVote ? 'Bình chọn tác phẩm' : 'Bình chọn đã đóng',
+                    label: state.contest!.canVote ? context.tr('contest.vote_entry_btn') : context.tr('contest.voting_closed'),
                     icon: Icons.how_to_vote_rounded,
                     gold: true,
                     isLoading: voting,
@@ -122,7 +136,7 @@ class ContestEntryDetailScreen extends StatelessWidget {
                   style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(50)),
                   onPressed: () => shareEntry(context, e),
                   icon: const Icon(Icons.share_rounded),
-                  label: const Text('Chia sẻ để kêu gọi bình chọn'),
+                  label: Text(context.tr('contest.share_to_call_votes')),
                 ),
               ],
             ),

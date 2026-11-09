@@ -6,6 +6,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'app.dart';
 import 'core/config/app_config.dart';
 import 'core/di/injection_container.dart' as di;
+import 'core/localization/locale_cubit.dart';
 import 'features/destination_discovery/data/datasources/destination_data_sources.dart';
 import 'firebase_options.dart';
 
@@ -24,9 +25,11 @@ Future<void> main() async {
     }
   }
 
-  // Bộ nhớ đệm cục bộ cho chế độ ngoại tuyến – địa điểm yêu thích (LI-05).
+  // Bộ nhớ đệm cục bộ cho chế độ ngoại tuyến – địa điểm yêu thích, xem gần đây (LI-05) & cài đặt đa ngôn ngữ (LI-06).
   await Hive.initFlutter();
   await FavoritesLocalDataSource.init();
+  await RecentlyViewedLocalDataSource.init();
+  await LocaleCubit.init();
 
   await initializeDateFormatting('vi');
   await di.initDependencyInjection();

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../shared/widgets/custom_app_bar.dart';
 
 /// [FE-17 -> FE-28] Screen: Admin Portal (CMS, VR/Audio, Events, Loyalty Rules, Analytics, RBAC, Audit Logs)
@@ -8,8 +10,8 @@ class AdminPortalScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(
-        title: 'FE-17 -> FE-28: Admin Portal',
+      appBar: CustomAppBar(
+        title: context.tr('admin.title'),
       ),
       body: Center(
         child: Padding(
@@ -20,12 +22,12 @@ class AdminPortalScreen extends StatelessWidget {
               const Icon(Icons.travel_explore, size: 64, color: Colors.blueGrey),
               const SizedBox(height: 16),
               Text(
-                'Admin Portal (CMS, VR/Audio, Events, Loyalty Rules, Analytics, RBAC, Audit Logs)',
+                context.tr('admin.heading'),
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-              const Text('Mô-đun đang trong quá trình kết nối dữ liệu Firestore.'),
+              Text(context.tr('admin.firestore_connecting')),
             ],
           ),
         ),

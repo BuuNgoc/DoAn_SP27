@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/date_formatter.dart';
 import '../../../../core/utils/view_status.dart';
@@ -30,11 +31,13 @@ class BookingConfirmationScreen extends StatelessWidget {
       create: (_) => sl<BookingDetailCubit>()..load(bookingId),
       child: TopographicScaffold(
         seed: 9,
-        appBar: const CustomAppBar(title: 'Đặt chỗ thành công', showBackButton: false),
+        appBar: CustomAppBar(title: context.tr('booking.confirmation_title'), showBackButton: false),
         body: BlocBuilder<BookingDetailCubit, BookingDetailState>(
           builder: (context, state) {
             final b = state.booking;
-            if (state.status.isFailure) return ErrorViewWidget(message: state.errorMessage ?? 'Không tải được đơn.');
+            if (state.status.isFailure) {
+              return ErrorViewWidget(message: state.errorMessage ?? context.tr('booking.load_booking_error'));
+            }
             if (b == null) return const LoadingIndicator();
             return ListView(
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
@@ -57,14 +60,20 @@ class BookingConfirmationScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 14),
-                const Text(
-                  'Cảm ơn bạn! Đơn đặt chỗ đã được ghi nhận.',
+                Text(
+                  context.tr('booking.confirmation_heading'),
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),
+                  style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 18),
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Hẹn gặp bạn lúc ${DateFormatter.formatTime(b.sessionAt)}, ${DateFormatter.formatWithWeekday(b.sessionAt)}.',
+                  context.tr(
+                    'booking.confirmation_subheading',
+                    params: {
+                      'time': DateFormatter.formatTime(b.sessionAt),
+                      'date': DateFormatter.formatWithWeekday(b.sessionAt),
+                    },
+                  ),
                   textAlign: TextAlign.center,
                   style: const TextStyle(color: AppColors.textSecondary),
                 ),
@@ -74,7 +83,7 @@ class BookingConfirmationScreen extends StatelessWidget {
                 BookingSummaryCard(booking: b),
                 const SizedBox(height: 20),
                 CustomButton(
-                  label: 'Xem lịch sử đặt chỗ',
+                  label: context.tr('booking.view_booking_history'),
                   icon: Icons.receipt_long_rounded,
                   onPressed: () => context.pushReplacement(RouteNames.bookingHistory),
                 ),
@@ -87,11 +96,16 @@ class BookingConfirmationScreen extends StatelessWidget {
                         onPressed: () => SocialShareSheet.show(
                           context,
                           title: b.serviceTitle,
-                          message: 'Mình vừa đặt “${b.serviceTitle}” tại Ngũ Hành Sơn qua SmartTravel! '
-                              '🗓 ${DateFormatter.formatDateOnly(b.sessionAt)} #SmartTravel',
+                          message: context.tr(
+                            'booking.share_booking_message',
+                            params: {
+                              'title': b.serviceTitle,
+                              'date': DateFormatter.formatDateOnly(b.sessionAt),
+                            },
+                          ),
                         ),
                         icon: const Icon(Icons.share_rounded),
-                        label: const Text('Chia sẻ'),
+                        label: Text(context.tr('common.share')),
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -100,7 +114,7 @@ class BookingConfirmationScreen extends StatelessWidget {
                         style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(50)),
                         onPressed: () => context.go(RouteNames.explore),
                         icon: const Icon(Icons.home_rounded),
-                        label: const Text('Trang chủ'),
+                        label: Text(context.tr('nav.home')),
                       ),
                     ),
                   ],
@@ -126,15 +140,23 @@ class BookingHistoryScreen extends StatelessWidget {
       child: DefaultTabController(
         length: 2,
         child: TopographicScaffold(
-          appBar: const CustomAppBar(
-            title: 'Lịch sử đặt chỗ',
-            bottom: TabBar(tabs: [Tab(text: 'Sắp tới'), Tab(text: 'Đã qua / Đã hủy')]),
+          appBar: CustomAppBar(
+            title: context.tr('booking.history_title'),
+            bottom: TabBar(
+              tabs: [
+                Tab(text: context.tr('booking.tab_upcoming')),
+                Tab(text: context.tr('booking.tab_past')),
+              ],
+            ),
           ),
           body: BlocBuilder<BookingHistoryCubit, BookingListState>(
             builder: (context, state) {
               final cubit = context.read<BookingHistoryCubit>();
               if (state.status.isFailure) {
-                return ErrorViewWidget(message: state.errorMessage ?? 'Không tải được.', onRetry: () => cubit.load(userId));
+                return ErrorViewWidget(
+                  message: state.errorMessage ?? context.tr('booking.load_history_error'),
+                  onRetry: () => cubit.load(userId),
+                );
               }
               if (state.status.isLoading && state.bookings.isEmpty) return const LoadingIndicator();
               Widget list(List<Booking> bookings, String emptyText) => RefreshIndicator(
@@ -145,7 +167,7 @@ class BookingHistoryScreen extends StatelessWidget {
                             EmptyStateWidget(
                               icon: Icons.event_note_rounded,
                               title: emptyText,
-                              actionLabel: 'Khám phá sự kiện',
+                              actionLabel: context.tr('booking.explore_events'),
                               onAction: () => context.push(RouteNames.events),
                             ),
                           ])
@@ -158,8 +180,8 @@ class BookingHistoryScreen extends StatelessWidget {
                   );
               return TabBarView(
                 children: [
-                  list(state.upcoming, 'Bạn chưa có lịch đặt chỗ sắp tới'),
-                  list(state.past, 'Chưa có đơn nào đã qua'),
+                  list(state.upcoming, context.tr('booking.empty_upcoming')),
+                  list(state.past, context.tr('booking.empty_past')),
                 ],
               );
             },
@@ -181,11 +203,13 @@ class BookingDetailScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) => sl<BookingDetailCubit>()..load(bookingId),
       child: TopographicScaffold(
-        appBar: const CustomAppBar(title: 'Chi tiết đặt chỗ'),
+        appBar: CustomAppBar(title: context.tr('booking.detail_title')),
         body: BlocBuilder<BookingDetailCubit, BookingDetailState>(
           builder: (context, state) {
             final b = state.booking;
-            if (state.status.isFailure) return ErrorViewWidget(message: state.errorMessage ?? 'Không tải được đơn.');
+            if (state.status.isFailure) {
+              return ErrorViewWidget(message: state.errorMessage ?? context.tr('booking.load_booking_error'));
+            }
             if (b == null) return const LoadingIndicator();
             return ListView(
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
@@ -194,8 +218,10 @@ class BookingDetailScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 BookingSummaryCard(booking: b),
                 const SizedBox(height: 12),
-                Text('Đặt lúc ${DateFormatter.formatFull(b.createdAt)}',
-                    style: const TextStyle(color: AppColors.textMuted, fontSize: 12)),
+                Text(
+                  context.tr('booking.booked_at', params: {'time': DateFormatter.formatFull(b.createdAt)}),
+                  style: const TextStyle(color: AppColors.textMuted, fontSize: 12),
+                ),
                 const SizedBox(height: 20),
                 if (b.canCancel)
                   OutlinedButton.icon(
@@ -210,9 +236,9 @@ class BookingDetailScreen extends StatelessWidget {
                             final cubit = context.read<BookingDetailCubit>();
                             final ok = await showConfirmDialog(
                               context,
-                              title: 'Hủy đặt chỗ?',
-                              message: 'Bạn có chắc muốn hủy “${b.serviceTitle}”? Thao tác này không thể hoàn tác.',
-                              confirmLabel: 'Hủy đặt chỗ',
+                              title: context.tr('booking.cancel_dialog_title'),
+                              message: context.tr('booking.cancel_dialog_message', params: {'title': b.serviceTitle}),
+                              confirmLabel: context.tr('booking.cancel_booking_btn'),
                               destructive: true,
                             );
                             if (!ok) return;
@@ -220,25 +246,25 @@ class BookingDetailScreen extends StatelessWidget {
                             if (!context.mounted) return;
                             showAppSnackBar(
                               context,
-                              error ?? 'Đã hủy đặt chỗ thành công.',
+                              error ?? context.tr('booking.cancel_success'),
                               type: error == null ? SnackType.success : SnackType.error,
                             );
                           },
                     icon: state.isCancelling
                         ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))
                         : const Icon(Icons.cancel_outlined),
-                    label: const Text('Hủy đặt chỗ'),
+                    label: Text(context.tr('booking.cancel_booking_btn')),
                   )
                 else if (b.isUpcoming && b.status != BookingStatus.cancelled)
-                  const Text(
-                    'Đơn không thể hủy khi còn dưới 2 giờ trước giờ bắt đầu.',
+                  Text(
+                    context.tr('booking.cannot_cancel_under_2h'),
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: AppColors.textMuted, fontSize: 12.5),
+                    style: const TextStyle(color: AppColors.textMuted, fontSize: 12.5),
                   ),
                 if (b.status == BookingStatus.completed) ...[
                   const SizedBox(height: 10),
                   CustomButton(
-                    label: 'Đặt lại dịch vụ này',
+                    label: context.tr('booking.rebook_service_btn'),
                     icon: Icons.replay_rounded,
                     onPressed: () => context.push(RouteNames.bookingForm(b.serviceId)),
                   ),

@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/localization/app_localizations.dart';
+
 /// Ngưỡng độ tin cậy: dưới mức này kết quả chỉ mang tính gợi ý (LI-02).
 const double kLowConfidenceThreshold = 0.6;
 
@@ -46,24 +48,29 @@ class RecognitionCandidate extends Equatable {
 }
 
 enum TravelBudget {
-  economy('Tiết kiệm', 'Dưới 500.000đ'),
-  standard('Vừa phải', '500.000 – 1.500.000đ'),
-  premium('Thoải mái', 'Trên 1.500.000đ');
+  economy('ai.budget_economy', 'ai.budget_economy_range'),
+  standard('ai.budget_standard', 'ai.budget_standard_range'),
+  premium('ai.budget_premium', 'ai.budget_premium_range');
 
-  const TravelBudget(this.label, this.range);
-  final String label;
-  final String range;
+  const TravelBudget(this.labelKey, this.rangeKey);
+  final String labelKey;
+  final String rangeKey;
+
+  String get label => AppLocalizations.trStatic(labelKey);
+  String get range => AppLocalizations.trStatic(rangeKey);
 }
 
 enum TravelTransport {
-  walking('Đi bộ', Icons.directions_walk_rounded),
-  bicycle('Xe đạp', Icons.pedal_bike_rounded),
-  motorbike('Xe máy', Icons.two_wheeler_rounded),
-  car('Ô tô / Taxi', Icons.local_taxi_rounded);
+  walking('ai.transport_walking', Icons.directions_walk_rounded),
+  bicycle('ai.transport_bicycle', Icons.pedal_bike_rounded),
+  motorbike('ai.transport_motorbike', Icons.two_wheeler_rounded),
+  car('ai.transport_car', Icons.local_taxi_rounded);
 
-  const TravelTransport(this.label, this.icon);
-  final String label;
+  const TravelTransport(this.labelKey, this.icon);
+  final String labelKey;
   final IconData icon;
+
+  String get label => AppLocalizations.trStatic(labelKey);
 }
 
 /// Các sở thích để RAG/AI cá nhân hóa lịch trình.
@@ -77,6 +84,20 @@ const List<String> kTravelInterests = [
   'Chụp ảnh check-in',
   'Lịch sử & Văn hóa',
 ];
+
+String localizedTravelInterest(BuildContext context, String raw) {
+  return switch (raw) {
+    'Tâm linh & Chùa chiền' => context.tr('ai.interest_spiritual'),
+    'Hang động & Leo núi' => context.tr('ai.interest_cave'),
+    'Làng nghề đá mỹ nghệ' => context.tr('ai.interest_craft'),
+    'Biển & Thể thao nước' => context.tr('ai.interest_beach'),
+    'Ẩm thực địa phương' => context.tr('ai.interest_food'),
+    'Cuộc sống về đêm' => context.tr('ai.interest_nightlife'),
+    'Chụp ảnh check-in' => context.tr('ai.interest_photo'),
+    'Lịch sử & Văn hóa' => context.tr('ai.interest_history'),
+    _ => raw,
+  };
+}
 
 /// [FE-05] Yêu cầu sinh lịch trình thông minh.
 class ItineraryRequest extends Equatable {

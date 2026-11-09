@@ -1,6 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
+
+import '../../../../core/localization/app_localizations.dart';
 
 /// [FE-10] Đánh giá của du khách cho một điểm đến
 /// (Firestore: `destinations/{destinationId}/reviews/{reviewId}`).
@@ -110,15 +113,16 @@ class ReviewDraft {
 
 /// Lý do báo cáo đánh giá vi phạm.
 enum ReportReason {
-  spam('Spam hoặc quảng cáo'),
-  offensive('Ngôn từ xúc phạm, thù ghét'),
-  falseInfo('Thông tin sai sự thật'),
-  irrelevant('Không liên quan đến điểm đến'),
-  privacy('Lộ thông tin cá nhân người khác'),
-  other('Lý do khác');
+  spam('reviews.reason_spam'),
+  offensive('reviews.reason_offensive'),
+  falseInfo('reviews.reason_false_info'),
+  irrelevant('reviews.reason_irrelevant'),
+  privacy('reviews.reason_privacy'),
+  other('reviews.reason_other');
 
-  const ReportReason(this.label);
-  final String label;
+  const ReportReason(this.labelKey);
+  final String labelKey;
+  String get label => AppLocalizations.trStatic(labelKey);
 }
 
 /// Giới hạn nội dung đánh giá.
@@ -128,4 +132,15 @@ class ReviewRules {
   static const int maxContentLength = 1000;
   static const int maxPhotos = 5;
   static const List<String> visitTypes = ['Một mình', 'Cặp đôi', 'Gia đình', 'Bạn bè', 'Công tác'];
+
+  static String localizedVisitType(BuildContext context, String raw) {
+    return switch (raw) {
+      'Một mình' => context.tr('reviews.visit_solo'),
+      'Cặp đôi' => context.tr('reviews.visit_couple'),
+      'Gia đình' => context.tr('reviews.visit_family'),
+      'Bạn bè' => context.tr('reviews.visit_friends'),
+      'Công tác' => context.tr('reviews.visit_business'),
+      _ => raw,
+    };
+  }
 }

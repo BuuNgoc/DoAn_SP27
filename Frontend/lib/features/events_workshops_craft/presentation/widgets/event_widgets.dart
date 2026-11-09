@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/date_formatter.dart';
 import '../../../../shared/widgets/app_card.dart';
@@ -22,8 +23,11 @@ class CapacityIndicator extends StatelessWidget {
         ? AppColors.error
         : (event.fillRate >= 0.75 ? AppColors.warning : AppColors.success);
     final label = event.isFull
-        ? 'Đã kín chỗ'
-        : 'Còn ${event.remainingSlots}/${event.capacity} chỗ';
+        ? context.tr('events.capacity_full')
+        : context.tr(
+            'events.remaining_slots',
+            params: {'remaining': '${event.remainingSlots}', 'capacity': '${event.capacity}'},
+          );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -34,7 +38,7 @@ class CapacityIndicator extends StatelessWidget {
             Text(label, style: TextStyle(color: color, fontWeight: FontWeight.w700, fontSize: compact ? 12 : 13)),
             if (!compact && !event.isFull && event.fillRate >= 0.75) ...[
               const SizedBox(width: 6),
-              const Text('· Sắp hết chỗ', style: TextStyle(color: AppColors.warning, fontSize: 12)),
+              Text(context.tr('events.almost_full'), style: const TextStyle(color: AppColors.warning, fontSize: 12)),
             ],
           ],
         ),
@@ -73,7 +77,10 @@ class DateBadge extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text('${date.day}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, height: 1.1)),
-          Text('thg ${date.month}', style: const TextStyle(fontSize: 11, color: AppColors.primaryTeal, fontWeight: FontWeight.w700)),
+          Text(
+            context.tr('common.month_short', params: {'month': '${date.month}'}),
+            style: const TextStyle(fontSize: 11, color: AppColors.primaryTeal, fontWeight: FontWeight.w700),
+          ),
         ],
       ),
     );

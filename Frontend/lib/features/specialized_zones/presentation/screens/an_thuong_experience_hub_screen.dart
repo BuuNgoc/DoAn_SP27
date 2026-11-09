@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/view_status.dart';
 import '../../../../shared/widgets/app_card.dart';
@@ -29,10 +30,10 @@ class AnThuongExperienceHubScreen extends StatelessWidget {
         seed: 73,
         body: BlocBuilder<ZoneCubit, ZoneState>(
           builder: (context, state) {
-            if (state.status.isLoading) return const LoadingIndicator(message: 'Đang tải phố An Thượng...');
+            if (state.status.isLoading) return LoadingIndicator(message: context.tr('zones.loading_an_thuong'));
             if (state.status.isFailure || state.overview == null) {
               return ErrorViewWidget(
-                message: state.errorMessage ?? 'Không tải được dữ liệu.',
+                message: state.errorMessage ?? context.tr('common.load_error'),
                 onRetry: () => context.read<ZoneCubit>().load(ZoneType.anThuong),
               );
             }
@@ -48,16 +49,19 @@ class AnThuongExperienceHubScreen extends StatelessWidget {
                       const SizedBox(height: 16),
                       const _NightlifeBanner(),
                       const SizedBox(height: 24),
-                      const SectionHeader(title: 'Ăn gì, chơi gì?', subtitle: 'Ẩm thực · Cà phê · Giải trí về đêm'),
+                      SectionHeader(
+                        title: context.tr('zones.what_to_eat_play'),
+                        subtitle: context.tr('zones.what_to_eat_play_sub'),
+                      ),
                       const SizedBox(height: 10),
                       ZoneCategoryChips(state: state),
                       const SizedBox(height: 12),
                       for (final s in state.visibleSpots) ...[ZoneSpotCard(spot: s), const SizedBox(height: 12)],
                       const SizedBox(height: 12),
                       SectionHeader(
-                        title: 'Bản đồ khu phố',
-                        subtitle: 'Chạm vào ghim để xem chi tiết',
-                        actionLabel: 'Bản đồ đầy đủ',
+                        title: context.tr('zones.neighborhood_map'),
+                        subtitle: context.tr('zones.tap_pin_for_details'),
+                        actionLabel: context.tr('zones.full_map'),
                         onAction: () => context.go(RouteNames.map),
                       ),
                       const SizedBox(height: 10),
@@ -65,8 +69,8 @@ class AnThuongExperienceHubScreen extends StatelessWidget {
                       if (state.events.isNotEmpty) ...[
                         const SizedBox(height: 24),
                         SectionHeader(
-                          title: 'Sự kiện tại An Thượng',
-                          actionLabel: 'Tất cả',
+                          title: context.tr('zones.events_in_an_thuong'),
+                          actionLabel: context.tr('common.all'),
                           onAction: () => context.push(RouteNames.events),
                         ),
                         const SizedBox(height: 10),
@@ -94,20 +98,20 @@ class _NightlifeBanner extends StatelessWidget {
     return AppCard(
       gradient: const LinearGradient(colors: [Color(0xFF24838B), Color(0xFF6E6BC9)]),
       padding: const EdgeInsets.all(18),
-      child: const Row(
+      child: Row(
         children: [
-          Icon(Icons.nightlife_rounded, color: Colors.white, size: 36),
-          SizedBox(width: 14),
+          const Icon(Icons.nightlife_rounded, color: Colors.white, size: 36),
+          const SizedBox(width: 14),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('An Thượng về đêm',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 16)),
-                SizedBox(height: 4),
+                Text(context.tr('zones.nightlife_banner_title'),
+                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 16)),
+                const SizedBox(height: 4),
                 Text(
-                  'Sôi động nhất từ 19:00 – 23:30. Nhạc sống mỗi tối, DJ cuối tuần và chợ đêm ẩm thực.',
-                  style: TextStyle(color: Colors.white, height: 1.4, fontSize: 13),
+                  context.tr('zones.nightlife_banner_desc'),
+                  style: const TextStyle(color: Colors.white, height: 1.4, fontSize: 13),
                 ),
               ],
             ),
@@ -135,7 +139,7 @@ class ZoneSliverHeader extends StatelessWidget {
         child: Center(
           child: CircleIconButton(
             icon: Icons.arrow_back_rounded,
-            tooltip: 'Quay lại',
+            tooltip: context.tr('common.back'),
             onPressed: () => Navigator.of(context).maybePop(),
           ),
         ),
@@ -143,11 +147,14 @@ class ZoneSliverHeader extends StatelessWidget {
       actions: [
         CircleIconButton(
           icon: Icons.ios_share_rounded,
-          tooltip: 'Chia sẻ',
+          tooltip: context.tr('common.share'),
           onPressed: () => SocialShareSheet.show(
             context,
             title: overview.title,
-            message: '${overview.title} – ${overview.tagline}\nKhám phá cùng SmartTravel Ngũ Hành Sơn! #SmartTravel #NguHanhSon',
+            message: context.tr(
+              'zones.share_zone_message',
+              params: {'title': overview.title, 'tagline': overview.tagline},
+            ),
           ),
         ),
         const SizedBox(width: 12),
@@ -173,7 +180,7 @@ class ZoneCategoryChips extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 8),
             child: ChoiceChip(
-              label: const Text('Tất cả'),
+              label: Text(context.tr('common.all')),
               selected: state.category == null,
               onSelected: (_) => context.read<ZoneCubit>().selectCategory(null),
             ),
@@ -195,13 +202,14 @@ class ZoneCategoryChips extends StatelessWidget {
 }
 
 class ZoneTipsCard extends StatelessWidget {
-  const ZoneTipsCard({super.key, required this.tips, this.title = 'Mẹo cho du khách'});
+  const ZoneTipsCard({super.key, required this.tips, this.title});
   final List<String> tips;
-  final String title;
+  final String? title;
 
   @override
   Widget build(BuildContext context) {
     if (tips.isEmpty) return const SizedBox.shrink();
+    final effectiveTitle = title ?? context.tr('zones.traveler_tips_title');
     return AppCard(
       color: AppColors.backgroundSecondary,
       showShadow: false,
@@ -212,7 +220,7 @@ class ZoneTipsCard extends StatelessWidget {
             children: [
               const Icon(Icons.lightbulb_rounded, color: AppColors.accentSoftGold),
               const SizedBox(width: 8),
-              Text(title, style: const TextStyle(fontWeight: FontWeight.w800)),
+              Text(effectiveTitle, style: const TextStyle(fontWeight: FontWeight.w800)),
             ],
           ),
           const SizedBox(height: 10),

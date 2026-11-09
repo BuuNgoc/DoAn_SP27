@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../domain/entities/map_poi.dart';
 
 /// Phép chiếu tuyến tính vĩ độ/kinh độ → tọa độ canvas cho khu vực Ngũ Hành Sơn.
@@ -174,10 +175,10 @@ class NguHanhSonMapPainter extends CustomPainter {
     }
 
     // Nhãn
-    _label(canvas, 'BIỂN ĐÔNG', Offset(w * 0.86, h * 0.45), size: 20, color: const Color(0xFF7FB5CA), spacing: 4, rotate: -1.2);
-    _label(canvas, 'NGŨ HÀNH SƠN', _p.toCanvas(16.0090, 108.2636), size: 15, color: AppColors.primaryTeal, spacing: 2);
-    _label(canvas, 'Làng đá Non Nước', village + const Offset(0, 46), size: 12, color: const Color(0xFFB98A3A));
-    _label(canvas, 'Khu An Thượng', Offset(at.center.dx, at.top - 14), size: 12, color: MapLayer.anThuong.color);
+    _label(canvas, AppLocalizations.trStatic('map.canvas_east_sea'), Offset(w * 0.86, h * 0.45), size: 20, color: const Color(0xFF7FB5CA), spacing: 4, rotate: -1.2);
+    _label(canvas, AppLocalizations.trStatic('map.canvas_ngu_hanh_son'), _p.toCanvas(16.0090, 108.2636), size: 15, color: AppColors.primaryTeal, spacing: 2);
+    _label(canvas, AppLocalizations.trStatic('map.canvas_non_nuoc_village'), village + const Offset(0, 46), size: 12, color: const Color(0xFFB98A3A));
+    _label(canvas, AppLocalizations.trStatic('map.canvas_an_thuong_zone'), Offset(at.center.dx, at.top - 14), size: 12, color: MapLayer.anThuong.color);
     _label(canvas, 'Đường Lê Văn Hiến', _p.toCanvas(16.030, 108.2483), size: 11, color: AppColors.textMuted, rotate: -1.33);
     _label(canvas, 'Đường Võ Nguyên Giáp', _p.toCanvas(16.038, 108.2527), size: 11, color: AppColors.textMuted, rotate: -1.38);
     _label(canvas, 'Huyền Trân Công Chúa', _p.toCanvas(16.0018, 108.2672), size: 10, color: AppColors.textMuted);

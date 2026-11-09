@@ -4,10 +4,24 @@ import '../constants/app_colors.dart';
 
 /// Material 3 theme – nền Ice-Mint, bo góc 18px, bóng đổ cực nhẹ và AppBar
 /// trong suốt để lộ lớp vân địa hình phía sau.
+///
+/// Hỗ trợ đầy đủ hiển thị ký tự tiếng Việt, tiếng Hàn (Hangul) và tiếng Trung
+/// (Hán tự CJK) trên Android thông qua `fontFamilyFallback` (LI-06).
 class AppTheme {
   AppTheme._();
 
   static const double _radius = 18;
+
+  /// Danh sách họ phông chữ dự phòng trên Android/iOS cho đa ngôn ngữ vi/en/ko/zh.
+  static const List<String> cjkFontFallback = [
+    'Roboto',
+    'Noto Sans',
+    'Noto Sans CJK KR',
+    'Noto Sans CJK SC',
+    'Noto Sans KR',
+    'Noto Sans SC',
+    'sans-serif',
+  ];
 
   static ThemeData get lightTheme {
     final colorScheme = ColorScheme.fromSeed(
@@ -29,11 +43,16 @@ class AppTheme {
       borderRadius: BorderRadius.circular(_radius),
     );
 
-    const baseText = TextStyle(color: AppColors.textPrimary, height: 1.35);
+    const baseText = TextStyle(
+      color: AppColors.textPrimary,
+      height: 1.35,
+      fontFamilyFallback: cjkFontFallback,
+    );
 
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
+      fontFamilyFallback: cjkFontFallback,
       scaffoldBackgroundColor: AppColors.backgroundIceMint,
       splashFactory: InkSparkle.splashFactory,
       textTheme: TextTheme(
@@ -59,6 +78,7 @@ class AppTheme {
           color: AppColors.textPrimary,
           fontSize: 19,
           fontWeight: FontWeight.w800,
+          fontFamilyFallback: cjkFontFallback,
         ),
       ),
       cardTheme: CardThemeData(
@@ -77,7 +97,11 @@ class AppTheme {
           elevation: 0,
           minimumSize: const Size(64, 52),
           shape: roundedShape,
-          textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+          textStyle: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+            fontFamilyFallback: cjkFontFallback,
+          ),
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(
@@ -85,7 +109,11 @@ class AppTheme {
           backgroundColor: AppColors.primaryTeal,
           minimumSize: const Size(64, 52),
           shape: roundedShape,
-          textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+          textStyle: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+            fontFamilyFallback: cjkFontFallback,
+          ),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -94,21 +122,28 @@ class AppTheme {
           minimumSize: const Size(64, 52),
           side: const BorderSide(color: AppColors.cardBorder, width: 1.4),
           shape: roundedShape,
-          textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+          textStyle: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+            fontFamilyFallback: cjkFontFallback,
+          ),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: AppColors.primaryTeal,
-          textStyle: const TextStyle(fontWeight: FontWeight.w700),
+          textStyle: const TextStyle(
+            fontWeight: FontWeight.w700,
+            fontFamilyFallback: cjkFontFallback,
+          ),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: AppColors.surfaceWhite,
         contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
-        hintStyle: const TextStyle(color: AppColors.textMuted),
-        labelStyle: const TextStyle(color: AppColors.textSecondary),
+        hintStyle: const TextStyle(color: AppColors.textMuted, fontFamilyFallback: cjkFontFallback),
+        labelStyle: const TextStyle(color: AppColors.textSecondary, fontFamilyFallback: cjkFontFallback),
         prefixIconColor: AppColors.textSecondary,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(_radius),
@@ -139,8 +174,13 @@ class AppTheme {
           color: AppColors.textPrimary,
           fontWeight: FontWeight.w600,
           fontSize: 13,
+          fontFamilyFallback: cjkFontFallback,
         ),
-        secondaryLabelStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+        secondaryLabelStyle: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w700,
+          fontFamilyFallback: cjkFontFallback,
+        ),
         checkmarkColor: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(_radius)),
@@ -167,6 +207,7 @@ class AppTheme {
             color: states.contains(WidgetState.selected)
                 ? AppColors.primaryTeal
                 : AppColors.textMuted,
+            fontFamilyFallback: cjkFontFallback,
           ),
         ),
       ),
@@ -194,7 +235,11 @@ class AppTheme {
         unselectedLabelColor: AppColors.textMuted,
         indicatorColor: AppColors.primaryTeal,
         dividerColor: Colors.transparent,
-        labelStyle: TextStyle(fontWeight: FontWeight.w800, fontSize: 14),
+        labelStyle: TextStyle(
+          fontWeight: FontWeight.w800,
+          fontSize: 14,
+          fontFamilyFallback: cjkFontFallback,
+        ),
       ),
       dividerTheme: const DividerThemeData(color: AppColors.cardBorder, thickness: 1, space: 1),
       sliderTheme: const SliderThemeData(

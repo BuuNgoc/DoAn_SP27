@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../localization/app_localizations.dart';
 import 'exceptions.dart';
 
 /// Base Failure class for Clean Architecture
@@ -20,7 +21,7 @@ class CacheFailure extends Failure {
 }
 
 class NetworkFailure extends Failure {
-  const NetworkFailure([super.message = 'Không có kết nối mạng. Vui lòng kiểm tra lại đường truyền.']);
+  const NetworkFailure([super.message = '']);
 }
 
 class AuthFailure extends Failure {
@@ -28,17 +29,35 @@ class AuthFailure extends Failure {
 }
 
 class PermissionFailure extends Failure {
-  const PermissionFailure([super.message = 'Bạn không có quyền thực hiện thao tác này.']);
+  const PermissionFailure([super.message = '']);
 }
 
-/// Chuyển mọi lỗi (Exception/Failure) thành thông điệp tiếng Việt thân thiện.
+/// Chuyển mọi lỗi (Exception/Failure) thành thông điệp đa ngôn ngữ thân thiện.
 String errorMessageOf(Object error) {
+  if (error is NetworkFailure) {
+    return error.message.isNotEmpty
+        ? error.message
+        : AppLocalizations.trStatic('core.network_error');
+  }
+  if (error is PermissionFailure) {
+    return error.message.isNotEmpty
+        ? error.message
+        : AppLocalizations.trStatic('core.unauthorized_error');
+  }
   if (error is Failure) return error.message;
   if (error is ServerException) return error.message;
   if (error is AuthException) return error.message;
   if (error is CacheException) return error.message;
-  if (error is NetworkException) return error.message;
-  if (error is PermissionException) return error.message;
+  if (error is NetworkException) {
+    return error.message.isNotEmpty
+        ? error.message
+        : AppLocalizations.trStatic('core.network_error');
+  }
+  if (error is PermissionException) {
+    return error.message.isNotEmpty
+        ? error.message
+        : AppLocalizations.trStatic('core.unauthorized_error');
+  }
   if (error is ArgumentError && error.message is String) return error.message as String;
-  return 'Đã xảy ra lỗi không mong muốn. Vui lòng thử lại.';
+  return AppLocalizations.trStatic('core.unexpected_error');
 }

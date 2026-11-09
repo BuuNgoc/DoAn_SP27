@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/date_formatter.dart';
 import '../../../../shared/widgets/app_card.dart';
@@ -32,7 +33,7 @@ class BookingQrCard extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-          Text('Mã đặt chỗ', style: const TextStyle(color: AppColors.textMuted, fontSize: 12.5)),
+          Text(context.tr('booking.booking_code_label'), style: const TextStyle(color: AppColors.textMuted, fontSize: 12.5)),
           const SizedBox(height: 4),
           SelectableText(
             booking.code,
@@ -61,7 +62,7 @@ class BookingQrCard extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            inactive ? 'Đơn đã hủy – mã QR không còn hiệu lực.' : 'Vui lòng xuất trình mã QR này tại quầy check-in.',
+            inactive ? context.tr('booking.qr_cancelled_notice') : context.tr('booking.qr_present_notice'),
             textAlign: TextAlign.center,
             style: TextStyle(color: inactive ? AppColors.error : AppColors.textSecondary, fontSize: 12.5),
           ),
@@ -100,15 +101,21 @@ class BookingSummaryCard extends StatelessWidget {
             ],
           ),
           const Divider(height: 26),
-          _row('Thời gian', '${DateFormatter.formatTime(b.sessionAt)} · ${DateFormatter.formatWithWeekday(b.sessionAt)}'),
-          _row('Địa điểm', b.venue),
-          _row('Số người', '${b.participants} người'),
-          _row('Người liên hệ', '${b.contactName} · ${b.contactPhone}'),
-          if (b.note.isNotEmpty) _row('Ghi chú', b.note),
+          _row(
+            context.tr('booking.summary_time'),
+            '${DateFormatter.formatTime(b.sessionAt)} · ${DateFormatter.formatWithWeekday(b.sessionAt)}',
+          ),
+          _row(context.tr('booking.summary_venue'), b.venue),
+          _row(
+            context.tr('booking.summary_participants'),
+            context.tr('booking.people_count', params: {'count': '${b.participants}'}),
+          ),
+          _row(context.tr('booking.summary_contact'), '${b.contactName} · ${b.contactPhone}'),
+          if (b.note.isNotEmpty) _row(context.tr('booking.summary_note'), b.note),
           const Divider(height: 22),
           Row(
             children: [
-              const Text('Tổng thanh toán', style: TextStyle(fontWeight: FontWeight.w700)),
+              Text(context.tr('booking.total_payment'), style: const TextStyle(fontWeight: FontWeight.w700)),
               const Spacer(),
               Text(
                 CurrencyFormatter.vnd(b.totalPrice),
@@ -117,9 +124,12 @@ class BookingSummaryCard extends StatelessWidget {
             ],
           ),
           if (b.totalPrice > 0)
-            const Align(
+            Align(
               alignment: Alignment.centerRight,
-              child: Text('Thanh toán tại quầy khi check-in', style: TextStyle(color: AppColors.textMuted, fontSize: 11.5)),
+              child: Text(
+                context.tr('booking.pay_at_counter_note'),
+                style: const TextStyle(color: AppColors.textMuted, fontSize: 11.5),
+              ),
             ),
         ],
       ),
@@ -161,7 +171,7 @@ class BookingListTile extends StatelessWidget {
                     maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontWeight: FontWeight.w800)),
                 const SizedBox(height: 4),
                 Text(
-                  '${DateFormatter.formatTime(b.sessionAt)} · ${DateFormatter.formatDateOnly(b.sessionAt)} · ${b.participants} người',
+                  '${DateFormatter.formatTime(b.sessionAt)} · ${DateFormatter.formatDateOnly(b.sessionAt)} · ${context.tr('booking.people_count', params: {'count': '${b.participants}'})}',
                   style: const TextStyle(color: AppColors.textSecondary, fontSize: 12.5),
                 ),
                 const SizedBox(height: 6),
