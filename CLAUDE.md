@@ -84,3 +84,21 @@
    - Viết Cloud Functions bằng TypeScript, kiểm tra quyền hạn bằng `role_guard.ts`.
    - Ghi nhật ký các tác vụ quản trị vào `audit_logger.ts`.
    - Kiểm tra chặt chẽ `firestore.rules` và `storage.rules` trước khi triển khai.
+
+---
+
+## 6. UI/UX Pro Max Design Intelligence Skill
+- **Đường dẫn**: `.agents/skills/ui-ux-pro-max/` (đồng bộ tại `.agent/skills/ui-ux-pro-max/`)
+- **Bộ skills thiết kế tích hợp**:
+  - `ui-ux-pro-max`: Design intelligence cho web/mobile/desktop, 80 UI styles, 192 palettes, 74 font pairings, 120 UX rules, hỗ trợ Flutter stack.
+  - `design`: Quy chuẩn thiết kế logo, visual identity, landing pages.
+  - `design-system`: Thiết lập và quản lý Design Tokens, Component System.
+  - `ui-styling`: Hướng dẫn style, animation, spacing.
+  - `brand`: Nhận diện thương hiệu & định vị sản phẩm du lịch.
+  - `banner-design`: Thiết kế ấn phẩm truyền thông, banner sự kiện/workshop.
+  - `slides`: Hướng dẫn thiết kế slide báo cáo dự án.
+- **Lệnh tra cứu thiết kế nhanh**:
+  ```bash
+  python .agents/skills/ui-ux-pro-max/scripts/search.py "<query>" --design-system
+  python .agents/skills/ui-ux-pro-max/scripts/search.py "<query>" --domain <domain> --stack flutter
+  ```

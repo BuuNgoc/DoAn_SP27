@@ -3,102 +3,97 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../shared/widgets/offline_banner_widget.dart';
+import '../../shared/widgets/tourism_bottom_navigation.dart';
 import '../constants/app_colors.dart';
 import '../localization/app_localizations.dart';
 import '../network/connectivity_cubit.dart';
 
-/// Khung điều hướng chính: thanh NavigationBar nổi bo tròn với 5 tab
-/// + dải thông báo ngoại tuyến tự động (LI-01, LI-05, LI-06).
+/// Khung điều hướng di động chính (360Mobile App):
+/// - Trải nghiệm thuần Mobile App 100% với 5 tab khám phá.
+/// - Trên màn hình máy tính / Web: Căn giữa khung hình điện thoại (max-width: 500px)
+///   tạo trải nghiệm ứng dụng di động chân thực nhất.
 class MainNavigationShell extends StatelessWidget {
   const MainNavigationShell({super.key, required this.navigationShell});
 
   final StatefulNavigationShell navigationShell;
 
-  List<NavigationDestination> _buildDestinations(BuildContext context) => [
-        NavigationDestination(
-          icon: const Icon(Icons.explore_outlined),
-          selectedIcon: const Icon(Icons.explore_rounded),
+  List<TourismNavItem> _buildNavItems(BuildContext context) => [
+        TourismNavItem(
+          icon: Icons.explore_outlined,
+          selectedIcon: Icons.explore_rounded,
           label: context.tr('nav.explore'),
-          tooltip: context.tr('nav.explore_tooltip'),
         ),
-        NavigationDestination(
-          icon: const Icon(Icons.map_outlined),
-          selectedIcon: const Icon(Icons.map_rounded),
+        TourismNavItem(
+          icon: Icons.map_outlined,
+          selectedIcon: Icons.map_rounded,
           label: context.tr('nav.map'),
-          tooltip: context.tr('nav.map_tooltip'),
         ),
-        NavigationDestination(
-          icon: const Icon(Icons.auto_awesome_outlined),
-          selectedIcon: const Icon(Icons.auto_awesome_rounded),
+        TourismNavItem(
+          icon: Icons.auto_awesome_outlined,
+          selectedIcon: Icons.auto_awesome_rounded,
           label: context.tr('nav.ai_itinerary'),
-          tooltip: context.tr('nav.ai_tooltip'),
         ),
-        NavigationDestination(
-          icon: const Icon(Icons.qr_code_scanner_outlined),
-          selectedIcon: const Icon(Icons.qr_code_scanner_rounded),
+        TourismNavItem(
+          icon: Icons.qr_code_scanner_outlined,
+          selectedIcon: Icons.qr_code_scanner_rounded,
           label: context.tr('nav.checkin_rewards'),
-          tooltip: context.tr('nav.checkin_tooltip'),
         ),
-        NavigationDestination(
-          icon: const Icon(Icons.person_outline_rounded),
-          selectedIcon: const Icon(Icons.person_rounded),
+        TourismNavItem(
+          icon: Icons.person_outline_rounded,
+          selectedIcon: Icons.person_rounded,
           label: context.tr('nav.personal'),
-          tooltip: context.tr('nav.personal_tooltip'),
         ),
       ];
 
   void _onSelect(int index) => navigationShell.goBranch(
         index,
-        // Bấm lại tab đang mở → quay về màn hình gốc của tab.
         initialLocation: index == navigationShell.currentIndex,
       );
 
   @override
   Widget build(BuildContext context) {
-    final bottomInset = MediaQuery.paddingOf(context).bottom;
+    final navItems = _buildNavItems(context);
+
     return Scaffold(
       extendBody: true,
-      backgroundColor: AppColors.backgroundIceMint,
-      body: BlocBuilder<ConnectivityCubit, bool>(
-        builder: (context, isOnline) => Column(
-          children: [
-            const OfflineBannerWidget(),
-            Expanded(
-              // Khi dải ngoại tuyến hiện, nó đã chiếm vùng status bar.
-              child: MediaQuery.removePadding(context: context, removeTop: !isOnline, child: navigationShell),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.fromLTRB(14, 0, 14, bottomInset > 0 ? bottomInset : 14),
-        child: DecoratedBox(
+      backgroundColor: const Color(0xFFF1F5F9), // Slate 100 background
+      body: Center(
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 500),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(28),
-            border: Border.all(color: AppColors.cardBorder),
+            color: AppColors.background,
             boxShadow: [
               BoxShadow(
-                color: AppColors.primaryTeal.withValues(alpha: 0.14),
-                blurRadius: 24,
-                offset: const Offset(0, 8),
+                color: const Color(0xFF0F172A).withValues(alpha: 0.08),
+                blurRadius: 32,
+                offset: const Offset(0, 4),
               ),
             ],
           ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(28),
-            child: MediaQuery.removePadding(
-              context: context,
-              removeBottom: true,
-              child: NavigationBar(
-                height: 68,
-                backgroundColor: AppColors.surfaceWhite.withValues(alpha: 0.96),
-                indicatorColor: AppColors.primaryTeal.withValues(alpha: 0.14),
-                labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-                selectedIndex: navigationShell.currentIndex,
-                onDestinationSelected: _onSelect,
-                destinations: _buildDestinations(context),
-              ),
+          child: BlocBuilder<ConnectivityCubit, bool>(
+            builder: (context, isOnline) => Column(
+              children: [
+                const OfflineBannerWidget(),
+                Expanded(
+                  child: MediaQuery.removePadding(
+                    context: context,
+                    removeTop: !isOnline,
+                    child: navigationShell,
+                  ),
+                ),
+              ],
             ),
+          ),
+        ),
+      ),
+      bottomNavigationBar: Center(
+        heightFactor: 1,
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 500),
+          child: TourismBottomNavigation(
+            currentIndex: navigationShell.currentIndex,
+            onTap: _onSelect,
+            items: navItems,
           ),
         ),
       ),

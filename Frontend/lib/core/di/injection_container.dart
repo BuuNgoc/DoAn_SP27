@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../features/ai_travel_assistant/data/datasources/ai_remote_data_source.dart';
@@ -73,7 +74,12 @@ Future<void> initDependencyInjection() async {
   sl.registerLazySingleton(() => LocaleCubit());
 
   // ── FE-01 Auth ────────────────────────────────────────────────────────
-  sl.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn(scopes: ['email', 'profile']));
+  sl.registerLazySingleton<GoogleSignIn>(
+    () => GoogleSignIn(
+      clientId: kIsWeb ? '462033431838-smarttravel.apps.googleusercontent.com' : null,
+      scopes: ['email', 'profile'],
+    ),
+  );
   sl.registerLazySingleton<AuthFirebaseDataSource>(
       () => AuthFirebaseDataSourceImpl(googleSignIn: sl()));
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()));
