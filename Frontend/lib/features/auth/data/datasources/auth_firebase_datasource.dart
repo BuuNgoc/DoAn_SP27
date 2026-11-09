@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -151,27 +152,44 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
 
   @override
   Future<UserModel> signInWithGoogle() async {
-    // 1. Kích hoạt luồng chọn tài khoản Google
-    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-    if (googleUser == null) {
-      throw const AuthException('Bạn đã hủy đăng nhập bằng Google.');
+    final UserCredential userCred;
+
+    if (kIsWeb) {
+      // Trên Web: Dùng trực tiếp signInWithPopup của Firebase Auth để tương thích hoàn toàn
+      // với luồng OAuth và tránh lỗi `origin_mismatch` do random port của localhost.
+      try {
+        final GoogleAuthProvider googleProvider = GoogleAuthProvider();
+        googleProvider.addScope('email');
+        googleProvider.addScope('profile');
+        userCred = await _auth.signInWithPopup(googleProvider);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'popup-closed-by-user') {
+          throw const AuthException('Bạn đã đóng cửa sổ đăng nhập Google.');
+        }
+        throw AuthException('Đăng nhập Google thất bại: ${e.message ?? e.code}');
+      }
+    } else {
+      // Trên Mobile (Android / iOS): Dùng GoogleSignIn native
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        throw const AuthException('Bạn đã hủy đăng nhập bằng Google.');
+      }
+
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      userCred = await _auth.signInWithCredential(credential);
     }
 
-    // 2. Lấy thông tin xác thực từ yêu cầu đăng nhập
-    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-    final AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-
-    // 3. Đăng nhập vào Firebase Authentication bằng credential
-    final UserCredential userCred = await _auth.signInWithCredential(credential);
     final User? firebaseUser = userCred.user;
     if (firebaseUser == null) {
       throw const AuthException('Đăng nhập Google vào Firebase thất bại.');
     }
 
-    // 4. Đồng bộ hồ sơ trên Firestore ngay lập tức (tránh độ trễ cold-start của trigger)
+    // Đồng bộ hồ sơ trên Firestore ngay lập tức (tránh độ trễ cold-start của trigger)
     final userDocRef = _userDoc(firebaseUser.uid);
     final docSnap = await userDocRef.get();
 
@@ -179,7 +197,11 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
       final userModel = UserModel.fromFirestore(docSnap);
       if (!userModel.isActive) {
         await _auth.signOut();
-        await _googleSignIn.signOut();
+        if (!kIsWeb) {
+          try {
+            await _googleSignIn.signOut();
+          } catch (_) {}
+        }
         throw const AuthException('Tài khoản của bạn đã bị khóa bởi Quản trị viên.');
       }
       return userModel;
@@ -188,10 +210,10 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
     // Lần đầu đăng nhập qua Google: Khởi tạo hồ sơ người dùng mới
     final newUser = UserModel(
       uid: firebaseUser.uid,
-      fullName: firebaseUser.displayName ?? googleUser.displayName ?? 'Du khách SmartTravel',
-      email: firebaseUser.email ?? googleUser.email,
+      fullName: firebaseUser.displayName ?? 'Du khách SmartTravel',
+      email: firebaseUser.email ?? '',
       phoneNumber: firebaseUser.phoneNumber ?? '',
-      avatarUrl: firebaseUser.photoURL ?? googleUser.photoUrl,
+      avatarUrl: firebaseUser.photoURL,
       role: 'TOURIST',
       loyaltyPoints: 0,
       totalEarnedPoints: 0,
@@ -265,7 +287,11 @@ class AuthFirebaseDataSourceImpl implements AuthFirebaseDataSource {
     final model = UserModel.fromFirestore(docSnap);
     if (!model.isActive) {
       await _auth.signOut();
-      await _googleSignIn.signOut();
+      if (!kIsWeb) {
+        try {
+          await _googleSignIn.signOut();
+        } catch (_) {}
+      }
       throw const AuthException('Tài khoản của bạn đã bị khóa bởi Quản trị viên.');
     }
     return model;
