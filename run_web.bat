@@ -7,5 +7,6 @@ echo   URL: http://localhost:8000/
 echo ===================================================================
 echo.
 cd /d "%~dp0Frontend"
-flutter run -d chrome --web-port 8000 --no-tree-shake-icons
+flutter run -d chrome --web-port 8000
 pause
+
