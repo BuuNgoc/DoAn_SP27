@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
 import '../constants/app_colors.dart';
+import '../constants/app_dimensions.dart';
 
-/// Material 3 theme – nền Ice-Mint, bo góc 18px, bóng đổ cực nhẹ và AppBar
-/// trong suốt để lộ lớp vân địa hình phía sau.
+/// NHS360 UI/UX Pro Max Material 3 Theme.
 ///
-/// Hỗ trợ đầy đủ hiển thị ký tự tiếng Việt, tiếng Hàn (Hangul) và tiếng Trung
-/// (Hán tự CJK) trên Android thông qua `fontFamilyFallback` (LI-06).
+/// Bảng màu & Typography lấy cảm hứng từ thiên nhiên Ngũ Hành Sơn:
+/// Biển Non Nước, rặng đá cẩm thạch huyền bí, hoàng hôn và di sản văn hóa.
 class AppTheme {
   AppTheme._();
 
-  static const double _radius = 18;
+  static const double _radius = AppDimensions.radiusCard;
 
-  /// Danh sách họ phông chữ dự phòng trên Android/iOS cho đa ngôn ngữ vi/en/ko/zh.
+  /// Danh sách font dự phòng cho đa ngôn ngữ vi/en/ko/zh.
   static const List<String> cjkFontFallback = [
     'Roboto',
     'Noto Sans',
@@ -25,18 +25,27 @@ class AppTheme {
 
   static ThemeData get lightTheme {
     final colorScheme = ColorScheme.fromSeed(
-      seedColor: AppColors.primaryTeal,
+      seedColor: AppColors.primary,
       brightness: Brightness.light,
     ).copyWith(
-      primary: AppColors.primaryTeal,
+      primary: AppColors.primary,
       onPrimary: Colors.white,
-      secondary: AppColors.primaryPastel,
-      tertiary: AppColors.accentSoftGold,
-      surface: AppColors.surfaceWhite,
+      primaryContainer: AppColors.primarySurface,
+      onPrimaryContainer: AppColors.primaryDark,
+      secondary: AppColors.secondary,
+      onSecondary: Colors.white,
+      secondaryContainer: AppColors.secondarySurface,
+      onSecondaryContainer: AppColors.secondaryDark,
+      tertiary: AppColors.accent,
+      onTertiary: Colors.white,
+      tertiaryContainer: AppColors.accentSurface,
+      onTertiaryContainer: const Color(0xFF7C2D12),
+      surface: AppColors.surface,
       onSurface: AppColors.textPrimary,
       error: AppColors.error,
-      outline: AppColors.cardBorder,
-      outlineVariant: AppColors.cardBorder,
+      onError: Colors.white,
+      outline: AppColors.border,
+      outlineVariant: AppColors.borderSubtle,
     );
 
     final roundedShape = RoundedRectangleBorder(
@@ -45,7 +54,7 @@ class AppTheme {
 
     const baseText = TextStyle(
       color: AppColors.textPrimary,
-      height: 1.35,
+      height: 1.4,
       fontFamilyFallback: cjkFontFallback,
     );
 
@@ -53,19 +62,24 @@ class AppTheme {
       useMaterial3: true,
       colorScheme: colorScheme,
       fontFamilyFallback: cjkFontFallback,
-      scaffoldBackgroundColor: AppColors.backgroundIceMint,
+      scaffoldBackgroundColor: AppColors.background,
       splashFactory: InkSparkle.splashFactory,
       textTheme: TextTheme(
-        displaySmall: baseText.copyWith(fontSize: 30, fontWeight: FontWeight.w800, letterSpacing: -0.5),
-        headlineSmall: baseText.copyWith(fontSize: 24, fontWeight: FontWeight.w800, letterSpacing: -0.3),
-        titleLarge: baseText.copyWith(fontSize: 20, fontWeight: FontWeight.w700),
+        displayLarge: baseText.copyWith(fontSize: 34, fontWeight: FontWeight.w800, letterSpacing: -0.6),
+        displayMedium: baseText.copyWith(fontSize: 30, fontWeight: FontWeight.w800, letterSpacing: -0.5),
+        displaySmall: baseText.copyWith(fontSize: 26, fontWeight: FontWeight.w800, letterSpacing: -0.4),
+        headlineLarge: baseText.copyWith(fontSize: 24, fontWeight: FontWeight.w800, letterSpacing: -0.3),
+        headlineMedium: baseText.copyWith(fontSize: 22, fontWeight: FontWeight.w700, letterSpacing: -0.2),
+        headlineSmall: baseText.copyWith(fontSize: 20, fontWeight: FontWeight.w700),
+        titleLarge: baseText.copyWith(fontSize: 18, fontWeight: FontWeight.w700),
         titleMedium: baseText.copyWith(fontSize: 16, fontWeight: FontWeight.w700),
         titleSmall: baseText.copyWith(fontSize: 14, fontWeight: FontWeight.w700),
-        bodyLarge: baseText.copyWith(fontSize: 16),
-        bodyMedium: baseText.copyWith(fontSize: 14, color: AppColors.textSecondary),
-        bodySmall: baseText.copyWith(fontSize: 12, color: AppColors.textMuted),
+        bodyLarge: baseText.copyWith(fontSize: 16, height: 1.5),
+        bodyMedium: baseText.copyWith(fontSize: 14, height: 1.5, color: AppColors.textSecondary),
+        bodySmall: baseText.copyWith(fontSize: 12, height: 1.4, color: AppColors.textMuted),
         labelLarge: baseText.copyWith(fontSize: 14, fontWeight: FontWeight.w700),
         labelMedium: baseText.copyWith(fontSize: 12, fontWeight: FontWeight.w600),
+        labelSmall: baseText.copyWith(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.textMuted),
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,
@@ -82,21 +96,23 @@ class AppTheme {
         ),
       ),
       cardTheme: CardThemeData(
-        color: AppColors.surfaceWhite,
+        color: AppColors.surface,
         elevation: 0,
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(_radius),
-          side: const BorderSide(color: AppColors.cardBorder),
+          side: const BorderSide(color: AppColors.border, width: 1.0),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primaryTeal,
+          backgroundColor: AppColors.primary,
           foregroundColor: Colors.white,
           elevation: 0,
-          minimumSize: const Size(64, 52),
-          shape: roundedShape,
+          minimumSize: const Size(64, 48),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+          ),
           textStyle: const TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w700,
@@ -106,9 +122,13 @@ class AppTheme {
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          backgroundColor: AppColors.primaryTeal,
-          minimumSize: const Size(64, 52),
-          shape: roundedShape,
+          backgroundColor: AppColors.primary,
+          foregroundColor: Colors.white,
+          elevation: 0,
+          minimumSize: const Size(64, 48),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+          ),
           textStyle: const TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w700,
@@ -118,10 +138,12 @@ class AppTheme {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: AppColors.primaryTeal,
-          minimumSize: const Size(64, 52),
-          side: const BorderSide(color: AppColors.cardBorder, width: 1.4),
-          shape: roundedShape,
+          foregroundColor: AppColors.primary,
+          minimumSize: const Size(64, 48),
+          side: const BorderSide(color: AppColors.border, width: 1.4),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+          ),
           textStyle: const TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w700,
@@ -131,7 +153,7 @@ class AppTheme {
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: AppColors.primaryTeal,
+          foregroundColor: AppColors.primary,
           textStyle: const TextStyle(
             fontWeight: FontWeight.w700,
             fontFamilyFallback: cjkFontFallback,
@@ -140,36 +162,37 @@ class AppTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.surfaceWhite,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
-        hintStyle: const TextStyle(color: AppColors.textMuted, fontFamilyFallback: cjkFontFallback),
-        labelStyle: const TextStyle(color: AppColors.textSecondary, fontFamilyFallback: cjkFontFallback),
+        fillColor: AppColors.surface,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        hintStyle: const TextStyle(color: AppColors.textMuted, fontSize: 14, fontFamilyFallback: cjkFontFallback),
+        labelStyle: const TextStyle(color: AppColors.textSecondary, fontSize: 14, fontFamilyFallback: cjkFontFallback),
         prefixIconColor: AppColors.textSecondary,
+        suffixIconColor: AppColors.textSecondary,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(_radius),
-          borderSide: const BorderSide(color: AppColors.cardBorder),
+          borderRadius: BorderRadius.circular(AppDimensions.radiusInput),
+          borderSide: const BorderSide(color: AppColors.border),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(_radius),
-          borderSide: const BorderSide(color: AppColors.cardBorder),
+          borderRadius: BorderRadius.circular(AppDimensions.radiusInput),
+          borderSide: const BorderSide(color: AppColors.border),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(_radius),
-          borderSide: const BorderSide(color: AppColors.primaryTeal, width: 1.6),
+          borderRadius: BorderRadius.circular(AppDimensions.radiusInput),
+          borderSide: const BorderSide(color: AppColors.primary, width: 1.8),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(_radius),
+          borderRadius: BorderRadius.circular(AppDimensions.radiusInput),
           borderSide: const BorderSide(color: AppColors.error),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(_radius),
-          borderSide: const BorderSide(color: AppColors.error, width: 1.6),
+          borderRadius: BorderRadius.circular(AppDimensions.radiusInput),
+          borderSide: const BorderSide(color: AppColors.error, width: 1.8),
         ),
       ),
       chipTheme: ChipThemeData(
-        backgroundColor: AppColors.backgroundSecondary,
-        selectedColor: AppColors.primaryTeal,
-        side: const BorderSide(color: AppColors.cardBorder),
+        backgroundColor: AppColors.backgroundSubtle,
+        selectedColor: AppColors.primarySurface,
+        side: const BorderSide(color: AppColors.border),
         labelStyle: const TextStyle(
           color: AppColors.textPrimary,
           fontWeight: FontWeight.w600,
@@ -177,25 +200,26 @@ class AppTheme {
           fontFamilyFallback: cjkFontFallback,
         ),
         secondaryLabelStyle: const TextStyle(
-          color: Colors.white,
+          color: AppColors.primary,
           fontWeight: FontWeight.w700,
+          fontSize: 13,
           fontFamilyFallback: cjkFontFallback,
         ),
-        checkmarkColor: Colors.white,
+        checkmarkColor: AppColors.primary,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(_radius)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppDimensions.radiusFull)),
       ),
       navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: AppColors.surfaceWhite,
+        backgroundColor: AppColors.surface,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         height: 68,
-        indicatorColor: AppColors.backgroundSecondary,
+        indicatorColor: AppColors.primarySurface,
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         iconTheme: WidgetStateProperty.resolveWith(
           (states) => IconThemeData(
             color: states.contains(WidgetState.selected)
-                ? AppColors.primaryTeal
+                ? AppColors.primary
                 : AppColors.textMuted,
             size: 24,
           ),
@@ -205,35 +229,35 @@ class AppTheme {
             fontSize: 11,
             fontWeight: states.contains(WidgetState.selected) ? FontWeight.w800 : FontWeight.w600,
             color: states.contains(WidgetState.selected)
-                ? AppColors.primaryTeal
+                ? AppColors.primary
                 : AppColors.textMuted,
             fontFamilyFallback: cjkFontFallback,
           ),
         ),
       ),
       bottomSheetTheme: const BottomSheetThemeData(
-        backgroundColor: AppColors.surfaceWhite,
+        backgroundColor: AppColors.surface,
         surfaceTintColor: Colors.transparent,
         showDragHandle: true,
-        dragHandleColor: AppColors.cardBorder,
+        dragHandleColor: AppColors.border,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(AppDimensions.radiusSheet)),
         ),
       ),
       dialogTheme: DialogThemeData(
-        backgroundColor: AppColors.surfaceWhite,
+        backgroundColor: AppColors.surface,
         surfaceTintColor: Colors.transparent,
         shape: roundedShape,
       ),
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
-        backgroundColor: AppColors.textPrimary,
+        backgroundColor: AppColors.surfaceDark,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       ),
       tabBarTheme: const TabBarThemeData(
-        labelColor: AppColors.primaryTeal,
+        labelColor: AppColors.primary,
         unselectedLabelColor: AppColors.textMuted,
-        indicatorColor: AppColors.primaryTeal,
+        indicatorColor: AppColors.primary,
         dividerColor: Colors.transparent,
         labelStyle: TextStyle(
           fontWeight: FontWeight.w800,
@@ -241,16 +265,16 @@ class AppTheme {
           fontFamilyFallback: cjkFontFallback,
         ),
       ),
-      dividerTheme: const DividerThemeData(color: AppColors.cardBorder, thickness: 1, space: 1),
+      dividerTheme: const DividerThemeData(color: AppColors.border, thickness: 1, space: 1),
       sliderTheme: const SliderThemeData(
-        activeTrackColor: AppColors.primaryTeal,
-        inactiveTrackColor: AppColors.backgroundSecondary,
-        thumbColor: AppColors.primaryTeal,
+        activeTrackColor: AppColors.primary,
+        inactiveTrackColor: AppColors.border,
+        thumbColor: AppColors.primary,
         trackHeight: 4,
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: AppColors.primaryTeal,
-        linearTrackColor: AppColors.backgroundSecondary,
+        color: AppColors.primary,
+        linearTrackColor: AppColors.borderSubtle,
       ),
     );
   }
