@@ -1,9 +1,15 @@
 # ==============================================================================
 # 1. Builder Stage: Flutter Web Compilation
+# Su dung image instrumentisto/flutter cap nhat Dart SDK moi nhat (Dart >= 3.13)
+# de tuong thich hoan toan voi panorama_viewer 3.0.0 va cac thu vien Flutter 3.x
 # ==============================================================================
-FROM ghcr.io/cirruslabs/flutter:stable AS build
+FROM instrumentisto/flutter:latest AS build
 
+USER root
 WORKDIR /app
+
+# Cho phep git hoat dong an toan trong container
+RUN git config --global --add safe.directory '*'
 
 # Sao chép manifest dependencies để tận dụng Docker cache layer
 COPY pubspec.yaml pubspec.lock ./
@@ -13,7 +19,7 @@ RUN flutter pub get
 COPY . .
 
 # Biên dịch Flutter Web ở chế độ Release
-# Thêm --no-tree-shake-icons để tránh lỗi subsetting font icon trên một số môi trường
+# Thêm --no-tree-shake-icons để tránh lỗi font subsetting icon
 RUN flutter build web --release --no-tree-shake-icons
 
 # ==============================================================================
