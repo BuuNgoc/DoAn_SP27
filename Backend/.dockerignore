@@ -1,0 +1,15 @@
+.git/
+.github/
+.idea/
+.vscode/
+functions/node_modules/
+functions/lib/
+functions/.env
+functions/.env.*
+*.log
+firebase-debug.log*
+firestore-debug.log*
+ui-debug.log*
+emulator-data/
+Dockerfile*
+.dockerignore
