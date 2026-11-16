@@ -1,15 +1,25 @@
 # ==============================================================================
 # 1. Builder Stage: Flutter Web Compilation
-# Su dung image instrumentisto/flutter cap nhat Dart SDK moi nhat (Dart >= 3.13)
-# de tuong thich hoan toan voi panorama_viewer 3.0.0 va cac thu vien Flutter 3.x
+# Cài đặt trực tiếp Flutter SDK Stable mới nhất từ Google (Dart >= 3.13)
+# đảm bảo tương thích 100% với camera, panorama_viewer và toàn bộ dependencies
 # ==============================================================================
-FROM instrumentisto/flutter:latest AS build
+FROM debian:bookworm-slim AS build
 
-USER root
+# Cài đặt các gói công cụ hệ thống cần thiết cho Flutter
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl git unzip xz-utils zip ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Clone Flutter SDK Stable trực tiếp từ repository chính thức của Google
+RUN git clone https://github.com/flutter/flutter.git --depth 1 -b stable /flutter
+ENV PATH="/flutter/bin:${PATH}"
+
+# Cấu hình git an toàn, tắt gửi analytics và tải trước web engine
+RUN git config --global --add safe.directory '*' \
+    && flutter config --no-analytics --enable-web \
+    && flutter precache --web
+
 WORKDIR /app
-
-# Cho phep git hoat dong an toan trong container
-RUN git config --global --add safe.directory '*'
 
 # Sao chép manifest dependencies để tận dụng Docker cache layer
 COPY pubspec.yaml pubspec.lock ./
@@ -19,7 +29,7 @@ RUN flutter pub get
 COPY . .
 
 # Biên dịch Flutter Web ở chế độ Release
-# Thêm --no-tree-shake-icons để tránh lỗi font subsetting icon
+# Thêm --no-tree-shake-icons để tránh lỗi subsetting font icon
 RUN flutter build web --release --no-tree-shake-icons
 
 # ==============================================================================
