@@ -1,0 +1,66 @@
+services:
+  # ============================================================================
+  # 1. BACKEND & DATABASE: Firebase Cloud Functions + Emulators Suite
+  # ============================================================================
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: nhs360-backend
+    restart: unless-stopped
+    ports:
+      - "4000:4000"   # Firebase Emulator Suite UI Dashboard
+      - "5001:5001"   # Cloud Functions (TypeScript REST & Triggers)
+      - "8080:8080"   # Cloud Firestore (NoSQL Database)
+      - "9099:9099"   # Firebase Authentication
+      - "9199:9199"   # Firebase Cloud Storage
+    environment:
+      - NODE_ENV=development
+      - GCLOUD_PROJECT=smarttravel-se13
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-AIzaSyStubGeminiApiKey12345}
+    volumes:
+      # Lưu trữ bền vững dữ liệu Firestore, Auth và Storage qua Docker Volume
+      - emulator-data:/workspace/emulator-data
+    networks:
+      - nhs360-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 25s
+
+  # ============================================================================
+  # 2. FRONTEND: Flutter Web Application (Nginx Alpine)
+  # ============================================================================
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    container_name: nhs360-frontend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"   # Cổng truy cập Web tiêu chuẩn cho dự án NHS360
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - nhs360-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+# ==============================================================================
+# NETWORKS & VOLUMES
+# ==============================================================================
+networks:
+  nhs360-network:
+    name: nhs360-network
+    driver: bridge
+
+volumes:
+  emulator-data:
+    name: nhs360-emulator-data
