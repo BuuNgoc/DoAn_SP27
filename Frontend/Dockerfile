@@ -1,7 +1,23 @@
 # ==============================================================================
 # 1. Builder Stage: Flutter Web Compilation
+# Cài đặt trực tiếp Flutter SDK Stable mới nhất từ Google (Dart >= 3.13)
+# đảm bảo tương thích 100% với camera, panorama_viewer và toàn bộ dependencies
 # ==============================================================================
-FROM ghcr.io/cirruslabs/flutter:stable AS build
+FROM debian:bookworm-slim AS build
+
+# Cài đặt các gói công cụ hệ thống cần thiết cho Flutter
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl git unzip xz-utils zip ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Clone Flutter SDK Stable trực tiếp từ repository chính thức của Google
+RUN git clone https://github.com/flutter/flutter.git --depth 1 -b stable /flutter
+ENV PATH="/flutter/bin:${PATH}"
+
+# Cấu hình git an toàn, tắt gửi analytics và tải trước web engine
+RUN git config --global --add safe.directory '*' \
+    && flutter config --no-analytics --enable-web \
+    && flutter precache --web
 
 WORKDIR /app
 
@@ -13,7 +29,7 @@ RUN flutter pub get
 COPY . .
 
 # Biên dịch Flutter Web ở chế độ Release
-# Thêm --no-tree-shake-icons để tránh lỗi subsetting font icon trên một số môi trường
+# Thêm --no-tree-shake-icons để tránh lỗi subsetting font icon
 RUN flutter build web --release --no-tree-shake-icons
 
 # ==============================================================================
