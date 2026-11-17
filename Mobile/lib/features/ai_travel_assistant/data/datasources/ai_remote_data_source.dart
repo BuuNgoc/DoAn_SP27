@@ -15,7 +15,7 @@ abstract class AiRemoteDataSource {
 }
 
 /// [FE-05] Bộ nhận diện trên thiết bị (On-Device Local AI) không dùng API bên thứ 3.
-/// Được thiết kế tương thích hoàn toàn với mô hình MobileNetV3 TFLite được huấn luyện từ AI_Training/.
+/// Được thiết kế tương thích hoàn toàn với mô hình MobileNetV3 TFLite được huấn luyện từ AI_Service/landmark_recognition/.
 class LocalOnDeviceAiDataSource implements AiRemoteDataSource {
   const LocalOnDeviceAiDataSource();
 
