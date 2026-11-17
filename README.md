@@ -23,7 +23,7 @@
 Dự án được tổ chức theo mô hình **Monorepo**:
 ```text
 NHS360/
-├── Frontend/           # Ứng dụng du lịch đa nền tảng Flutter (Web, Android, iOS)
+├── Mobile/             # Ứng dụng du lịch đa nền tảng Flutter (Mobile & Web)
 ├── Backend/            # Cloud Functions (TypeScript) & Cấu hình Firestore / Storage
 ├── docker-compose.yml  # Điều phối môi trường Container hóa toàn bộ hệ thống
 ├── run_docker.bat      # Script 1-click chạy Docker trên Windows
@@ -109,7 +109,7 @@ run_mobile.bat
 
 2. **Chạy ứng dụng Flutter**:
    ```powershell
-   if (-not (Test-Path "X:\")) { subst X: "$PSScriptRoot" }; cd X:\Frontend; flutter run
+   if (-not (Test-Path "X:\")) { subst X: "$PSScriptRoot" }; cd X:\Mobile; flutter run
    ```
 
 ---

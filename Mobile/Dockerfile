@@ -25,7 +25,7 @@ WORKDIR /app
 COPY pubspec.yaml pubspec.lock ./
 RUN flutter pub get
 
-# Sao chép toàn bộ mã nguồn Frontend
+# Sao chép toàn bộ mã nguồn Mobile
 COPY . .
 
 # Biên dịch Flutter Web ở chế độ Release

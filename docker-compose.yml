@@ -31,11 +31,11 @@ services:
       start_period: 25s
 
   # ============================================================================
-  # 2. FRONTEND: Flutter Web Application (Nginx Alpine)
+  # 2. MOBILE / WEB: Flutter Application (Nginx Alpine)
   # ============================================================================
   frontend:
     build:
-      context: ./Frontend
+      context: ./Mobile
       dockerfile: Dockerfile
     container_name: nhs360-frontend
     restart: unless-stopped
