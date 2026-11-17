@@ -1,7 +1,7 @@
 # DoAn_SP27: SmartTravel – Smart Tourism Platform for Ngu Hanh Son (SE13)
 
 > **AI Agent / Claude Code Instructions**: You are working inside the `DoAn_SP27/` monorepo.
-> - All **Flutter Frontend** code resides in `DoAn_SP27/Frontend/`.
+> - All **Flutter Mobile** code resides in `DoAn_SP27/Mobile/`.
 > - All **Firebase Backend** (Cloud Functions, Firestore Rules, Storage Rules, Indexes) resides in `DoAn_SP27/Backend/`.
 > Read this document carefully before generating or modifying any files.
 
@@ -14,7 +14,7 @@
 - **Mentor**: Lê Thiện Nhật Quang
 - **Team Members**: Nguyễn Ngọc Bữu (Leader), Văn Đức Tài, Vương Mai Ngân, Nguyễn Thị An Thuyên, Trương Đình Nhật
 - **Tech Stack**:
-  - **Frontend (`DoAn_SP27/Frontend/`)**: Flutter (Dart 3.x), Material 3, Clean Architecture (Feature-First), `flutter_bloc`, `go_router`, `get_it`.
+  - **Mobile (`DoAn_SP27/Mobile/`)**: Flutter (Dart 3.x), Material 3, Clean Architecture (Feature-First), `flutter_bloc`, `go_router`, `get_it`.
   - **Backend (`DoAn_SP27/Backend/`)**: Firebase Serverless BaaS (Firebase Auth, Cloud Firestore, Cloud Functions in TypeScript, Firebase Storage, FCM, Gemini AI / Vertex AI + Firestore Vector Search for RAG).
 
 ---
@@ -37,7 +37,7 @@ DoAn_SP27/
 ├── README.md                                   # Project Documentation
 ├── .gitignore
 │
-├── Frontend/                                   # FLUTTER APPLICATION (smart_travel_app)
+├── Mobile/                                     # FLUTTER APPLICATION (smart_travel_app)
 │   ├── pubspec.yaml
 │   ├── assets/
 │   │   ├── images/
@@ -101,12 +101,12 @@ DoAn_SP27/
 ---
 
 ## 4. Architectural & Coding Rules for Claude Code
-1. **3-Layer Clean Architecture inside `Frontend/lib/features/<feature_name>/`**:
+1. **3-Layer Clean Architecture inside `Mobile/lib/features/<feature_name>/`**:
    - `data/`: `models/` (with `fromFirestore` & `toFirestore`), `datasources/`, `repositories/`.
    - `domain/`: `entities/`, `repositories/` (abstract interfaces), `usecases/`.
    - `presentation/`: `bloc/` (or `cubit/`), `screens/`, `widgets/`.
 2. **Client-Server Security Boundary**:
-   - Flutter client in `Frontend/` MUST NOT directly mutate `loyaltyPoints`, `role`, `checkin_records`, `reward_redemptions`, `bookings` capacity, or contest `voteCount`.
+   - Flutter client in `Mobile/` MUST NOT directly mutate `loyaltyPoints`, `role`, `checkin_records`, `reward_redemptions`, `bookings` capacity, or contest `voteCount`.
    - Always invoke TypeScript Cloud Functions located in `Backend/functions/src/modules/`.
 3. **Offline Mode (`LI-05`)**:
    - Keep Firestore Offline Persistence enabled and use `CachedNetworkImage` for all remote media.
@@ -133,17 +133,16 @@ DoAn_SP27/
 
 ## 6. Common Commands from `DoAn_SP27/` Root
 
-### Run Flutter Frontend (`DoAn_SP27/Frontend`)
+### Run Flutter Mobile (`DoAn_SP27/Mobile`)
 ~~~bash
-# Cách 1: Chạy trực tiếp qua file script (mặc định luôn chạy cổng 8000):
-./run_web.bat     # Trên Windows (hoặc nhấp đúp file run_web.bat)
-./run_web.sh      # Trên macOS / Linux
+# Cách 1: Chạy trực tiếp qua file script:
+./run_mobile.bat  # Trên Windows (hoặc nhấp đúp file run_mobile.bat)
 
 # Cách 2: Chạy qua VS Code / IDE:
-# Nhấn F5 (đã cấu hình sẵn profile "SmartTravel Web (Port 8000)" trong .vscode/launch.json)
+# Nhấn F5 (đã cấu hình sẵn profile "SmartTravel Web (Port 8000)" hoặc "SmartTravel Mobile" trong .vscode/launch.json)
 
 # Cách 3: Chạy thủ công qua lệnh terminal:
-cd Frontend
+cd Mobile
 flutter pub get
 flutter run -d chrome --web-port 8000
 ~~~

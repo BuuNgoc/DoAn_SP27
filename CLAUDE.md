@@ -27,7 +27,7 @@
 
 ## 3. Bảng Ánh Xạ 28 Chức Năng (FE-01 -> FE-28)
 
-| Mã FE | Tên Chức Năng | Thư Mục Frontend | Module Backend |
+| Mã FE | Tên Chức Năng | Thư Mục Mobile | Module Backend |
 |---|---|---|---|
 | **FE-01** | Authentication & Profile | `features/auth/` | `modules/auth_and_users/` |
 | **FE-02** | Destination Discovery | `features/destination_discovery/` | Firestore `destinations` |
@@ -76,7 +76,7 @@
 ---
 
 ## 5. Quy Tắc Phát Triển Cho Các Phiên Làm Việc Tiếp Theo
-1. **Frontend**:
+1. **Mobile (Flutter)**:
    - Tuân thủ nghiêm ngặt 3 tầng Clean Architecture tại từng feature (`data/`, `domain/`, `presentation/`).
    - Mọi state management dùng `flutter_bloc`, điều hướng dùng `go_router`, dependency injection dùng `get_it`.
    - Tất cả text hiển thị trên UI phải dùng localization (`vi`, `en`, `ko`, `zh`).

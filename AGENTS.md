@@ -77,7 +77,7 @@ Mỗi khi người dùng đưa ra yêu cầu lập trình (code tính năng mớ
      - **Màu sắc**: Bắt buộc dùng `AppColors` (`core/constants/app_colors.dart`), không hard-code mã màu hex ngẫu nhiên.
      - **Khoảng cách**: Dùng `AppDimensions` (`core/constants/app_dimensions.dart` với hệ spacing 4, 8, 12, 16, 24, 32, 48).
      - **Typography**: Dùng `AppTheme` (`core/theme/app_theme.dart`).
-     - **Tái sử dụng**: Dùng các component đã chuẩn hóa trong `Frontend/lib/shared/widgets/` (`TourismCard`, `DestinationCard`, `PrimaryButton`, `CategoryChip`, `TourismSearchBar`, v.v.).
+     - **Tái sử dụng**: Dùng các component đã chuẩn hóa trong `Mobile/lib/shared/widgets/` (`TourismCard`, `DestinationCard`, `PrimaryButton`, `CategoryChip`, `TourismSearchBar`, v.v.).
 
 #### 💻 Giai Đoạn 3: Lập Trình & Sửa Lỗi (Implementation & Debugging)
 - **Khi nào áp dụng**: Khi bắt tay vào viết code hoặc điều tra lỗi.

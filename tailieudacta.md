@@ -2,7 +2,7 @@
 
 > **Chỉ dẫn bắt buộc dành cho Claude Code**:
 > Tài liệu này là nguồn tham chiếu chuẩn xác nhất (Single Source of Truth) được trích xuất từ báo cáo Capstone Project Report 1 của dự án **SmartTravel**[cite: 10].
-> - Toàn bộ mã nguồn Frontend đặt tại: `DoAn_SP27/Frontend/`[cite: 9].
+> - Toàn bộ mã nguồn Mobile đặt tại: `DoAn_SP27/Mobile/`[cite: 9].
 > - Toàn bộ mã nguồn Backend đặt tại: `DoAn_SP27/Backend/`[cite: 9].
 > - Trước khi viết code cho bất kỳ màn hình hay API nào, BẮT BUỘC phải đối chiếu đúng mã chức năng (`FE-01` -> `FE-28`) và tuân thủ nghiêm ngặt các giới hạn kỹ thuật (`LI-01` -> `LI-11`) bên dưới[cite: 10]. Tuyệt đối không tự ý thêm các tính năng nằm ngoài phạm vi dự án (như đặt vé máy bay, vận hành khách sạn hay thương mại điện tử toàn diện theo `LI-11`)[cite: 10].
 
@@ -54,7 +54,7 @@ Khi tạo file mới, Claude Code phải đặt đúng vào cấu trúc Monorepo
 DoAn_SP27/
 ├── CLAUDE.md                                   # Tài liệu đặc tả dự án dành cho AI Agent
 ├── README.md                                   # Tài liệu hướng dẫn cài đặt
-├── Frontend/                                   # ỨNG DỤNG FLUTTER (DoAn_SP27/Frontend/)
+├── Mobile/                                     # ỨNG DỤNG FLUTTER (DoAn_SP27/Mobile/)
 │   ├── pubspec.yaml
 │   ├── assets/                                 # images, icons, animations, translations (vi, en, ko, zh)
 │   └── lib/
