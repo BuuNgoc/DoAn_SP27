@@ -25,6 +25,7 @@ Dự án được tổ chức theo mô hình **Monorepo**:
 NHS360/
 ├── Mobile/             # Ứng dụng du lịch đa nền tảng Flutter (Mobile & Web)
 ├── Backend/            # Cloud Functions (TypeScript) & Cấu hình Firestore / Storage
+├── AI_Service/         # Trung tâm huấn luyện AI tự quản (Landmark, Stone Craft, Sentiment)
 ├── docker-compose.yml  # Điều phối môi trường Container hóa toàn bộ hệ thống
 ├── run_docker.bat      # Script 1-click chạy Docker trên Windows
 ├── run_docker.sh       # Script chạy Docker trên Linux/macOS

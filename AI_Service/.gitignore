@@ -1,0 +1,15 @@
+# Python & Virtualenv
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Training artifacts & datasets
+dataset/
+exported_model/
+*.tflite
+*.h5
+*.png
+.ipynb_checkpoints/

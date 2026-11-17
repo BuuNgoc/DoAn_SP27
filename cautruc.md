@@ -96,6 +96,13 @@ DoAn_SP27/
                 ├── checkin_and_loyalty/        # [FE-08, FE-09, FE-20] QR signature verification, Point calc, Reward redeem
                 ├── reviews_and_moderation/     # [FE-10] Auto rating recalculation trigger, Review reporting
                 └── analytics_and_system/       # [FE-25, FE-28] Scheduled stats aggregation, Report export, Backup
+│
+├── AI_Service/                                 # MACHINE LEARNING & AI TRAINING HUB
+│   ├── requirements.txt
+│   ├── shared/                                 # tflite_utils.py, visualization.py
+│   ├── landmark_recognition/                   # [FE-05] MobileNetV3 TFLite Landmark Classifier
+│   ├── stone_craft_recognition/                # [FE-15, FE-16] Non Nuoc Stone Sculpture Classifier
+│   └── review_sentiment_analysis/              # [FE-10] Tourist Review Sentiment & Moderation NLP
 ~~~
 
 ---
