@@ -1,0 +1,60 @@
+{
+  "model_name": "NHS360_NguHanhSon_Landmark_Classifier",
+  "version": "1.0.0",
+  "architecture": "MobileNetV3-Small",
+  "input_shape": [1, 224, 224, 3],
+  "num_classes": 10,
+  "preprocessing": "preprocess_input_mobilenet_v3 (-1 to 1)",
+  "classes": [
+    {
+      "id": "dong_huyen_khong",
+      "name": "Động Huyền Không",
+      "destinationId": "dong_huyen_khong"
+    },
+    {
+      "id": "chua_tam_thai",
+      "name": "Chùa Tam Thai",
+      "destinationId": "chua_tam_thai"
+    },
+    {
+      "id": "chua_linh_ung",
+      "name": "Chùa Linh Ứng Non Nước",
+      "destinationId": "chua_linh_ung_non_nuoc"
+    },
+    {
+      "id": "dong_van_thong",
+      "name": "Động Vân Thông",
+      "destinationId": "ngu_hanh_son"
+    },
+    {
+      "id": "dong_am_phu",
+      "name": "Động Âm Phủ",
+      "destinationId": "dong_am_phu"
+    },
+    {
+      "id": "lang_da_non_nuoc",
+      "name": "Làng đá Mỹ nghệ Non Nước",
+      "destinationId": "lang_da_non_nuoc"
+    },
+    {
+      "id": "vong_giang_dai",
+      "name": "Vọng Giang Đài",
+      "destinationId": "ngu_hanh_son"
+    },
+    {
+      "id": "dinh_thuong_thai",
+      "name": "Đỉnh Thượng Thai",
+      "destinationId": "ngu_hanh_son"
+    },
+    {
+      "id": "chua_quan_the_am",
+      "name": "Chùa Quán Thế Âm",
+      "destinationId": "ngu_hanh_son"
+    },
+    {
+      "id": "bai_bien_son_thuy",
+      "name": "Bãi biển Sơn Thủy",
+      "destinationId": "bai_bien_son_thuy"
+    }
+  ]
+}
