@@ -21,6 +21,9 @@ emulator-data/
 .env.*
 !.env.example
 Backend/functions/lib/
+*serviceAccountKey*.json
+serviceAccountKey.json
+serviceAccountKey.json.json
 
 # Flutter & Dart
 .dart_tool/

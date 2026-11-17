@@ -1,0 +1,2875 @@
+{
+  "users": {
+    "user_admin_bql": {
+      "uid": "user_admin_bql",
+      "fullName": "Nguyễn Văn An",
+      "email": "bql.nguhanhson@danang.gov.vn",
+      "phoneNumber": "+842363847250",
+      "avatarUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/avatars/admin_bql.jpg",
+      "status": "ACTIVE",
+      "isActive": true,
+      "loyaltyPoints": 0,
+      "totalEarnedPoints": 0,
+      "favoriteDestinationIds": [
+        "dest_thuy_son",
+        "dest_huyen_khong",
+        "dest_tam_thai"
+      ],
+      "nationality": "VN",
+      "preferredLanguage": "vi",
+      "preferences": {
+        "language": "vi",
+        "currency": "VND",
+        "notificationsEnabled": true,
+        "theme": "system",
+        "autoPlayAudio": false
+      },
+      "travelInterests": [
+        "heritage_management",
+        "conservation",
+        "cultural_tourism"
+      ],
+      "customClaims": {
+        "role": "ADMIN",
+        "department": "Ban Quản lý Di tích Danh thắng Ngũ Hành Sơn",
+        "permissions": [
+          "all"
+        ]
+      },
+      "role": "ADMIN",
+      "createdAt": "2024-01-01T08:00:00Z",
+      "updatedAt": "2024-10-01T09:00:00Z"
+    },
+    "user_manager_bql": {
+      "uid": "user_manager_bql",
+      "fullName": "Trần Thị Thu Hà",
+      "email": "thuha.bql@danang.gov.vn",
+      "phoneNumber": "+84905123456",
+      "avatarUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/avatars/manager_thuha.jpg",
+      "status": "ACTIVE",
+      "isActive": true,
+      "loyaltyPoints": 0,
+      "totalEarnedPoints": 0,
+      "favoriteDestinationIds": [
+        "dest_quan_the_am",
+        "dest_non_nuoc"
+      ],
+      "nationality": "VN",
+      "preferredLanguage": "vi",
+      "preferences": {
+        "language": "vi",
+        "currency": "VND",
+        "notificationsEnabled": true,
+        "theme": "system",
+        "autoPlayAudio": true
+      },
+      "travelInterests": [
+        "traditional_festivals",
+        "stone_craft_heritage",
+        "event_organization"
+      ],
+      "customClaims": {
+        "role": "TOURISM_MANAGER",
+        "department": "Tổ Nghiệp vụ Du lịch & Sự kiện",
+        "assignedZone": "ngu_hanh_son_district"
+      },
+      "role": "TOURISM_MANAGER",
+      "createdAt": "2024-01-15T08:30:00Z",
+      "updatedAt": "2024-10-15T14:00:00Z"
+    },
+    "user_tourist_vn1": {
+      "uid": "user_tourist_vn1",
+      "fullName": "Nguyễn Ngọc Bữu",
+      "email": "buunnde180722@fpt.edu.vn",
+      "phoneNumber": "+84822835695",
+      "avatarUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/avatars/tourist_ngocbuu.jpg",
+      "status": "ACTIVE",
+      "isActive": true,
+      "loyaltyPoints": 280,
+      "totalEarnedPoints": 450,
+      "favoriteDestinationIds": [
+        "dest_thuy_son",
+        "dest_huyen_khong",
+        "dest_tam_thai",
+        "dest_non_nuoc"
+      ],
+      "nationality": "VN",
+      "preferredLanguage": "vi",
+      "preferences": {
+        "language": "vi",
+        "currency": "VND",
+        "notificationsEnabled": true,
+        "theme": "dark",
+        "autoPlayAudio": true
+      },
+      "travelInterests": [
+        "lịch sử triều Nguyễn",
+        "văn hóa Phật giáo Champa",
+        "hang động kỳ vĩ",
+        "nghệ thuật điêu khắc đá Non Nước",
+        "chụp ảnh phong cảnh"
+      ],
+      "customClaims": {
+        "role": "TOURIST"
+      },
+      "role": "TOURIST",
+      "createdAt": "2024-03-01T07:15:00Z",
+      "updatedAt": "2024-11-10T16:20:00Z"
+    },
+    "user_tourist_vn2": {
+      "uid": "user_tourist_vn2",
+      "fullName": "Trần Mai Linh",
+      "email": "mailinh.traveler@gmail.com",
+      "phoneNumber": "+84988776655",
+      "avatarUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/avatars/tourist_mailinh.jpg",
+      "status": "ACTIVE",
+      "isActive": true,
+      "loyaltyPoints": 140,
+      "totalEarnedPoints": 240,
+      "favoriteDestinationIds": [
+        "dest_son_thuy",
+        "dest_an_thuong",
+        "dest_vong_giang_dai"
+      ],
+      "nationality": "VN",
+      "preferredLanguage": "vi",
+      "preferences": {
+        "language": "vi",
+        "currency": "VND",
+        "notificationsEnabled": true,
+        "theme": "light",
+        "autoPlayAudio": false
+      },
+      "travelInterests": [
+        "ngắm bình minh bãi biển",
+        "ẩm thực phố An Thượng",
+        "check-in sống ảo",
+        "cà phê ngắm cảnh sông Cổ Cò",
+        "làm đồ thủ công lưu niệm"
+      ],
+      "customClaims": {
+        "role": "TOURIST"
+      },
+      "role": "TOURIST",
+      "createdAt": "2024-04-12T10:00:00Z",
+      "updatedAt": "2024-11-12T11:45:00Z"
+    },
+    "user_tourist_intl1": {
+      "uid": "user_tourist_intl1",
+      "fullName": "James Harrison",
+      "email": "james.harrison.uk@gmail.com",
+      "phoneNumber": "+447911123456",
+      "avatarUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/avatars/tourist_james.jpg",
+      "status": "ACTIVE",
+      "isActive": true,
+      "loyaltyPoints": 350,
+      "totalEarnedPoints": 600,
+      "favoriteDestinationIds": [
+        "dest_huyen_khong",
+        "dest_am_phu",
+        "dest_non_nuoc"
+      ],
+      "nationality": "GB",
+      "preferredLanguage": "en",
+      "preferences": {
+        "language": "en",
+        "currency": "USD",
+        "notificationsEnabled": true,
+        "theme": "system",
+        "autoPlayAudio": true
+      },
+      "travelInterests": [
+        "Champa archaeology and inscriptions",
+        "Buddhist cave temples and sacred art",
+        "authentic marble carving workshops",
+        "historical battlefield sites",
+        "architectural photography"
+      ],
+      "customClaims": {
+        "role": "TOURIST"
+      },
+      "role": "TOURIST",
+      "createdAt": "2024-05-02T13:40:00Z",
+      "updatedAt": "2024-11-05T09:10:00Z"
+    },
+    "user_tourist_intl2": {
+      "uid": "user_tourist_intl2",
+      "fullName": "Park Ji-hoon",
+      "email": "jihoon.park.danang@naver.com",
+      "phoneNumber": "+821098765432",
+      "avatarUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/avatars/tourist_jihoon.jpg",
+      "status": "ACTIVE",
+      "isActive": true,
+      "loyaltyPoints": 190,
+      "totalEarnedPoints": 310,
+      "favoriteDestinationIds": [
+        "dest_thuy_son",
+        "dest_son_thuy",
+        "dest_an_thuong"
+      ],
+      "nationality": "KR",
+      "preferredLanguage": "ko",
+      "preferences": {
+        "language": "ko",
+        "currency": "KRW",
+        "notificationsEnabled": true,
+        "theme": "system",
+        "autoPlayAudio": true
+      },
+      "travelInterests": [
+        "mountain hiking with panoramic coastal views",
+        "marble mountain glass elevator experience",
+        "relaxing luxury resort beach walk",
+        "Korean friendly seafood and night markets",
+        "stone carving gift shopping"
+      ],
+      "customClaims": {
+        "role": "TOURIST"
+      },
+      "role": "TOURIST",
+      "createdAt": "2024-06-18T08:20:00Z",
+      "updatedAt": "2024-11-14T20:30:00Z"
+    }
+  },
+  "categories": {
+    "cat_hang_dong": {
+      "id": "cat_hang_dong",
+      "name": {
+        "vi": "Hang động kỳ vĩ",
+        "en": "Mystical Caves & Grottoes",
+        "ko": "신비로운 동굴",
+        "zh": "神秘洞穴"
+      },
+      "description": {
+        "vi": "Hệ thống hang động tự nhiên ngàn năm kiến tạo đá vôi, cẩm thạch huyền ảo gắn liền với tín ngưỡng tâm linh (Động Huyền Không, Động Âm Phủ, Động Hoa Nghiêm, Động Tàng Chơn...).",
+        "en": "Millennia-old natural limestone and marble caves intertwined with Buddhist legends and sacred sanctuaries.",
+        "ko": "수천 년의 역사를 품은 천연 석회암 대리석 동굴과 불교 유적지.",
+        "zh": "历经千年的天然石灰石与大理石洞穴，蕴含深厚的佛教文化与传说。"
+      },
+      "iconName": "cave",
+      "color": "#4A2C2A",
+      "displayOrder": 1,
+      "isActive": true,
+      "destinationCount": 3,
+      "createdAt": "2024-01-01T00:00:00Z"
+    },
+    "cat_den_chua": {
+      "id": "cat_den_chua",
+      "name": {
+        "vi": "Đền chùa & Cổ tự",
+        "en": "Sacred Pagodas & Temples",
+        "ko": "사찰 및 사원",
+        "zh": "寺庙与古刹"
+      },
+      "description": {
+        "vi": "Quần thể cổ tự hàng trăm năm tuổi ngự trên non xanh nước biếc, mang sắc phong Quốc tự triều Nguyễn (Chùa Tam Thai, Chùa Linh Ứng Ngũ Hành Sơn, Chùa Quán Thế Âm...).",
+        "en": "Centuries-old pagodas holding Imperial Royal Temple honors from the Nguyen Dynasty, set amidst limestone peaks.",
+        "ko": "응우옌 왕조의 국사 칭호를 받은 수백 년 역사의 유서 깊은 고찰들.",
+        "zh": "数百年的古寺，曾获阮朝国寺御赐封号，坐落于奇峰翠壁之中。"
+      },
+      "iconName": "temple_buddhist",
+      "color": "#D35400",
+      "displayOrder": 2,
+      "isActive": true,
+      "destinationCount": 3,
+      "createdAt": "2024-01-01T00:00:00Z"
+    },
+    "cat_lang_nghe": {
+      "id": "cat_lang_nghe",
+      "name": {
+        "vi": "Làng nghề Điêu khắc đá Non Nước",
+        "en": "Non Nuoc Stone Carving Craft Village",
+        "ko": "논누옥 석조각 공예 마을",
+        "zh": "弄诺石雕传统手工艺村"
+      },
+      "description": {
+        "vi": "Di sản Văn hóa Phi vật thể Quốc gia với hơn 400 năm lịch sử thổi hồn vào đá cẩm thạch của các nghệ nhân tài hoa dưới chân núi Ngũ Hành.",
+        "en": "National Intangible Cultural Heritage boasting over 400 years of stone carving mastery beneath the Marble Mountains.",
+        "ko": "400년 이상의 역사를 자랑하는 베트남 국가 무형문화유산 논누옥 대리석 공예 마을.",
+        "zh": "拥有400余年历史的国家级非物质文化遗产，展现精湛的天然大理石雕刻技艺。"
+      },
+      "iconName": "handyman",
+      "color": "#27AE60",
+      "displayOrder": 3,
+      "isActive": true,
+      "destinationCount": 1,
+      "createdAt": "2024-01-01T00:00:00Z"
+    },
+    "cat_bien": {
+      "id": "cat_bien",
+      "name": {
+        "vi": "Bãi biển & Du lịch sinh thái",
+        "en": "Beaches & Coastal Tourism",
+        "ko": "해변 및 생태 관광",
+        "zh": "海滩与生态旅游"
+      },
+      "description": {
+        "vi": "Bãi biển Sơn Thủy - Tân Trà hoang sơ, bờ cát trắng thoai thoải, nước biển trong xanh, thích hợp tắm biển, ngắm bình minh và thể thao biển.",
+        "en": "Pristine white sandy coastline stretching from Son Thuy to Tan Tra, ideal for sunrise viewing and water sports.",
+        "ko": "고운 백사장과 맑은 바다가 어우러진 손투이 해변으로 일출과 해양 스포츠의 명소.",
+        "zh": "细腻平缓的白沙滩与清澈蔚蓝的海水，是欣赏海上日出与亲水休闲的绝佳之地。"
+      },
+      "iconName": "beach_access",
+      "color": "#2980B9",
+      "displayOrder": 4,
+      "isActive": true,
+      "destinationCount": 1,
+      "createdAt": "2024-01-01T00:00:00Z"
+    },
+    "cat_an_thuong": {
+      "id": "cat_an_thuong",
+      "name": {
+        "vi": "Phố đêm An Thượng & Dịch vụ",
+        "en": "An Thuong Tourist Quarter & Nightlife",
+        "ko": "안트엉 관광 거리 및 나이트라이프",
+        "zh": "安尚旅游步行街区与夜生活"
+      },
+      "description": {
+        "vi": "Khu phố du lịch đêm quốc tế sôi động bậc nhất Đà Nẵng với chuỗi phố đi bộ, nhà hàng đa quốc gia, quán bar và dịch vụ giải trí 24/7.",
+        "en": "Da Nang's vibrant international walking quarter packed with multi-cuisine dining, chill bars, and 24/7 entertainment.",
+        "ko": "다양한 세계 요리, 라이브 바, 야간 쇼핑을 즐길 수 있는 다낭 최고의 글로벌 관광 특구.",
+        "zh": "岘港最活跃的国际旅游步行街，汇聚各国美食、酒吧、咖啡馆与夜间文娱服务。"
+      },
+      "iconName": "nightlife",
+      "color": "#8E44AD",
+      "displayOrder": 5,
+      "isActive": true,
+      "destinationCount": 1,
+      "createdAt": "2024-01-01T00:00:00Z"
+    }
+  },
+  "destinations": {
+    "dest_thuy_son": {
+      "id": "dest_thuy_son",
+      "name": {
+        "vi": "Ngọn Thủy Sơn (Núi Nước)",
+        "en": "Thuy Son Peak (Water Mountain)",
+        "ko": "투이선 (수산 - 물의 산)",
+        "zh": "水山（五行山主峰）"
+      },
+      "category": "cat_hang_dong",
+      "zone": "thuy_son_complex",
+      "overview": {
+        "vi": "Ngọn Thủy Sơn là ngọn núi lớn, cao nhất (106m) và kỳ vĩ nhất trong quần thể Di tích Quốc gia đặc biệt Ngũ Hành Sơn. Nơi đây tập trung hầu hết các cổ tự danh tiếng như Chùa Tam Thai, Chùa Linh Ứng và chuỗi hang động lừng danh thế giới như Động Huyền Không, Động Tàng Chơn, Động Hoa Nghiêm cùng hai đài ngắm cảnh Vọng Giang Đài và Vọng Hải Đài.",
+        "en": "Thuy Son is the grandest, highest (106m), and most culturally significant peak of the Marble Mountains Special National Monument. It hosts historic royal pagodas like Tam Thai and Linh Ung, magnificent natural grottos including Huyen Khong, and panoramic viewpoints overlooking the East Sea and Da Nang."
+      },
+      "culturalHistoricalInfo": {
+        "vi": "Vào thế kỷ XIX, Vua Minh Mạng đã nhiều lần ngự giá tuần du đến Thủy Sơn, sắc phong Tam Thai làm Quốc tự, cho tôn tạo đường bậc đá tam cấp và xây dựng Vọng Giang Đài, Vọng Hải Đài. Trong kháng chiến chống Pháp và Mỹ, các hang động trên núi là căn cứ bí mật kiên cường của quân dân vùng Quảng Nam - Đà Nẵng.",
+        "en": "In the 19th century, King Minh Mang visited Thuy Son multiple times, conferring National Temple status upon Tam Thai Pagoda and constructing stone staircases and observatories. During the Vietnam wars, its grottos served as a strategic hidden base and medical station."
+      },
+      "location": {
+        "geopoint": {
+          "latitude": 16.0041,
+          "longitude": 108.2635
+        },
+        "geohash": "w6bcv9",
+        "address": {
+          "vi": "Số 81 đường Huyền Trân Công Chúa, phường Hòa Hải, quận Ngũ Hành Sơn, TP. Đà Nẵng",
+          "en": "81 Huyen Tran Cong Chua St, Hoa Hai Ward, Ngu Hanh Son District, Da Nang City"
+        }
+      },
+      "openingHours": {
+        "open": "07:00",
+        "close": "17:30",
+        "note": {
+          "vi": "Mở cửa tất cả các ngày trong tuần (kể cả Lễ, Tết). Hệ thống thang máy kính vận hành từ 07:00 đến 17:00.",
+          "en": "Open daily including public holidays. Glass elevator operates 07:00 - 17:00."
+        }
+      },
+      "ticketPrice": {
+        "adult": 40000,
+        "student": 10000,
+        "childUnder6": 0,
+        "elevatorOneWay": 15000,
+        "elevatorRoundTrip": 30000,
+        "currency": "VND"
+      },
+      "images": [
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/thuy_son_panoramic.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/thuy_son_stairs.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/thuy_son_elevator.jpg"
+      ],
+      "hasVr360": true,
+      "hasAudioGuide": true,
+      "ratingAvg": 4.8,
+      "reviewCount": 420,
+      "isPublished": true,
+      "estimatedVisitDuration": "2 - 3 giờ",
+      "tags": [
+        "di_tich_quoc_gia_dac_biet",
+        "chua_chiền",
+        "hang_dong",
+        "panoramic_view",
+        "thang_may_kinh"
+      ],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z"
+    },
+    "dest_huyen_khong": {
+      "id": "dest_huyen_khong",
+      "name": {
+        "vi": "Động Huyền Không",
+        "en": "Huyen Khong Cave",
+        "ko": "후옌콩 동굴",
+        "zh": "玄空洞"
+      },
+      "category": "cat_hang_dong",
+      "zone": "thuy_son_complex",
+      "overview": {
+        "vi": "Động Huyền Không được đánh giá là hang động lộ thiên tráng lệ và linh thiêng nhất quần thể Ngũ Hành Sơn. Động có vòm hình chuông úp ngược, trần hang thủng 5 lỗ giếng trời tự nhiên (Ngũ Thông Động) tạo nên những luồng ánh sáng mặt trời huyền bí soi rọi pho tượng Phật Thích Ca Mâu Ni uy nghiêm ngự trên vách đá cao.",
+        "en": "Huyen Khong is celebrated as the most spectacular and sacred open-roof cave in the Marble Mountains. Its cathedral-like dome features five natural skylights casting ethereal sunbeams onto an ancient stone Shakyamuni Buddha carved directly into the rock face."
+      },
+      "culturalHistoricalInfo": {
+        "vi": "Trước khi Phật giáo du nhập sâu sắc, đây từng là đền thờ Ấn Độ giáo của cư dân Chăm Pa cổ (vẫn còn dấu tích bệ thờ Yoni - Linga). Trong kháng chiến chống Mỹ, động Huyền Không được cách mạng bí mật sử dụng làm trạm phẫu thuật tiền phương của quân y và nơi tập kích an toàn của lực lượng vũ trang địa phương.",
+        "en": "Prior to Mahayana Buddhism, this cave served as an ancient Champa Hindu sanctuary, evident by Champa reliefs. During the Vietnam War, it functioned as a clandestine frontline surgical clinic and garrison for local resistance fighters."
+      },
+      "location": {
+        "geopoint": {
+          "latitude": 16.0036,
+          "longitude": 108.2634
+        },
+        "geohash": "w6bcv9",
+        "address": {
+          "vi": "Lưng chừng núi Thủy Sơn (lối qua Động Hoa Nghiêm), Ngũ Hành Sơn, Đà Nẵng",
+          "en": "Midway up Thuy Son Mountain (accessible via Hoa Nghiem Cave), Ngu Hanh Son, Da Nang"
+        }
+      },
+      "openingHours": {
+        "open": "07:00",
+        "close": "17:30",
+        "note": {
+          "vi": "Thời điểm chiêm ngưỡng luồng sáng tự nhiên đẹp nhất là từ 10:00 đến 12:30 vào những ngày trời nắng.",
+          "en": "Best sunbeam illumination occurs between 10:00 AM and 12:30 PM on sunny days."
+        }
+      },
+      "ticketPrice": {
+        "adult": 0,
+        "student": 0,
+        "note": {
+          "vi": "Bao gồm trong vé tham quan Núi Thủy Sơn (40.000 VNĐ)",
+          "en": "Included in general Thuy Son entrance ticket (40,000 VND)"
+        },
+        "currency": "VND"
+      },
+      "images": [
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/huyen_khong_skylight.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/huyen_khong_buddha.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/huyen_khong_altar.jpg"
+      ],
+      "hasVr360": true,
+      "hasAudioGuide": true,
+      "ratingAvg": 4.9,
+      "reviewCount": 650,
+      "isPublished": true,
+      "estimatedVisitDuration": "45 - 60 phút",
+      "tags": [
+        "gieng_troi",
+        "tuong_phat_da",
+        "di_tich_lich_su",
+        "champa",
+        "photography_hotspot"
+      ],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z",
+      "__collections__": {
+        "vr360_contents": {
+          "vr_hk_01": {
+            "id": "vr_hk_01",
+            "destinationId": "dest_huyen_khong",
+            "title": {
+              "vi": "Toàn cảnh 360° Động Huyền Không – Giếng Trời Ngũ Thông",
+              "en": "360° Panorama: Huyen Khong Cave Skylight Sanctuary"
+            },
+            "description": {
+              "vi": "Khám phá góc nhìn 360 độ từ trung tâm lòng Động Huyền Không, nơi 5 lỗ thông sáng tự nhiên rọi những luồng ánh sáng mặt trời chiếu sáng pho tượng Phật Thích Ca Mâu Ni tạc trên vách đá cao.",
+              "en": "360-degree immersive view from the heart of Huyen Khong Cave, capturing celestial skylight shafts illuminating the cliff-carved Shakyamuni Buddha."
+            },
+            "panoramaUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/vr360/real/huyen_khong_skylight_8k.jpg",
+            "thumbnailUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/vr360/real/huyen_khong_thumb.jpg",
+            "hotspots": [
+              {
+                "id": "hs_hk_buddha",
+                "type": "info",
+                "position": {
+                  "pitch": 18.5,
+                  "yaw": 2.4
+                },
+                "title": {
+                  "vi": "Tôn tượng Đức Phật Thích Ca Mâu Ni",
+                  "en": "Cliff-carved Shakyamuni Buddha"
+                },
+                "description": {
+                  "vi": "Pho tượng được tạc trực tiếp vào vách đá cẩm thạch tự nhiên từ thời cụ Nguyễn Tri Phương chỉ huy quân dân giữ phòng tuyến Đà Nẵng thế kỷ XIX.",
+                  "en": "Carved directly into living marble in the 19th century by master Non Nuoc craftsmen."
+                }
+              },
+              {
+                "id": "hs_hk_champa",
+                "type": "info",
+                "position": {
+                  "pitch": -12,
+                  "yaw": -85
+                },
+                "title": {
+                  "vi": "Dấu tích Đền thờ Ấn Độ giáo Champa",
+                  "en": "Ancient Champa Altar Relics"
+                },
+                "description": {
+                  "vi": "Vị trí bệ thờ đá cổ nơi người Champa từng phụng thờ Thần Shiva trước thế kỷ XIV.",
+                  "en": "Ancient stone sanctuary where Cham people worshipped Lord Shiva prior to the 14th century."
+                }
+              }
+            ],
+            "displayOrder": 1,
+            "isPublished": true,
+            "viewCount": 8940,
+            "createdAt": "2024-01-01T00:00:00Z",
+            "updatedAt": "2024-11-01T00:00:00Z"
+          }
+        },
+        "audio_guides": {
+          "audio_hk_vi": {
+            "id": "audio_hk_vi",
+            "destinationId": "dest_huyen_khong",
+            "language": "vi",
+            "title": "Thuyết minh Di tích Động Huyền Không",
+            "description": "Bài thuyết minh chuẩn di sản văn hóa về nguồn gốc địa chất, dấu tích Chăm Pa, thời kỳ triều Nguyễn và huyền thoại ánh sáng Động Huyền Không.",
+            "transcript": "Chào mừng quý khách đến với Động Huyền Không, viên ngọc quý linh thiêng bậc nhất trong lòng núi Thủy Sơn thuộc Danh thắng Ngũ Hành Sơn. Bước chân qua vòm cửa đá phủ rêu phong, quý khách đang đứng dưới một mái vòm đá vôi tự nhiên khổng lồ. Hãy ngước nhìn lên cao: năm lỗ thủng tự nhiên trên trần hang, gọi là Ngũ Thông Động, chính là cánh cửa của trời mở vào lòng đất...",
+            "audioUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/audio/real/huyen_khong_vi_heritage.mp3",
+            "durationSeconds": 340,
+            "fileSize": 5440000,
+            "narrator": "Ban Quản lý Di tích Danh thắng Ngũ Hành Sơn - Giọng đọc miền Trung truyền cảm",
+            "isPublished": true,
+            "playCount": 7820,
+            "createdAt": "2024-01-01T00:00:00Z",
+            "updatedAt": "2024-11-01T00:00:00Z"
+          },
+          "audio_hk_en": {
+            "id": "audio_hk_en",
+            "destinationId": "dest_huyen_khong",
+            "language": "en",
+            "title": "Huyen Khong Cave Heritage Audio Guide",
+            "description": "Comprehensive narration detailing geological formation, sacred Hindu-Buddhist evolution, and war history of Huyen Khong Cave.",
+            "transcript": "Welcome to Huyen Khong Cave, the spiritual crown jewel of the Marble Mountains. As you step down into this natural cathedral, glance upwards at the cavern roof. Five natural skylights pierce the marble dome, channeling heavenly beams of daylight directly upon the solemn statue of Shakyamuni Buddha chiseled high into the cliff wall...",
+            "audioUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/audio/real/huyen_khong_en_heritage.mp3",
+            "durationSeconds": 315,
+            "fileSize": 5040000,
+            "narrator": "Official English Heritage Narration",
+            "isPublished": true,
+            "playCount": 5120,
+            "createdAt": "2024-01-01T00:00:00Z",
+            "updatedAt": "2024-11-01T00:00:00Z"
+          }
+        },
+        "reviews": {
+          "rev_hk_real_01": {
+            "id": "rev_hk_real_01",
+            "userId": "user_tourist_vn1",
+            "userName": "Nguyễn Ngọc Bữu",
+            "userAvatarUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/avatars/tourist_ngocbuu.jpg",
+            "destinationId": "dest_huyen_khong",
+            "rating": 5,
+            "title": "Hang động lộ thiên đẹp nhất từng được chứng kiến tại Việt Nam",
+            "content": "Tôi đến Động Huyền Không lúc 11h trưa đúng như gợi ý của ứng dụng SmartTravel, ánh nắng mặt trời rọi thẳng qua 5 lỗ giếng trời tự nhiên (Ngũ Thông Động) tạo thành những luồng hào quang huyền ảo rọi lên pho tượng Phật Thích Ca trên vách đá. Cảm giác vô cùng linh thiêng và xúc động. Bài thuyết minh Audio Guide trong app rất sâu sắc khi nói về bệ thờ Champa cổ và trạm phẫu thuật tiền phương thời chiến tranh.",
+            "images": [
+              "https://storage.googleapis.com/smarttravel-se13.appspot.com/reviews/real/hk_sunbeam_01.jpg",
+              "https://storage.googleapis.com/smarttravel-se13.appspot.com/reviews/real/hk_buddha_cliff_02.jpg"
+            ],
+            "language": "vi",
+            "isReported": false,
+            "helpfulCount": 42,
+            "createdAt": "2024-11-10T12:30:00+07:00",
+            "updatedAt": "2024-11-10T12:30:00+07:00"
+          },
+          "rev_hk_real_02": {
+            "id": "rev_hk_real_02",
+            "userId": "user_tourist_intl1",
+            "userName": "James Harrison",
+            "userAvatarUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/avatars/tourist_james.jpg",
+            "destinationId": "dest_huyen_khong",
+            "rating": 5,
+            "title": "A cathedral of nature – Unforgettable Buddhist sanctuary",
+            "content": "Huyen Khong Cave exceeded all my expectations. The natural cave ceiling feels like a grand Gothic cathedral sculpted by nature over millions of years. As an archaeology enthusiast, seeing the preserved Cham brick foundations and the stone-carved Buddha in person was breathtaking. Audio guide was very accurate in historical details. Highly recommend visiting around noon on a clear day.",
+            "images": [
+              "https://storage.googleapis.com/smarttravel-se13.appspot.com/reviews/real/hk_james_archaeology.jpg"
+            ],
+            "language": "en",
+            "isReported": false,
+            "helpfulCount": 35,
+            "createdAt": "2024-11-11T13:45:00+07:00",
+            "updatedAt": "2024-11-11T13:45:00+07:00"
+          }
+        }
+      }
+    },
+    "dest_am_phu": {
+      "id": "dest_am_phu",
+      "name": {
+        "vi": "Động Âm Phủ",
+        "en": "Am Phu Cave (Hell Cave)",
+        "ko": "암푸 동굴 (지옥 동굴)",
+        "zh": "阴府洞（地狱洞）"
+      },
+      "category": "cat_hang_dong",
+      "zone": "am_phu_zone",
+      "overview": {
+        "vi": "Nằm ngay dưới chân núi Thủy Sơn, Động Âm Phủ là hang động tự nhiên dài và sâu nhất trong quần thể Ngũ Hành Sơn. Động được phục dựng độc đáo theo triết lý luân hồi quả báo của Phật giáo với hình tượng 18 tầng địa ngục, cầu Nại Hà, đài Phán Quan, vạc dầu sôi và ngõ rẽ hướng lên Cổng Thiên Đường chan hòa ánh sáng.",
+        "en": "Located at the foot of Thuy Son Mountain, Am Phu Cave is the longest and deepest cave in the Marble Mountains. It vividly manifests Buddhist concepts of karma and reincarnation through subterranean chambers depicting the 18 levels of Hell, the Nai He Bridge, and the contrasting ascent to Heavenly Light."
+      },
+      "culturalHistoricalInfo": {
+        "vi": "Tương truyền vua Minh Mạng khi kinh lý Ngũ Hành Sơn đã từng cử quan quân thắp đuốc thám hiểm hang động sâu thẳm này. Hang động mang ý nghĩa giáo dục con người hướng thiện, tránh xa điều ác, tôn trọng đạo lý nhân quả.",
+        "en": "According to legend, Emperor Minh Mang sent soldiers with flaming torches to explore this mysterious abyss. The cave serves as an allegorical moral journey encouraging righteous deeds and ethical living."
+      },
+      "location": {
+        "geopoint": {
+          "latitude": 16.0044,
+          "longitude": 108.2638
+        },
+        "geohash": "w6bcv9",
+        "address": {
+          "vi": "Đường Huyền Trân Công Chúa (cạnh lối lên cổng số 1 Thủy Sơn), phường Hòa Hải, quận Ngũ Hành Sơn, Đà Nẵng",
+          "en": "Huyen Tran Cong Chua St (beside Gate 1 of Thuy Son), Hoa Hai Ward, Ngu Hanh Son, Da Nang"
+        }
+      },
+      "openingHours": {
+        "open": "07:00",
+        "close": "17:30",
+        "note": {
+          "vi": "Mở cửa liên tục cả ngày. Bậc thang trong hang có đoạn dốc, nên mang giày đế bám tốt.",
+          "en": "Open all day. Some subterranean steps are steep; wear gripping footwear."
+        }
+      },
+      "ticketPrice": {
+        "adult": 20000,
+        "student": 7000,
+        "childUnder6": 0,
+        "currency": "VND"
+      },
+      "images": [
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/am_phu_entrance.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/am_phu_hell_chamber.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/am_phu_heaven_stair.jpg"
+      ],
+      "hasVr360": true,
+      "hasAudioGuide": true,
+      "ratingAvg": 4.6,
+      "reviewCount": 380,
+      "isPublished": true,
+      "estimatedVisitDuration": "45 - 60 phút",
+      "tags": [
+        "triet_ly_phat_giao",
+        "dia_nguc_thien_duong",
+        "hang_dong_dai",
+        "trai_nghiem_doc_dao"
+      ],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z",
+      "__collections__": {
+        "vr360_contents": {
+          "vr_ap_01": {
+            "id": "vr_ap_01",
+            "destinationId": "dest_am_phu",
+            "title": {
+              "vi": "Toàn cảnh 360° Động Âm Phủ – Cầu Nại Hà & Điện Diêm Vương",
+              "en": "360° Panorama: Am Phu Cave – Nai He Bridge & Underworld Hall"
+            },
+            "description": {
+              "vi": "Góc nhìn 360 độ huyền ảo bên trong vòm hang sâu thẳm Động Âm Phủ với hệ thống ánh sáng nghệ thuật tái hiện truyền thuyết cầu Nại Hà và đài Phán Quan.",
+              "en": "Atmospheric 360-degree vista within the cavern depths, featuring dramatic illumination of the Nai He Bridge and judgment halls."
+            },
+            "panoramaUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/vr360/real/am_phu_hell_chamber_8k.jpg",
+            "thumbnailUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/vr360/real/am_phu_thumb.jpg",
+            "hotspots": [
+              {
+                "id": "hs_ap_bridge",
+                "type": "info",
+                "position": {
+                  "pitch": -15.2,
+                  "yaw": 120
+                },
+                "title": {
+                  "vi": "Cầu Nại Hà bắc qua suối ngầm",
+                  "en": "Nai He Bridge"
+                },
+                "description": {
+                  "vi": "Cây cầu đá tượng trưng cho ranh giới phân định thiện ác trong quan niệm dân gian Phật giáo.",
+                  "en": "Symbolic stone bridge representing the spiritual boundary of conscience in Buddhist lore."
+                }
+              }
+            ],
+            "displayOrder": 1,
+            "isPublished": true,
+            "viewCount": 6120,
+            "createdAt": "2024-01-01T00:00:00Z",
+            "updatedAt": "2024-11-01T00:00:00Z"
+          }
+        },
+        "audio_guides": {
+          "audio_ap_vi": {
+            "id": "audio_ap_vi",
+            "destinationId": "dest_am_phu",
+            "language": "vi",
+            "title": "Thuyết minh Động Âm Phủ – Triết lý Luân hồi & Hướng thiện",
+            "description": "Khám phá huyền tích Động Âm Phủ, thông điệp nhân quả báo ứng và hành trình tìm về ánh sáng thiên đường dưới chân núi Thủy Sơn.",
+            "transcript": "Kính thưa quý khách, Động Âm Phủ là hang động dài và kỳ bí nhất dưới chân núi Thủy Sơn. Được tạo hóa kiến tạo thành hai hướng đối lập: một lối đi xuống lòng đất lạnh lẽo tái hiện 18 tầng địa ngục, và một lối vươn lên cao ngập tràn ánh sáng mặt trời đại diện cho cõi Thiên Đường. Hành trình bước vào Động Âm Phủ là một chuyến chiêm nghiệm sâu sắc về luật nhân quả trong triết lý Phật giáo...",
+            "audioUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/audio/real/am_phu_vi_guide.mp3",
+            "durationSeconds": 320,
+            "fileSize": 5120000,
+            "narrator": "Ban Quản lý Di tích Ngũ Hành Sơn",
+            "isPublished": true,
+            "playCount": 4980,
+            "createdAt": "2024-01-01T00:00:00Z",
+            "updatedAt": "2024-11-01T00:00:00Z"
+          },
+          "audio_ap_en": {
+            "id": "audio_ap_en",
+            "destinationId": "dest_am_phu",
+            "language": "en",
+            "title": "Am Phu Cave (Hell Cave) Philosophy Audio Guide",
+            "description": "An enlightening narration walking you through the Buddhist allegorical journey through the Underworld to Heavenly Light.",
+            "transcript": "Welcome to Am Phu Cave, the deepest subterranean grotto in the Marble Mountains. Unlike traditional caves, Am Phu is structured as a profound moral journey. Below, cavernous chambers vividly illustrate karmic accountability across the 18 courts of Buddhist hell. Yet directly adjacent lies a steep ascent towards the open Heaven Gate, symbolizing redemption and righteous wisdom...",
+            "audioUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/audio/real/am_phu_en_guide.mp3",
+            "durationSeconds": 290,
+            "fileSize": 4640000,
+            "narrator": "Official English Audio Guide",
+            "isPublished": true,
+            "playCount": 3410,
+            "createdAt": "2024-01-01T00:00:00Z",
+            "updatedAt": "2024-11-01T00:00:00Z"
+          }
+        },
+        "reviews": {
+          "rev_ap_real_01": {
+            "id": "rev_ap_real_01",
+            "userId": "user_tourist_intl1",
+            "userName": "James Harrison",
+            "userAvatarUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/avatars/tourist_james.jpg",
+            "destinationId": "dest_am_phu",
+            "rating": 5,
+            "title": "Fascinating allegorical journey from darkness to light",
+            "content": "Am Phu Cave is a genuinely unique cultural experience. The contrast between descending into the depths representing the Buddhist underworld and then ascending the steep steps up into the open sky and sunshine at Heaven Gate is profound. It's cool inside, tickets are very cheap (20,000 VND), and the audio guide offers great context on Vietnamese folklore.",
+            "images": [
+              "https://storage.googleapis.com/smarttravel-se13.appspot.com/reviews/real/am_phu_hell_chamber.jpg",
+              "https://storage.googleapis.com/smarttravel-se13.appspot.com/reviews/real/am_phu_heaven_exit.jpg"
+            ],
+            "language": "en",
+            "isReported": false,
+            "helpfulCount": 28,
+            "createdAt": "2024-11-11T11:30:00+07:00",
+            "updatedAt": "2024-11-11T11:30:00+07:00"
+          },
+          "rev_ap_real_02": {
+            "id": "rev_ap_real_02",
+            "userId": "user_tourist_intl2",
+            "userName": "Park Ji-hoon",
+            "userAvatarUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/avatars/tourist_jihoon.jpg",
+            "destinationId": "dest_am_phu",
+            "rating": 4,
+            "title": "Unique cave experience under the mountain",
+            "content": "It is located right at the foot of Thuy Son mountain, very convenient to visit before or after taking the elevator. The cave is surprisingly deep and cool compared to the outside heat. The stalactites and Buddhist sculptures are very impressive. QR code check-in on SmartTravel earned me enough points to get a coffee discount!",
+            "images": [],
+            "language": "en",
+            "isReported": false,
+            "helpfulCount": 19,
+            "createdAt": "2024-11-13T16:15:00+07:00",
+            "updatedAt": "2024-11-13T16:15:00+07:00"
+          }
+        }
+      }
+    },
+    "dest_tam_thai": {
+      "id": "dest_tam_thai",
+      "name": {
+        "vi": "Chùa Tam Thai (Cổ tự Quốc bảo)",
+        "en": "Tam Thai Pagoda (National Royal Temple)",
+        "ko": "땀타이 사찰 (국보급 고찰)",
+        "zh": "三台寺（皇室御赐国寺）"
+      },
+      "category": "cat_den_chua",
+      "zone": "thuy_son_complex",
+      "overview": {
+        "vi": "Chùa Tam Thai được khởi dựng từ thời Hậu Lê (năm 1630), là ngôi chùa cổ nhất trên đỉnh núi Thủy Sơn. Ngôi chùa tọa lạc trên một khoảng đất bằng phẳng rộng lớn, mặt hướng về phía Nam. Năm 1825, Vua Minh Mạng ngự giá thăm chùa, ban tặng tấm biển 'Ngự Chế Tam Thai Tự' bằng đồng và sắc phong chùa là Quốc tự.",
+        "en": "Founded in 1630 during the Later Le Dynasty, Tam Thai Pagoda is the oldest sanctuary atop Thuy Son. In 1825, Emperor Minh Mang made an imperial pilgrimage here, granting an inscribed bronze royal tablet and officially designating it as a National Royal Temple."
+      },
+      "culturalHistoricalInfo": {
+        "vi": "Chùa lưu giữ quả chuông đồng cổ đúc năm Minh Mạng thứ 7 (1826) và tấm bia ký ghi chép lịch sử trùng tu. Kiến trúc chùa mang phong cách cung đình Huế hòa quyện với phong vị thiền môn xứ Quảng thanh tịnh.",
+        "en": "The pagoda preserves a bronze bell cast in 1826 under Emperor Minh Mang and ancient stone steles. Its architectural symmetry blends Imperial Hue court styling with serene Buddhist monastic traditions."
+      },
+      "location": {
+        "geopoint": {
+          "latitude": 16.0042,
+          "longitude": 108.2628
+        },
+        "geohash": "w6bcv8",
+        "address": {
+          "vi": "Đỉnh Thủy Sơn (qua Cổng số 1, leo 156 bậc đá), Ngũ Hành Sơn, Đà Nẵng",
+          "en": "Thuy Son Summit (via Gate 1, up 156 stone steps), Ngu Hanh Son, Da Nang"
+        }
+      },
+      "openingHours": {
+        "open": "07:00",
+        "close": "17:30",
+        "note": {
+          "vi": "Trang phục lịch sự kín đáo khi vào lễ Phật.",
+          "en": "Modest attire covering shoulders and knees required for Buddhist halls."
+        }
+      },
+      "ticketPrice": {
+        "adult": 0,
+        "student": 0,
+        "note": {
+          "vi": "Bao gồm trong vé tham quan Núi Thủy Sơn",
+          "en": "Included in general Thuy Son entrance ticket"
+        },
+        "currency": "VND"
+      },
+      "images": [
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/tam_thai_gate.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/tam_thai_sanctuary.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/tam_thai_bell.jpg"
+      ],
+      "hasVr360": true,
+      "hasAudioGuide": true,
+      "ratingAvg": 4.7,
+      "reviewCount": 310,
+      "isPublished": true,
+      "estimatedVisitDuration": "30 - 45 phút",
+      "tags": [
+        "quoc_tu",
+        "trieu_nguyen",
+        "chuong_dong_co",
+        "tam_linh",
+        "kien_truc_co"
+      ],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z",
+      "__collections__": {
+        "vr360_contents": {
+          "vr_tt_01": {
+            "id": "vr_tt_01",
+            "destinationId": "dest_tam_thai",
+            "title": {
+              "vi": "Toàn cảnh 360° Chùa Tam Thai – Sân Cổ Tự Hướng Nam",
+              "en": "360° Panorama: Tam Thai Pagoda Courtyard"
+            },
+            "description": {
+              "vi": "Toàn cảnh sân Chùa Tam Thai trên đỉnh núi Thủy Sơn với cổng tam quan cổ kính và bức hoành phi 'Ngự Chế Tam Thai Tự' bằng đồng do Vua Minh Mạng ban tặng.",
+              "en": "Courtyard view atop Thuy Son featuring ancient triple-gates and the imperial bronze plaque bestowed by Emperor Minh Mang."
+            },
+            "panoramaUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/vr360/real/tam_thai_courtyard_8k.jpg",
+            "thumbnailUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/vr360/real/tam_thai_thumb.jpg",
+            "hotspots": [],
+            "displayOrder": 1,
+            "isPublished": true,
+            "viewCount": 5430,
+            "createdAt": "2024-01-01T00:00:00Z",
+            "updatedAt": "2024-11-01T00:00:00Z"
+          }
+        },
+        "audio_guides": {
+          "audio_tt_vi": {
+            "id": "audio_tt_vi",
+            "destinationId": "dest_tam_thai",
+            "language": "vi",
+            "title": "Thuyết minh Quốc tự Tam Thai – Dấu ấn Vua Minh Mạng",
+            "description": "Lịch sử hơn 390 năm của Chùa Tam Thai, bia đá ngự chế và chuông đồng cổ Minh Mạng năm 1826.",
+            "transcript": "Kính chào quý khách. Quý khách đang diện kiến Chùa Tam Thai, ngôi cổ tự khởi lập từ năm 1630 thời Hậu Lê. Năm 1825, vua Minh Mạng khi ngự giá tuần du Quảng Nam đã đích thân viếng chùa, ban tặng tấm biển đồng 'Ngự Chế Tam Thai Tự' và sắc chỉ định chùa làm Quốc tự. Trong khuôn viên chùa hiện còn lưu giữ quả đại hồng chung đúc từ năm 1826...",
+            "audioUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/audio/real/tam_thai_vi_royal.mp3",
+            "durationSeconds": 300,
+            "fileSize": 4800000,
+            "narrator": "Ban Quản lý Di tích Ngũ Hành Sơn",
+            "isPublished": true,
+            "playCount": 4120,
+            "createdAt": "2024-01-01T00:00:00Z",
+            "updatedAt": "2024-11-01T00:00:00Z"
+          },
+          "audio_tt_en": {
+            "id": "audio_tt_en",
+            "destinationId": "dest_tam_thai",
+            "language": "en",
+            "title": "Tam Thai Pagoda – Imperial Legacy Audio Guide",
+            "description": "Historical account of the 1630 pagoda, Emperor Minh Mang's royal visits, and ancient 1826 bronze bells.",
+            "transcript": "Welcome to Tam Thai Pagoda, the oldest sanctuary atop Thuy Son, founded in 1630. In 1825, Emperor Minh Mang personally climbed these stone heights, commissioning a major royal reconstruction and elevating Tam Thai to an Imperial National Pagoda. Notice the bronze royal tablet hanging above the main portal...",
+            "audioUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/audio/real/tam_thai_en_royal.mp3",
+            "durationSeconds": 275,
+            "fileSize": 4400000,
+            "narrator": "Official English Audio Guide",
+            "isPublished": true,
+            "playCount": 2690,
+            "createdAt": "2024-01-01T00:00:00Z",
+            "updatedAt": "2024-11-01T00:00:00Z"
+          }
+        }
+      }
+    },
+    "dest_linh_ung": {
+      "id": "dest_linh_ung",
+      "name": {
+        "vi": "Chùa Linh Ứng Ngũ Hành Sơn (Chùa Ngoài)",
+        "en": "Linh Ung Pagoda Ngu Hanh Son (Outer Pagoda)",
+        "ko": "린응 사찰 오행산",
+        "zh": "五行山灵应寺"
+      },
+      "category": "cat_den_chua",
+      "zone": "thuy_son_complex",
+      "overview": {
+        "vi": "Chùa Linh Ứng Ngũ Hành Sơn (trước đây có tên là Ứng Chơn Tự) tọa lạc ở sườn phía Đông núi Thủy Sơn, hướng nhìn thẳng ra biển Non Nước bao la. Đây là một trong 3 ngôi chùa Linh Ứng linh thiêng nổi tiếng của thành phố Đà Nẵng, nổi bật với tháp Xá Lợi 7 tầng cao 28m uy nghi.",
+        "en": "Linh Ung Pagoda Ngu Hanh Son sits on the eastern slope of Thuy Son Mountain facing the East Sea. It is the oldest of Da Nang's three sacred Linh Ung pagodas, featuring the majestic 28-meter, 7-storey Xa Loi Buddhist Relic Stupa."
+      },
+      "culturalHistoricalInfo": {
+        "vi": "Chùa được thiền sư Quang Chánh khai sơn vào nửa đầu thế kỷ XIX. Năm Minh Mạng thứ 6 (1825), nhà vua cho xây dựng lại chùa bằng gạch ngói hoa lệ và ngự ban tên 'Linh Ứng Tự'.",
+        "en": "Founded by Zen Master Quang Chanh in the early 19th century. In 1825, Emperor Minh Mang rebuilt it with fine brickwork and bestowed its imperial name 'Linh Ung Tu'."
+      },
+      "location": {
+        "geopoint": {
+          "latitude": 16.0028,
+          "longitude": 108.2641
+        },
+        "geohash": "w6bcvb",
+        "address": {
+          "vi": "Sườn Đông núi Thủy Sơn (gần thang máy và Cổng số 2), phường Hòa Hải, Ngũ Hành Sơn, Đà Nẵng",
+          "en": "Eastern slope of Thuy Son (near glass elevator and Gate 2), Ngu Hanh Son, Da Nang"
+        }
+      },
+      "openingHours": {
+        "open": "07:00",
+        "close": "17:30",
+        "note": {
+          "vi": "Rất gần trạm dừng trên cao của thang máy kính.",
+          "en": "Directly accessible from the upper platform of the glass elevator."
+        }
+      },
+      "ticketPrice": {
+        "adult": 0,
+        "student": 0,
+        "note": {
+          "vi": "Bao gồm trong vé tham quan Núi Thủy Sơn",
+          "en": "Included in general Thuy Son entrance ticket"
+        },
+        "currency": "VND"
+      },
+      "images": [
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/linh_ung_stupa.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/linh_ung_facade.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/linh_ung_sea_view.jpg"
+      ],
+      "hasVr360": true,
+      "hasAudioGuide": true,
+      "ratingAvg": 4.8,
+      "reviewCount": 490,
+      "isPublished": true,
+      "estimatedVisitDuration": "30 - 45 phút",
+      "tags": [
+        "thap_xa_loi",
+        "ngam_bien",
+        "3_chua_linh_ung",
+        "di_tich_trieu_nguyen"
+      ],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z"
+    },
+    "dest_non_nuoc": {
+      "id": "dest_non_nuoc",
+      "name": {
+        "vi": "Làng Nghề Đá Mỹ Nghệ Non Nước",
+        "en": "Non Nuoc Stone Carving Craft Village",
+        "ko": "논누옥 대리석 공예 마을",
+        "zh": "弄诺石雕传统手工艺村"
+      },
+      "category": "cat_lang_nghe",
+      "zone": "non_nuoc_village",
+      "overview": {
+        "vi": "Trải dài dưới chân núi Ngũ Hành Sơn dọc các trục đường Huyền Trân Công Chúa, Nguyễn Duy Trinh và Lê Văn Hiến, Làng đá Non Nước có niên đại trên 400 năm, được công nhận là Di sản Văn hóa Phi vật thể Quốc gia. Nơi đây quy tụ hơn 500 cơ sở điêu khắc đá cẩm thạch với hàng ngàn nghệ nhân tài hoa chế tác nên các tác phẩm tượng Phật, linh vật và đồ trang sức tinh mỹ xuất khẩu khắp thế giới.",
+        "en": "Spanning the base of the Marble Mountains, Non Nuoc Craft Village is a 400-year-old National Intangible Cultural Heritage. It hosts over 500 marble workshops where master artisans carve world-renowned Buddhist statues, mythical guardians, and fine stone jewelry."
+      },
+      "culturalHistoricalInfo": {
+        "vi": "Khởi tổ làng nghề là cụ Huỳnh Bá Quát người Thanh Hóa di cư vào khai hoang lập nghiệp từ cuối thế kỷ XVII. Để bảo vệ danh thắng, từ năm 2010 chính quyền TP. Đà Nẵng đã cấm triệt để việc khai thác đá tại núi Ngũ Hành Sơn; toàn bộ nguyên liệu đá cẩm thạch ngày nay được nhập khẩu hợp pháp từ Ninh Bình, Thanh Hóa, Nghệ An và nước ngoài.",
+        "en": "Founded in the late 17th century by master mason Huynh Ba Quat. To protect the mountains, Da Nang banned local marble extraction in 2010; all stone materials are now ethically sourced from domestic and international quarries."
+      },
+      "location": {
+        "geopoint": {
+          "latitude": 16.0015,
+          "longitude": 108.268
+        },
+        "geohash": "w6bcvf",
+        "address": {
+          "vi": "Phường Hòa Hải, quận Ngũ Hành Sơn, TP. Đà Nẵng (dọc tuyến đường Huyền Trân Công Chúa - Nguyễn Duy Trinh)",
+          "en": "Hoa Hai Ward, Ngu Hanh Son District, Da Nang City"
+        }
+      },
+      "openingHours": {
+        "open": "07:30",
+        "close": "18:00",
+        "note": {
+          "vi": "Các xưởng điêu khắc và showroom trưng bày mở cửa đón khách tham quan miễn phí cả ngày.",
+          "en": "Studios and exhibition showrooms welcome visitors with free admission daily."
+        }
+      },
+      "ticketPrice": {
+        "adult": 0,
+        "student": 0,
+        "currency": "VND"
+      },
+      "images": [
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/non_nuoc_sculptor_at_work.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/non_nuoc_statue_gallery.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/non_nuoc_jewelry.jpg"
+      ],
+      "hasVr360": true,
+      "hasAudioGuide": true,
+      "ratingAvg": 4.7,
+      "reviewCount": 520,
+      "isPublished": true,
+      "estimatedVisitDuration": "1 - 2 giờ",
+      "tags": [
+        "di_san_phi_vat_the",
+        "dieu_khac_da",
+        "lang_nghe_400_nam",
+        "qua_luu_niem",
+        "trai_nghiem_nghe_nhan"
+      ],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z",
+      "__collections__": {
+        "vr360_contents": {
+          "vr_nn_01": {
+            "id": "vr_nn_01",
+            "destinationId": "dest_non_nuoc",
+            "title": {
+              "vi": "Toàn cảnh 360° Làng Đá Non Nước – Xưởng Điêu Khắc Nghệ Nhân",
+              "en": "360° Panorama: Non Nuoc Craft Village – Master Sculpture Studio"
+            },
+            "description": {
+              "vi": "Trải nghiệm không gian sống động tại xưởng điêu khắc đá Non Nước với hàng trăm tác phẩm đá cẩm thạch trắng, xanh, hồng tuyệt mỹ dưới bàn tay nghệ nhân tài hoa.",
+              "en": "Step inside a working marble studio surrounded by hundreds of monumental and fine marble sculptures being chiseled by master craftsmen."
+            },
+            "panoramaUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/vr360/real/non_nuoc_studio_8k.jpg",
+            "thumbnailUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/vr360/real/non_nuoc_thumb.jpg",
+            "hotspots": [],
+            "displayOrder": 1,
+            "isPublished": true,
+            "viewCount": 7890,
+            "createdAt": "2024-01-01T00:00:00Z",
+            "updatedAt": "2024-11-01T00:00:00Z"
+          }
+        },
+        "audio_guides": {
+          "audio_nn_vi": {
+            "id": "audio_nn_vi",
+            "destinationId": "dest_non_nuoc",
+            "language": "vi",
+            "title": "Thuyết minh Di sản Làng nghề Điêu khắc đá Non Nước",
+            "description": "Lịch sử hơn 400 năm hình thành, danh nhân Huỳnh Bá Quát và bí quyết chạm khắc đá cẩm thạch của người Đà Nẵng.",
+            "transcript": "Chào mừng quý khách đến với Làng đá mỹ nghệ Non Nước - Di sản Văn hóa Phi vật thể Quốc gia. Bắt đầu từ cuối thế kỷ XVII khi cụ Huỳnh Bá Quát di cư từ Thanh Hóa vào khai hoang và phát hiện chất lượng tuyệt hảo của đá cẩm thạch Ngũ Hành Sơn. Trải qua hơn bốn thế kỷ cha truyền con nối, nghệ nhân Non Nước đã tôi rèn một phong cách điêu khắc tài hoa, biến những khối đá cẩm thạch vô tri thành các tác phẩm nghệ thuật có linh hồn...",
+            "audioUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/audio/real/non_nuoc_vi_heritage.mp3",
+            "durationSeconds": 360,
+            "fileSize": 5760000,
+            "narrator": "Ban Quản lý Di tích Ngũ Hành Sơn",
+            "isPublished": true,
+            "playCount": 6120,
+            "createdAt": "2024-01-01T00:00:00Z",
+            "updatedAt": "2024-11-01T00:00:00Z"
+          },
+          "audio_nn_en": {
+            "id": "audio_nn_en",
+            "destinationId": "dest_non_nuoc",
+            "language": "en",
+            "title": "Non Nuoc Marble Craft Village Heritage Narration",
+            "description": "400-year chronicles of master Huynh Ba Quat, traditional marble sculpting techniques, and living craft traditions.",
+            "transcript": "Welcome to Non Nuoc Stone Carving Village, a National Intangible Cultural Heritage. Established over 400 years ago by master mason Huynh Ba Quat, generations of local craftsmen have handed down specialized chiseling, smoothing, and polishing techniques. Today, this village exports magnificent stone art across the globe...",
+            "audioUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/audio/real/non_nuoc_en_heritage.mp3",
+            "durationSeconds": 330,
+            "fileSize": 5280000,
+            "narrator": "Official English Audio Guide",
+            "isPublished": true,
+            "playCount": 4250,
+            "createdAt": "2024-01-01T00:00:00Z",
+            "updatedAt": "2024-11-01T00:00:00Z"
+          }
+        },
+        "reviews": {
+          "rev_nn_real_01": {
+            "id": "rev_nn_real_01",
+            "userId": "user_tourist_vn1",
+            "userName": "Nguyễn Ngọc Bữu",
+            "userAvatarUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/avatars/tourist_ngocbuu.jpg",
+            "destinationId": "dest_non_nuoc",
+            "rating": 5,
+            "title": "Tự hào Di sản văn hóa phi vật thể 400 năm của quê hương",
+            "content": "Tham gia workshop tại xưởng nghệ nhân Nguyễn Việt Minh là trải nghiệm đáng giá nhất chuyến đi. Tận mắt nhìn các bác nghệ nhân tỉ mẩn từng nhát búa, nhát đục tạc nên thần thái đức Phật mới thấy hết sự công phu và tâm huyết. Tôi đã đổi voucher 100.000đ từ điểm check-in để mua một chuỗi vòng đá cẩm thạch trắng tự nhiên làm quà cho mẹ.",
+            "images": [
+              "https://storage.googleapis.com/smarttravel-se13.appspot.com/reviews/real/nn_workshop_craft.jpg",
+              "https://storage.googleapis.com/smarttravel-se13.appspot.com/reviews/real/nn_marble_bracelet.jpg"
+            ],
+            "language": "vi",
+            "isReported": false,
+            "helpfulCount": 51,
+            "createdAt": "2024-11-10T16:45:00+07:00",
+            "updatedAt": "2024-11-10T16:45:00+07:00"
+          }
+        }
+      }
+    },
+    "dest_son_thuy": {
+      "id": "dest_son_thuy",
+      "name": {
+        "vi": "Bãi Biển Sơn Thủy – Tân Trà",
+        "en": "Son Thuy - Tan Tra Beach",
+        "ko": "손투이 해변",
+        "zh": "山水-新茶海滩"
+      },
+      "category": "cat_bien",
+      "zone": "son_thuy_coastal",
+      "overview": {
+        "vi": "Nằm ngay đối diện với danh thắng Ngũ Hành Sơn trên đường Trường Sa, Bãi biển Sơn Thủy sở hữu dải cát trắng mịn thoai thoải dài hơn 5km, làn nước trong xanh êm đềm và rặng phi lao xanh ngát. Đây là bãi biển lý tưởng để tắm biển sáng sớm, ngắm bình minh trên biển Đông và tham gia các hoạt động chèo SUP, dù lượn biển.",
+        "en": "Directly facing the Marble Mountains along Truong Sa Boulevard, Son Thuy Beach boasts a 5km pristine white shoreline, gentle waves, and emerald waters. It is premier spot for sunrise gazing, morning swims, and stand-up paddleboarding (SUP)."
+      },
+      "beachSafetyInfo": {
+        "vi": "Có lực lượng cứu hộ túc trực tại các chòi quan sát từ 05:00 đến 19:00 hàng ngày. Phao phân luồng khu vực tắm an toàn. Nghiêm cấm tắm biển khi cắm cờ đỏ cảnh báo dòng chảy xa bờ (Rip current).",
+        "en": "Lifeguard patrols active 05:00 - 19:00 daily. Swimming zones demarcated by buoys. Strictly adhere to safety warning flags; avoid water when red flags indicate rip currents."
+      },
+      "location": {
+        "geopoint": {
+          "latitude": 16.007,
+          "longitude": 108.272
+        },
+        "geohash": "w6bcvk",
+        "address": {
+          "vi": "Đường Trường Sa, phường Hòa Hải, quận Ngũ Hành Sơn, TP. Đà Nẵng",
+          "en": "Truong Sa Blvd, Hoa Hai Ward, Ngu Hanh Son District, Da Nang"
+        }
+      },
+      "openingHours": {
+        "open": "05:00",
+        "close": "21:00",
+        "note": {
+          "vi": "Tắm biển an toàn nhất từ 05:30 - 08:30 và 16:00 - 18:30.",
+          "en": "Optimal and safest swimming hours: 05:30 - 08:30 and 16:00 - 18:30."
+        }
+      },
+      "ticketPrice": {
+        "adult": 0,
+        "student": 0,
+        "currency": "VND"
+      },
+      "images": [
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/son_thuy_sunrise.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/son_thuy_beach_aerial.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/son_thuy_sup.jpg"
+      ],
+      "hasVr360": false,
+      "hasAudioGuide": false,
+      "ratingAvg": 4.6,
+      "reviewCount": 280,
+      "isPublished": true,
+      "estimatedVisitDuration": "1 - 3 giờ",
+      "tags": [
+        "bai_bien_dep",
+        "ngam_binh_minh",
+        "tam_bien_an_toan",
+        "cheo_sup",
+        "resort_bien"
+      ],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z",
+      "__collections__": {
+        "reviews": {
+          "rev_st_real_01": {
+            "id": "rev_st_real_01",
+            "userId": "user_tourist_vn2",
+            "userName": "Trần Mai Linh",
+            "userAvatarUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/avatars/tourist_mailinh.jpg",
+            "destinationId": "dest_son_thuy",
+            "rating": 5,
+            "title": "Bình minh tuyệt đẹp, biển êm và cát mịn không thua gì Mỹ Khê",
+            "content": "Bãi biển Sơn Thủy ngay sát chân núi Ngũ Hành Sơn, không bị quá đông đúc xô bồ như bãi tắm trung tâm. Dậy lúc 5h sáng đón bình minh mặt trời đỏ ối ngoi lên từ biển Đông tuyệt đẹp. Nước biển sạch, sóng nhẹ và đội cứu hộ rất trách nhiệm.",
+            "images": [
+              "https://storage.googleapis.com/smarttravel-se13.appspot.com/reviews/real/son_thuy_sunrise_real.jpg"
+            ],
+            "language": "vi",
+            "isReported": false,
+            "helpfulCount": 38,
+            "createdAt": "2024-11-12T08:30:00+07:00",
+            "updatedAt": "2024-11-12T08:30:00+07:00"
+          }
+        }
+      }
+    },
+    "dest_an_thuong": {
+      "id": "dest_an_thuong",
+      "name": {
+        "vi": "Khu Phố Du Lịch An Thượng (Phố Tây Đà Nẵng)",
+        "en": "An Thuong Tourism Quarter (Da Nang Walking District)",
+        "ko": "안트엉 관광 특구 (다낭 여행자의 거리)",
+        "zh": "安尚国际旅游步行街（岘港洋人街）"
+      },
+      "category": "cat_an_thuong",
+      "zone": "an_thuong_quarter",
+      "overview": {
+        "vi": "Khu phố du lịch An Thượng (nằm tại phường Mỹ An, quận Ngũ Hành Sơn, sát biển Mỹ Khê) là trung tâm giải trí đêm và ẩm thực quốc tế sôi động nhất miền Trung. Khu phố quy tụ mạng lưới phố đi bộ gồm đường An Thượng 1 đến 4, Hoàng Kế Viêm, Trần Bạch Đằng với hàng trăm nhà hàng Á - Âu, quán cà phê boutique, quán bar mộc ngoài trời và dịch vụ chăm sóc sức khỏe.",
+        "en": "An Thuong Tourist Quarter (in My An Ward, Ngu Hanh Son District, steps away from My Khe Beach) is Da Nang's premier international dining and nightlife hub. It features pedestrian streets lined with Western and Asian restaurants, craft beer pubs, specialty coffee shops, and live music lounges."
+      },
+      "culturalHistoricalInfo": {
+        "vi": "Được UBND TP. Đà Nẵng quy hoạch bài bản thành 'Phố đi bộ đêm An Thượng', khu phố là cầu nối văn hóa giữa du khách quốc tế và nhịp sống hiện đại, năng động của người dân Đà Nẵng.",
+        "en": "Designated as an official tourist nightlife precinct by Da Nang People's Committee, An Thuong serves as a vibrant cultural crossroads uniting international travelers with local hospitality."
+      },
+      "location": {
+        "geopoint": {
+          "latitude": 16.0505,
+          "longitude": 108.243
+        },
+        "geohash": "w6bdj3",
+        "address": {
+          "vi": "Khu vực giới hạn bởi các đường Hoàng Kế Viêm, Võ Nguyên Giáp, Lê Quang Đạo, Ngô Thì Sĩ, phường Mỹ An, quận Ngũ Hành Sơn, Đà Nẵng",
+          "en": "Bounded by Hoang Ke Viem, Vo Nguyen Giap, Le Quang Dao, Ngo Thi Si Sts, My An Ward, Ngu Hanh Son, Da Nang"
+        }
+      },
+      "openingHours": {
+        "open": "00:00",
+        "close": "23:59",
+        "note": {
+          "vi": "Hoạt động 24/7. Phố đi bộ và các quán bar, ẩm thực đêm nhộn nhịp nhất từ 18:00 đến 02:00 sáng hôm sau.",
+          "en": "Open 24/7. Peak pedestrian and nightlife atmosphere runs from 18:00 to 02:00."
+        }
+      },
+      "ticketPrice": {
+        "adult": 0,
+        "student": 0,
+        "currency": "VND"
+      },
+      "images": [
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/an_thuong_night_street.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/an_thuong_craft_beer.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/an_thuong_cafe.jpg"
+      ],
+      "hasVr360": false,
+      "hasAudioGuide": false,
+      "ratingAvg": 4.6,
+      "reviewCount": 730,
+      "isPublished": true,
+      "estimatedVisitDuration": "2 - 4 giờ",
+      "tags": [
+        "pho_di_bo",
+        "am_thuc_quoc_te",
+        "nightlife",
+        "craft_beer",
+        "sat_bien"
+      ],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z",
+      "__collections__": {
+        "reviews": {
+          "rev_at_real_01": {
+            "id": "rev_at_real_01",
+            "userId": "user_tourist_vn2",
+            "userName": "Trần Mai Linh",
+            "userAvatarUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/avatars/tourist_mailinh.jpg",
+            "destinationId": "dest_an_thuong",
+            "rating": 5,
+            "title": "Phố đi bộ đêm An Thượng cực chill và đồ ăn đa dạng",
+            "content": "Buổi tối đi dạo khu phố An Thượng cảm giác rất quốc tế. Rất nhiều quán bia thủ công craft beer, cà phê specialty và nhà hàng phong cách Ý, Mexico, Hàn Quốc. Đường phố được lát đá sạch đẹp, đi bộ ra biển chỉ mất 2 phút.",
+            "images": [
+              "https://storage.googleapis.com/smarttravel-se13.appspot.com/reviews/real/an_thuong_night_vibes.jpg"
+            ],
+            "language": "vi",
+            "isReported": false,
+            "helpfulCount": 33,
+            "createdAt": "2024-11-12T22:15:00+07:00",
+            "updatedAt": "2024-11-12T22:15:00+07:00"
+          }
+        }
+      }
+    },
+    "dest_vong_giang_dai": {
+      "id": "dest_vong_giang_dai",
+      "name": {
+        "vi": "Vọng Giang Đài (Đài Ngắm Sông Cổ Cò)",
+        "en": "Vong Giang Dai (River View Observatory)",
+        "ko": "봉장대 (강 전망대)",
+        "zh": "望江台（观河台）"
+      },
+      "category": "cat_hang_dong",
+      "zone": "thuy_son_complex",
+      "overview": {
+        "vi": "Vọng Giang Đài tọa lạc trên đỉnh Tây Nam núi Thủy Sơn, đối diện chùa Tam Thai. Tại đây có tấm bia đá cổ khắc 3 chữ Hán 'Vọng Giang Đài' do Vua Minh Mạng ngự chế năm 1837. Đứng tại đài, du khách phóng tầm mắt ngắm trọn khúc lượn êm đềm của dòng sông Cổ Cò, bốn ngọn núi Kim - Mộc - Hỏa - Thổ và cánh đồng trù phú của vùng đồng bằng Hòa Vang.",
+        "en": "Perched on the southwestern summit of Thuy Son Mountain opposite Tam Thai Pagoda, Vong Giang Dai features an ancient stele inscribed by Emperor Minh Mang in 1837. It commands panoramic vistas over the winding Co Co River, the four neighboring Marble peaks, and Da Nang countryside."
+      },
+      "culturalHistoricalInfo": {
+        "vi": "Dòng sông Cổ Cò từng là thủy lộ giao thương sầm uất nối liền cảng thị cổ Hội An với thương cảng Đà Nẵng vào các thế kỷ XVII - XVIII. Đứng trên đài quan sát ngắm hoàng hôn buông xuống sông Cổ Cò là một trong những cảnh sắc đẹp nhất Ngũ Hành Sơn.",
+        "en": "The Co Co River historically served as the vital commercial waterway linking Hoi An ancient trade port with Da Nang port during the 17th-18th centuries."
+      },
+      "location": {
+        "geopoint": {
+          "latitude": 16.0045,
+          "longitude": 108.263
+        },
+        "geohash": "w6bcv8",
+        "address": {
+          "vi": "Đỉnh Tây Nam núi Thủy Sơn (ngay sau chùa Tam Thai), Ngũ Hành Sơn, Đà Nẵng",
+          "en": "Southwest summit of Thuy Son (behind Tam Thai Pagoda), Ngu Hanh Son, Da Nang"
+        }
+      },
+      "openingHours": {
+        "open": "07:00",
+        "close": "17:30",
+        "note": {
+          "vi": "Điểm ngắm hoàng hôn tuyệt đẹp từ 16:30 đến 17:15.",
+          "en": "Magnificent sunset spot from 16:30 to 17:15."
+        }
+      },
+      "ticketPrice": {
+        "adult": 0,
+        "student": 0,
+        "note": {
+          "vi": "Bao gồm trong vé tham quan Núi Thủy Sơn",
+          "en": "Included in general Thuy Son entrance ticket"
+        },
+        "currency": "VND"
+      },
+      "images": [
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/vong_giang_dai_view.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/vong_giang_dai_stele.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/vong_giang_dai_sunset.jpg"
+      ],
+      "hasVr360": true,
+      "hasAudioGuide": true,
+      "ratingAvg": 4.7,
+      "reviewCount": 195,
+      "isPublished": true,
+      "estimatedVisitDuration": "20 - 30 phút",
+      "tags": [
+        "dai_ngam_canh",
+        "bia_co_minh_mang",
+        "song_co_co",
+        "hoang_hon",
+        "panoramic"
+      ],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z"
+    },
+    "dest_quan_the_am": {
+      "id": "dest_quan_the_am",
+      "name": {
+        "vi": "Chùa Quán Thế Âm (Trung Tâm Lễ Hội)",
+        "en": "Quan The Am Pagoda (Festival Center)",
+        "ko": "관세음 사찰 (축제 중심지)",
+        "zh": "观世音寺（节庆中心）"
+      },
+      "category": "cat_den_chua",
+      "zone": "kim_son_zone",
+      "overview": {
+        "vi": "Tọa lạc dưới chân núi Kim Sơn (một trong năm ngọn núi của Ngũ Hành Sơn), Chùa Quán Thế Âm là trung tâm tổ chức Đại lễ hội Quán Thế Âm 19/2 Âm lịch hàng năm - Di sản Văn hóa Phi vật thể Quốc gia. Chùa nổi tiếng với động Quan Âm kỳ bí ăn sâu vào lòng núi và Viện Bảo tàng Văn hóa Phật giáo đầu tiên tại Việt Nam lưu giữ hàng trăm hiện vật cổ quý giá.",
+        "en": "Situated at the foot of Kim Son (Metal Mountain), Quan The Am Pagoda is the spiritual focal point of the annual Avalokiteshvara Festival on the 19th of the 2nd lunar month (National Intangible Cultural Heritage). The temple houses a sacred natural cave and Vietnam's first Buddhist Cultural Museum with hundreds of ancient relics."
+      },
+      "culturalHistoricalInfo": {
+        "vi": "Chùa gắn liền với pho tượng Bồ Tát Quán Thế Âm bằng thạch nhũ tự nhiên cao gần 2m ẩn trong động Quan Âm do cố Hòa thượng Thích Pháp Nhãn phát hiện năm 1956.",
+        "en": "Famous for the natural 2-meter stalagmite shaped like Bodhisattva Avalokiteshvara discovered inside the inner cavern in 1956 by Venerable Thich Phap Nhan."
+      },
+      "location": {
+        "geopoint": {
+          "latitude": 16.002,
+          "longitude": 108.2585
+        },
+        "geohash": "w6bcv3",
+        "address": {
+          "vi": "Số 48 đường Sư Vạn Hạnh, phường Hòa Hải, quận Ngũ Hành Sơn, TP. Đà Nẵng",
+          "en": "48 Su Van Hanh St, Hoa Hai Ward, Ngu Hanh Son District, Da Nang"
+        }
+      },
+      "openingHours": {
+        "open": "06:30",
+        "close": "18:00",
+        "note": {
+          "vi": "Mở cửa miễn phí quanh năm. Dịp Lễ hội 19/2 Âm lịch đón hàng chục vạn đồng bào Phật tử.",
+          "en": "Free admission year-round. Hosts hundreds of thousands of pilgrims during the annual festival."
+        }
+      },
+      "ticketPrice": {
+        "adult": 0,
+        "student": 0,
+        "currency": "VND"
+      },
+      "images": [
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/quan_the_am_pagoda_gate.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/quan_the_am_cave_statue.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/destinations/quan_the_am_festival.jpg"
+      ],
+      "hasVr360": true,
+      "hasAudioGuide": true,
+      "ratingAvg": 4.8,
+      "reviewCount": 460,
+      "isPublished": true,
+      "estimatedVisitDuration": "1 - 2 giờ",
+      "tags": [
+        "le_hoi_quan_the_am",
+        "bao_tang_phat_giao",
+        "nui_kim_son",
+        "dong_quan_am"
+      ],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z"
+    }
+  },
+  "artisans": {
+    "artisan_nguyen_long_buu": {
+      "id": "artisan_nguyen_long_buu",
+      "fullName": "Nguyễn Long Bửu",
+      "birthYear": 1957,
+      "craft": "stone_carving",
+      "title": {
+        "vi": "Nghệ nhân Nhân dân / Nghệ nhân Ưu tú",
+        "en": "People's Artisan / Meritorious Artisan of Vietnam"
+      },
+      "bio": {
+        "vi": "Nghệ nhân Nguyễn Long Bửu sinh ra trong một gia đình có 4 đời gắn bó với nghề điêu khắc đá tại Làng Non Nước. Ông là người Việt Nam đầu tiên đoạt giải thưởng cao tại các triển lãm điêu khắc đá quốc tế tại Úc và châu Âu. Các tác phẩm của ông kết hợp tinh tế giữa hồn cốt mỹ thuật dân gian truyền thống với tư duy điêu khắc đương đại.",
+        "en": "Born into a 4-generation stone carving family in Non Nuoc, Master Artisan Nguyen Long Buu is one of Vietnam's most internationally recognized sculptors. His works have been exhibited and collected in Australia, Europe, and major Vietnamese public plazas, seamlessly marrying ancient marble craftsmanship with contemporary sculptural forms."
+      },
+      "specialty": {
+        "vi": "Điêu khắc nghệ thuật đương đại và tượng đài đá cẩm thạch quy mô lớn",
+        "en": "Contemporary sculptural art and monumental marble landmarks"
+      },
+      "workshopAddress": {
+        "vi": "Đường Huyền Trân Công Chúa, Làng đá Non Nước, phường Hòa Hải, Ngũ Hành Sơn, Đà Nẵng",
+        "en": "Huyen Tran Cong Chua St, Non Nuoc Stone Village, Hoa Hai Ward, Ngu Hanh Son, Da Nang"
+      },
+      "phoneNumber": "+84903502345",
+      "yearsOfExperience": 50,
+      "avatarUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/artisans/nguyen_long_buu_portrait.jpg",
+      "images": [
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/artisans/buu_studio_1.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/artisans/buu_sculpture_monument.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/artisans/buu_award_ceremony.jpg"
+      ],
+      "awards": [
+        {
+          "year": 2007,
+          "title": {
+            "vi": "Danh hiệu Nghệ nhân Ưu tú",
+            "en": "Title of Meritorious Artisan of Vietnam"
+          }
+        },
+        {
+          "year": 2016,
+          "title": {
+            "vi": "Danh hiệu Nghệ nhân Nhân dân",
+            "en": "Title of People's Artisan of Vietnam"
+          }
+        },
+        {
+          "year": 2002,
+          "title": {
+            "vi": "Huy chương Vàng Triển lãm Điêu khắc Quốc tế tại Sydney (Úc)",
+            "en": "Gold Medal at International Sculpture Exhibition in Sydney, Australia"
+          }
+        }
+      ],
+      "isActive": true,
+      "geopoint": {
+        "latitude": 16.0018,
+        "longitude": 108.2675
+      },
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z"
+    },
+    "artisan_tran_van_xuat": {
+      "id": "artisan_tran_van_xuat",
+      "fullName": "Trần Văn Xuất",
+      "birthYear": 1962,
+      "craft": "stone_carving",
+      "title": {
+        "vi": "Nghệ nhân Ưu tú",
+        "en": "Meritorious Artisan of Vietnam"
+      },
+      "bio": {
+        "vi": "Nghệ nhân Trần Văn Xuất có hơn 40 năm miệt mài gõ búa đục đá dưới chân núi Ngũ Hành. Ông là bậc thầy về kỹ thuật tạc tượng Phật giáo bằng đá cẩm thạch trắng nguyên khối, đặc biệt là thần thái từ bi của các pho tượng Phật Thích Ca, Quán Thế Âm và tượng 18 vị La Hán cho hàng trăm ngôi chùa khắp Việt Nam.",
+        "en": "With over 40 years of dedication under the Marble Mountains, Master Artisan Tran Van Xuat is acclaimed for his supreme craftsmanship in sculpting monolithic white marble Buddhist figures, particularly Shakyamuni, Avalokiteshvara, and the 18 Arhats for temples across Vietnam."
+      },
+      "specialty": {
+        "vi": "Tạc tượng Phật giáo và linh vật cẩm thạch cổ truyền",
+        "en": "Sacred Buddhist statues and traditional mythical guardians"
+      },
+      "workshopAddress": {
+        "vi": "Số 136 đường Lê Văn Hiến, phường Hòa Hải, quận Ngũ Hành Sơn, Đà Nẵng",
+        "en": "136 Le Van Hien St, Hoa Hai Ward, Ngu Hanh Son District, Da Nang"
+      },
+      "phoneNumber": "+84905223344",
+      "yearsOfExperience": 42,
+      "avatarUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/artisans/tran_van_xuat_portrait.jpg",
+      "images": [
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/artisans/xuat_buddha_carving.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/artisans/xuat_arhat_collection.jpg"
+      ],
+      "awards": [
+        {
+          "year": 2011,
+          "title": {
+            "vi": "Danh hiệu Nghệ nhân Ưu tú",
+            "en": "Title of Meritorious Artisan of Vietnam"
+          }
+        },
+        {
+          "year": 2014,
+          "title": {
+            "vi": "Bằng khen của Chủ tịch UBND TP. Đà Nẵng vì đóng góp bảo tồn Di sản văn hóa phi vật thể",
+            "en": "Certificate of Merit from Da Nang Chairman for Heritage Preservation"
+          }
+        }
+      ],
+      "isActive": true,
+      "geopoint": {
+        "latitude": 16.0025,
+        "longitude": 108.266
+      },
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z"
+    },
+    "artisan_nguyen_viet_minh": {
+      "id": "artisan_nguyen_viet_minh",
+      "fullName": "Nguyễn Việt Minh",
+      "birthYear": 1955,
+      "craft": "stone_carving",
+      "title": {
+        "vi": "Nghệ nhân Ưu tú / Chủ tịch Hội Làng đá Non Nước",
+        "en": "Meritorious Artisan / President of Non Nuoc Craft Association"
+      },
+      "bio": {
+        "vi": "Là Chủ tịch Hội Làng nghề Điêu khắc đá Non Nước, nghệ nhân Nguyễn Việt Minh đóng vai trò linh hồn trong việc gìn giữ và truyền thụ bí quyết nghề truyền thống cho các thế hệ trẻ. Cơ sở của ông là điểm dừng chân uy tín hàng đầu cho du khách quốc tế tham gia workshop trải nghiệm gọt đá cẩm thạch thủ công.",
+        "en": "As President of the Non Nuoc Stone Carving Village Association, Master Nguyen Viet Minh has led efforts to preserve ancient sculpting secrets and mentor young apprentices. His studio is the premier destination for tourist workshops."
+      },
+      "specialty": {
+        "vi": "Truyền dạy kỹ nghệ chạm khắc đá mỹ nghệ và tác phẩm linh vật phong thủy",
+        "en": "Craft mentoring, marble fine arts, and Feng Shui guardians"
+      },
+      "workshopAddress": {
+        "vi": "Số 73 đường Nguyễn Duy Trinh, phường Hòa Hải, quận Ngũ Hành Sơn, Đà Nẵng",
+        "en": "73 Nguyen Duy Trinh St, Hoa Hai Ward, Ngu Hanh Son District, Da Nang"
+      },
+      "phoneNumber": "+84905334455",
+      "yearsOfExperience": 48,
+      "avatarUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/artisans/nguyen_viet_minh_portrait.jpg",
+      "images": [
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/artisans/minh_workshop_tourists.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/artisans/minh_dragons.jpg"
+      ],
+      "awards": [
+        {
+          "year": 2013,
+          "title": {
+            "vi": "Danh hiệu Nghệ nhân Ưu tú",
+            "en": "Title of Meritorious Artisan of Vietnam"
+          }
+        }
+      ],
+      "isActive": true,
+      "geopoint": {
+        "latitude": 16.001,
+        "longitude": 108.269
+      },
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z"
+    }
+  },
+  "events_workshops": {
+    "evt_quan_the_am_2025": {
+      "id": "evt_quan_the_am_2025",
+      "type": "event",
+      "title": {
+        "vi": "Đại Lễ Hội Quán Thế Âm Ngũ Hành Sơn 2025",
+        "en": "Ngu Hanh Son Avalokiteshvara Festival 2025",
+        "ko": "2025 오행산 관세음 대축제",
+        "zh": "2025五行山观世音菩萨盛典"
+      },
+      "description": {
+        "vi": "Lễ hội Quán Thế Âm (19/2 Âm lịch) tại Chùa Quán Thế Âm - Di sản Văn hóa Phi vật thể Quốc gia. Sự kiện thu hút hàng vạn phật tử và du khách thập phương với các nghi lễ truyền thống trang nghiêm: Lễ rước tôn tượng Quán Thế Âm Bồ Tát, Lễ cầu quốc thái dân an, Lễ tế xuân, cùng phần hội tưng bừng: Đua thuyền truyền thống trên sông Cổ Cò, biểu diễn thư pháp, triển lãm ảnh mỹ thuật danh thắng và hội thi điêu khắc đá Non Nước.",
+        "en": "The Avalokiteshvara Festival (celebrated on the 19th day of the 2nd lunar month) at Quan The Am Pagoda is a recognized National Intangible Cultural Heritage. Featuring solemn Buddhist rites (sacred statue procession, peace prayer ceremonies) alongside vibrant cultural festivities including traditional boat races on Co Co River, Zen calligraphy demonstrations, and stone carving exhibitions."
+      },
+      "destinationId": "dest_quan_the_am",
+      "location": {
+        "name": {
+          "vi": "Khuôn viên Chùa Quán Thế Âm và bờ sông Cổ Cò, đường Sư Vạn Hạnh, phường Hòa Hải, Ngũ Hành Sơn",
+          "en": "Quan The Am Pagoda Grounds and Co Co Riverfront, Su Van Hanh St, Hoa Hai Ward, Ngu Hanh Son"
+        },
+        "geopoint": {
+          "latitude": 16.002,
+          "longitude": 108.2585
+        }
+      },
+      "startAt": "2025-03-18T06:00:00+07:00",
+      "endAt": "2025-03-20T21:30:00+07:00",
+      "maxCapacity": 5000,
+      "currentParticipants": 1820,
+      "bookedCount": 1820,
+      "price": {
+        "amount": 0,
+        "currency": "VND",
+        "note": {
+          "vi": "Vào cửa tự do cho toàn thể nhân dân và du khách",
+          "en": "Free public admission"
+        }
+      },
+      "status": "upcoming",
+      "isPublished": true,
+      "images": [
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/events/quan_the_am_procession.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/events/quan_the_am_boat_race.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/events/quan_the_am_night_lights.jpg"
+      ],
+      "organizer": {
+        "name": "UBND Quận Ngũ Hành Sơn & Ban Trị sự Giáo hội Phật giáo Việt Nam TP. Đà Nẵng",
+        "contactPhone": "+842363847250"
+      },
+      "tags": [
+        "di_san_quoc_gia",
+        "le_hoi_truyen_thong",
+        "dua_thuyen_co_co",
+        "phat_giao"
+      ],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z"
+    },
+    "evt_stone_workshop_2025": {
+      "id": "evt_stone_workshop_2025",
+      "type": "workshop",
+      "title": {
+        "vi": "Workshop: Thử Tài Chạm Khắc Đá Cẩm Thạch Cùng Nghệ Nhân Ưu Tú",
+        "en": "Workshop: Hands-on Marble Sculpting with Master Artisans",
+        "ko": "장인과 함께하는 대리석 조각 원데이 클래스",
+        "zh": "大师亲授：天然大理石雕刻沉浸式体验工作坊"
+      },
+      "description": {
+        "vi": "Khóa trải nghiệm thực tế 3 tiếng tại Xưởng điêu khắc đá của Nghệ nhân Nguyễn Việt Minh và Nguyễn Long Bửu. Du khách được trang bị đồ bảo hộ chuyên dụng, lắng nghe thuyết minh về lịch sử 400 năm Làng đá Non Nước, học cách phân biệt các loại đá cẩm thạch tự nhiên và tự tay sử dụng búa, đục, máy mài mini để hoàn thành một tác phẩm đá nhỏ (vòng tay phong thủy, con dấu đá hoặc tượng hoa sen) mang về làm kỷ niệm.",
+        "en": "An exclusive 3-hour masterclass at the studios of Master Artisans Nguyen Viet Minh and Nguyen Long Buu. Participants learn stone grading, basic chiseling, and fine polishing under master supervision to craft their own take-home marble souvenir (Feng Shui bracelet or carved lotus)."
+      },
+      "artisanId": "artisan_nguyen_viet_minh",
+      "destinationId": "dest_non_nuoc",
+      "location": {
+        "name": {
+          "vi": "Xưởng chế tác Nghệ nhân Nguyễn Việt Minh, số 73 đường Nguyễn Duy Trinh, Làng đá Non Nước",
+          "en": "Master Nguyen Viet Minh Studio, 73 Nguyen Duy Trinh St, Non Nuoc Stone Village"
+        },
+        "geopoint": {
+          "latitude": 16.001,
+          "longitude": 108.269
+        }
+      },
+      "startAt": "2025-02-15T08:30:00+07:00",
+      "endAt": "2025-02-15T11:30:00+07:00",
+      "maxCapacity": 20,
+      "currentParticipants": 16,
+      "bookedCount": 16,
+      "price": {
+        "amount": 350000,
+        "currency": "VND",
+        "includes": [
+          "Đá cẩm thạch tự nhiên",
+          "Dụng cụ bảo hộ và máy mài",
+          "Tác phẩm mang về kèm hộp quà",
+          "Nước uống thảo mộc và chứng nhận trải nghiệm"
+        ]
+      },
+      "status": "upcoming",
+      "isPublished": true,
+      "images": [
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/events/stone_ws_carving.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/events/stone_ws_souvenir.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/events/stone_ws_mentor.jpg"
+      ],
+      "organizer": {
+        "name": "Hiệp hội Làng nghề Đá Mỹ nghệ Non Nước",
+        "contactPhone": "+84905334455"
+      },
+      "tags": [
+        "workshop_trai_nghiem",
+        "nghe_nhan_uu_tu",
+        "tu_tay_lam_qua",
+        "dieu_khac_da"
+      ],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z"
+    },
+    "evt_heritage_night_tour": {
+      "id": "evt_heritage_night_tour",
+      "type": "event",
+      "title": {
+        "vi": "Tour Đêm: Huyền Bí Ngũ Hành Sơn & Lung Linh Cổ Tự",
+        "en": "Night Tour: Mystical Marble Mountains & Pagoda Illumination",
+        "ko": "야간 투어: 오행산의 신비와 사찰 야경",
+        "zh": "夜游专线：玄幻五行山与千年古寺夜光巡礼"
+      },
+      "description": {
+        "vi": "Tour trải nghiệm đặc biệt giới hạn 30 khách/đoàn vào đêm trăng rằm hàng tháng. Du khách đi thang máy kính ngắm toàn cảnh đêm thành phố Đà Nẵng và bãi biển Non Nước, chiêm bái Chùa Linh Ứng và Tam Thai dưới ánh đèn lồng lung linh, nghe thuyết minh về huyền tích Chăm Pa và thưởng thức trà đạo tại Vọng Giang Đài.",
+        "en": "Exclusive full-moon evening tour limited to 30 guests. Ascend via glass elevator for nocturnal Da Nang city vistas, visit lantern-lit Linh Ung and Tam Thai pagodas, and savor Zen herbal tea atop Vong Giang Dai observatory."
+      },
+      "destinationId": "dest_thuy_son",
+      "location": {
+        "name": {
+          "vi": "Tập trung tại Cổng 2 Thang máy Núi Thủy Sơn, đường Huyền Trân Công Chúa, Ngũ Hành Sơn",
+          "en": "Meeting point at Gate 2 Glass Elevator, Huyen Tran Cong Chua St, Ngu Hanh Son"
+        },
+        "geopoint": {
+          "latitude": 16.0028,
+          "longitude": 108.2641
+        }
+      },
+      "startAt": "2025-02-12T18:30:00+07:00",
+      "endAt": "2025-02-12T21:30:00+07:00",
+      "maxCapacity": 30,
+      "currentParticipants": 28,
+      "bookedCount": 28,
+      "price": {
+        "amount": 250000,
+        "currency": "VND",
+        "includes": [
+          "Vé thang máy khứ hồi",
+          "Vé tham quan danh thắng",
+          "Hướng dẫn viên song ngữ",
+          "Trà đạo ngắm trăng tại Vọng Giang Đài"
+        ]
+      },
+      "status": "upcoming",
+      "isPublished": true,
+      "images": [
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/events/night_tour_stupa.jpg",
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/events/night_tour_elevator.jpg"
+      ],
+      "organizer": {
+        "name": "Trung tâm Xúc tiến Du lịch Đà Nẵng phối hợp Ban Quản lý Di tích Ngũ Hành Sơn",
+        "contactPhone": "+842363847250"
+      },
+      "tags": [
+        "tour_dem",
+        "ngam_trang",
+        "tra_dao",
+        "thang_may_kinh"
+      ],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z"
+    }
+  },
+  "bookings": {
+    "booking_real_001": {
+      "id": "booking_real_001",
+      "userId": "user_tourist_vn1",
+      "userName": "Nguyễn Ngọc Bữu",
+      "userEmail": "buunnde180722@fpt.edu.vn",
+      "userPhone": "+84822835695",
+      "serviceId": "evt_stone_workshop_2025",
+      "serviceTitle": {
+        "vi": "Workshop: Thử Tài Chạm Khắc Đá Cẩm Thạch Cùng Nghệ Nhân Ưu Tú",
+        "en": "Workshop: Hands-on Marble Sculpting with Master Artisans"
+      },
+      "serviceType": "workshop",
+      "eventDate": "2025-02-15T08:30:00+07:00",
+      "numberOfParticipants": 2,
+      "unitPrice": 350000,
+      "totalPrice": 700000,
+      "currency": "VND",
+      "status": "CONFIRMED",
+      "paymentStatus": "PAID",
+      "paymentMethod": "VNPAY_QR",
+      "qrCode": "ST-BK-20250215-001-A8B9C",
+      "bookingNotes": "Đăng ký 2 người lớn trải nghiệm tạc con dấu đá cẩm thạch",
+      "createdAt": "2024-11-10T14:30:00Z",
+      "updatedAt": "2024-11-10T14:35:00Z"
+    },
+    "booking_real_002": {
+      "id": "booking_real_002",
+      "userId": "user_tourist_intl1",
+      "userName": "James Harrison",
+      "userEmail": "james.harrison.uk@gmail.com",
+      "userPhone": "+447911123456",
+      "serviceId": "evt_stone_workshop_2025",
+      "serviceTitle": {
+        "vi": "Workshop: Thử Tài Chạm Khắc Đá Cẩm Thạch Cùng Nghệ Nhân Ưu Tú",
+        "en": "Workshop: Hands-on Marble Sculpting with Master Artisans"
+      },
+      "serviceType": "workshop",
+      "eventDate": "2025-02-15T08:30:00+07:00",
+      "numberOfParticipants": 1,
+      "unitPrice": 350000,
+      "totalPrice": 350000,
+      "currency": "VND",
+      "status": "CONFIRMED",
+      "paymentStatus": "PAID",
+      "paymentMethod": "STRIPE_CREDIT_CARD",
+      "qrCode": "ST-BK-20250215-002-K9L2M",
+      "bookingNotes": "Interested in Champa relief motifs and chisel techniques",
+      "createdAt": "2024-11-11T09:15:00Z",
+      "updatedAt": "2024-11-11T09:18:00Z"
+    },
+    "booking_real_003": {
+      "id": "booking_real_003",
+      "userId": "user_tourist_vn2",
+      "userName": "Trần Mai Linh",
+      "userEmail": "mailinh.traveler@gmail.com",
+      "userPhone": "+84988776655",
+      "serviceId": "evt_heritage_night_tour",
+      "serviceTitle": {
+        "vi": "Tour Đêm: Huyền Bí Ngũ Hành Sơn & Lung Linh Cổ Tự",
+        "en": "Night Tour: Mystical Marble Mountains & Pagoda Illumination"
+      },
+      "serviceType": "event",
+      "eventDate": "2025-02-12T18:30:00+07:00",
+      "numberOfParticipants": 2,
+      "unitPrice": 250000,
+      "totalPrice": 500000,
+      "currency": "VND",
+      "status": "CONFIRMED",
+      "paymentStatus": "PAID",
+      "paymentMethod": "MOMO_WALLET",
+      "qrCode": "ST-BK-20250212-003-X7Y8Z",
+      "bookingNotes": "Đi cùng bạn ngắm cảnh trăng rằm và chụp ảnh đêm",
+      "createdAt": "2024-11-12T16:00:00Z",
+      "updatedAt": "2024-11-12T16:05:00Z"
+    },
+    "booking_real_004": {
+      "id": "booking_real_004",
+      "userId": "user_tourist_intl2",
+      "userName": "Park Ji-hoon",
+      "userEmail": "jihoon.park.danang@naver.com",
+      "userPhone": "+821098765432",
+      "serviceId": "evt_heritage_night_tour",
+      "serviceTitle": {
+        "vi": "Tour Đêm: Huyền Bí Ngũ Hành Sơn & Lung Linh Cổ Tự",
+        "en": "Night Tour: Mystical Marble Mountains & Pagoda Illumination"
+      },
+      "serviceType": "event",
+      "eventDate": "2025-02-12T18:30:00+07:00",
+      "numberOfParticipants": 2,
+      "unitPrice": 250000,
+      "totalPrice": 500000,
+      "currency": "VND",
+      "status": "CONFIRMED",
+      "paymentStatus": "PAID",
+      "paymentMethod": "STRIPE_CREDIT_CARD",
+      "qrCode": "ST-BK-20250212-004-P4Q5R",
+      "bookingNotes": "Couple tour with Korean language audio preference",
+      "createdAt": "2024-11-13T11:20:00Z",
+      "updatedAt": "2024-11-13T11:25:00Z"
+    },
+    "booking_real_005": {
+      "id": "booking_real_005",
+      "userId": "user_tourist_vn1",
+      "userName": "Nguyễn Ngọc Bữu",
+      "userEmail": "buunnde180722@fpt.edu.vn",
+      "userPhone": "+84822835695",
+      "serviceId": "evt_quan_the_am_2025",
+      "serviceTitle": {
+        "vi": "Đại Lễ Hội Quán Thế Âm Ngũ Hành Sơn 2025",
+        "en": "Ngu Hanh Son Avalokiteshvara Festival 2025"
+      },
+      "serviceType": "event",
+      "eventDate": "2025-03-18T06:00:00+07:00",
+      "numberOfParticipants": 3,
+      "unitPrice": 0,
+      "totalPrice": 0,
+      "currency": "VND",
+      "status": "CONFIRMED",
+      "paymentStatus": "FREE",
+      "paymentMethod": "NONE",
+      "qrCode": "ST-BK-20250318-005-Q1T2A",
+      "bookingNotes": "Đăng ký nhận thẻ đại biểu tham dự lễ rước tôn tượng và cổ vũ đua thuyền",
+      "createdAt": "2024-11-14T08:00:00Z",
+      "updatedAt": "2024-11-14T08:00:00Z"
+    }
+  },
+  "checkin_points": {
+    "cp_cong_thuy_son": {
+      "id": "cp_cong_thuy_son",
+      "name": {
+        "vi": "Trạm Check-in Cổng 1 Núi Thủy Sơn (Bậc đá tam cấp)",
+        "en": "Check-in Station: Gate 1 Thuy Son Mountain"
+      },
+      "destinationId": "dest_thuy_son",
+      "destinationName": {
+        "vi": "Ngọn Thủy Sơn",
+        "en": "Thuy Son Peak"
+      },
+      "locationDescription": {
+        "vi": "Đặt tại quầy soát vé Cổng số 1 Núi Thủy Sơn (đường Huyền Trân Công Chúa)",
+        "en": "Located at Ticket Counter Gate 1, Thuy Son Mountain (Huyen Tran Cong Chua St)"
+      },
+      "geopoint": {
+        "latitude": 16.0041,
+        "longitude": 108.2635
+      },
+      "geohash": "w6bcv9",
+      "radiusMeters": 100,
+      "qrCryptoHash": "sha256_e7d2f9a1c8b3e5a4d6f8c2b1a9e7d4f3b5a8c2d1e9f4a7b6c3d8e5f2a1b9c7d4",
+      "cooldownHours": 24,
+      "rewardPoints": 50,
+      "totalCheckins": 3420,
+      "isActive": true,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z"
+    },
+    "cp_dong_am_phu": {
+      "id": "cp_dong_am_phu",
+      "name": {
+        "vi": "Trạm Check-in Cửa Động Âm Phủ (Cầu Nại Hà)",
+        "en": "Check-in Station: Am Phu Cave Entrance"
+      },
+      "destinationId": "dest_am_phu",
+      "destinationName": {
+        "vi": "Động Âm Phủ",
+        "en": "Am Phu Cave"
+      },
+      "locationDescription": {
+        "vi": "Đặt ngay bên phải cổng vòm đá lối vào Động Âm Phủ",
+        "en": "Located on the right archway entrance to Am Phu Cave"
+      },
+      "geopoint": {
+        "latitude": 16.0044,
+        "longitude": 108.2638
+      },
+      "geohash": "w6bcv9",
+      "radiusMeters": 80,
+      "qrCryptoHash": "sha256_b4c8d1e7f3a9b2c5d8e1f4a7b9c3d6e2f8a1b5c9d4e7f2a8b3c6d1e9f5a7b2c4",
+      "cooldownHours": 24,
+      "rewardPoints": 40,
+      "totalCheckins": 2180,
+      "isActive": true,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z"
+    },
+    "cp_dong_huyen_khong": {
+      "id": "cp_dong_huyen_khong",
+      "name": {
+        "vi": "Trạm Check-in Động Huyền Không (Khu Giếng Trời)",
+        "en": "Check-in Station: Huyen Khong Cave"
+      },
+      "destinationId": "dest_huyen_khong",
+      "destinationName": {
+        "vi": "Động Huyền Không",
+        "en": "Huyen Khong Cave"
+      },
+      "locationDescription": {
+        "vi": "Bảng đồng QR gắn tại lối bậc đá dẫn xuống vòm Động Huyền Không",
+        "en": "Bronze QR plaque mounted at the stone stairway descending into Huyen Khong Cave"
+      },
+      "geopoint": {
+        "latitude": 16.0036,
+        "longitude": 108.2634
+      },
+      "geohash": "w6bcv9",
+      "radiusMeters": 60,
+      "qrCryptoHash": "sha256_f9a8b7c6d5e4f3a2b1c9d8e7f6a5b4c3d2e1f0a9b8c7d6e5f4a3b2c1d0e9f8a7",
+      "cooldownHours": 24,
+      "rewardPoints": 60,
+      "totalCheckins": 4850,
+      "isActive": true,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z"
+    },
+    "cp_lang_da_non_nuoc": {
+      "id": "cp_lang_da_non_nuoc",
+      "name": {
+        "vi": "Trạm Check-in Cổng Làng Nghề Đá Mỹ Nghệ Non Nước",
+        "en": "Check-in Station: Non Nuoc Craft Village Portal"
+      },
+      "destinationId": "dest_non_nuoc",
+      "destinationName": {
+        "vi": "Làng Nghề Đá Mỹ Nghệ Non Nước",
+        "en": "Non Nuoc Stone Village"
+      },
+      "locationDescription": {
+        "vi": "Đặt tại cổng chào biểu tượng làng nghề, ngã ba Huyền Trân Công Chúa và Lê Văn Hiến",
+        "en": "Located at the Village Welcome Arch, intersection of Huyen Tran Cong Chua and Le Van Hien"
+      },
+      "geopoint": {
+        "latitude": 16.0015,
+        "longitude": 108.268
+      },
+      "geohash": "w6bcvf",
+      "radiusMeters": 120,
+      "qrCryptoHash": "sha256_a3b6c9d2e5f8a1b4c7d0e3f6a9b2c5d8e1f4a7b0c3d6e9f2a5b8c1d4e7f0a3b6",
+      "cooldownHours": 12,
+      "rewardPoints": 30,
+      "totalCheckins": 5600,
+      "isActive": true,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z"
+    },
+    "cp_bien_son_thuy": {
+      "id": "cp_bien_son_thuy",
+      "name": {
+        "vi": "Trạm Check-in Công Viên Bãi Biển Sơn Thủy",
+        "en": "Check-in Station: Son Thuy Beach Park"
+      },
+      "destinationId": "dest_son_thuy",
+      "destinationName": {
+        "vi": "Bãi Biển Sơn Thủy – Tân Trà",
+        "en": "Son Thuy Beach"
+      },
+      "locationDescription": {
+        "vi": "Đặt tại trung tâm quảng trường công viên lối xuống bãi tắm Sơn Thủy",
+        "en": "Located at central beach park plaza entrance, Truong Sa Boulevard"
+      },
+      "geopoint": {
+        "latitude": 16.007,
+        "longitude": 108.272
+      },
+      "geohash": "w6bcvk",
+      "radiusMeters": 150,
+      "qrCryptoHash": "sha256_c1d4e7f0a3b6c9d2e5f8a1b4c7d0e3f6a9b2c5d8e1f4a7b0c3d6e9f2a5b8c1d4",
+      "cooldownHours": 8,
+      "rewardPoints": 25,
+      "totalCheckins": 6240,
+      "isActive": true,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z"
+    }
+  },
+  "checkin_records": {
+    "checkin_rec_001": {
+      "id": "checkin_rec_001",
+      "userId": "user_tourist_vn1",
+      "userName": "Nguyễn Ngọc Bữu",
+      "checkinPointId": "cp_cong_thuy_son",
+      "destinationId": "dest_thuy_son",
+      "destinationName": {
+        "vi": "Ngọn Thủy Sơn",
+        "en": "Thuy Son Peak"
+      },
+      "earnedPoints": 50,
+      "checkinAt": "2024-11-10T08:15:00+07:00",
+      "verificationMethod": "qr_crypto",
+      "deviceLocation": {
+        "latitude": 16.00412,
+        "longitude": 108.26348,
+        "accuracyMeters": 4.5
+      },
+      "distanceToPointMeters": 3.8,
+      "isValid": true,
+      "createdAt": "2024-11-10T08:15:00Z"
+    },
+    "checkin_rec_002": {
+      "id": "checkin_rec_002",
+      "userId": "user_tourist_vn1",
+      "userName": "Nguyễn Ngọc Bữu",
+      "checkinPointId": "cp_dong_huyen_khong",
+      "destinationId": "dest_huyen_khong",
+      "destinationName": {
+        "vi": "Động Huyền Không",
+        "en": "Huyen Khong Cave"
+      },
+      "earnedPoints": 60,
+      "checkinAt": "2024-11-10T09:40:00+07:00",
+      "verificationMethod": "qr_crypto",
+      "deviceLocation": {
+        "latitude": 16.00362,
+        "longitude": 108.26338,
+        "accuracyMeters": 5.2
+      },
+      "distanceToPointMeters": 4.1,
+      "isValid": true,
+      "createdAt": "2024-11-10T09:40:00Z"
+    },
+    "checkin_rec_003": {
+      "id": "checkin_rec_003",
+      "userId": "user_tourist_vn1",
+      "userName": "Nguyễn Ngọc Bữu",
+      "checkinPointId": "cp_lang_da_non_nuoc",
+      "destinationId": "dest_non_nuoc",
+      "destinationName": {
+        "vi": "Làng Nghề Đá Mỹ Nghệ Non Nước",
+        "en": "Non Nuoc Stone Village"
+      },
+      "earnedPoints": 30,
+      "checkinAt": "2024-11-10T11:20:00+07:00",
+      "verificationMethod": "qr_crypto",
+      "deviceLocation": {
+        "latitude": 16.00148,
+        "longitude": 108.26805,
+        "accuracyMeters": 6
+      },
+      "distanceToPointMeters": 5.5,
+      "isValid": true,
+      "createdAt": "2024-11-10T11:20:00Z"
+    },
+    "checkin_rec_004": {
+      "id": "checkin_rec_004",
+      "userId": "user_tourist_intl1",
+      "userName": "James Harrison",
+      "checkinPointId": "cp_cong_thuy_son",
+      "destinationId": "dest_thuy_son",
+      "destinationName": {
+        "vi": "Ngọn Thủy Sơn",
+        "en": "Thuy Son Peak"
+      },
+      "earnedPoints": 50,
+      "checkinAt": "2024-11-11T09:00:00+07:00",
+      "verificationMethod": "qr_crypto",
+      "deviceLocation": {
+        "latitude": 16.00408,
+        "longitude": 108.26352,
+        "accuracyMeters": 3.8
+      },
+      "distanceToPointMeters": 2.9,
+      "isValid": true,
+      "createdAt": "2024-11-11T09:00:00Z"
+    },
+    "checkin_rec_005": {
+      "id": "checkin_rec_005",
+      "userId": "user_tourist_intl1",
+      "userName": "James Harrison",
+      "checkinPointId": "cp_dong_am_phu",
+      "destinationId": "dest_am_phu",
+      "destinationName": {
+        "vi": "Động Âm Phủ",
+        "en": "Am Phu Cave"
+      },
+      "earnedPoints": 40,
+      "checkinAt": "2024-11-11T10:45:00+07:00",
+      "verificationMethod": "qr_crypto",
+      "deviceLocation": {
+        "latitude": 16.00438,
+        "longitude": 108.26382,
+        "accuracyMeters": 4.1
+      },
+      "distanceToPointMeters": 3.2,
+      "isValid": true,
+      "createdAt": "2024-11-11T10:45:00Z"
+    },
+    "checkin_rec_006": {
+      "id": "checkin_rec_006",
+      "userId": "user_tourist_vn2",
+      "userName": "Trần Mai Linh",
+      "checkinPointId": "cp_bien_son_thuy",
+      "destinationId": "dest_son_thuy",
+      "destinationName": {
+        "vi": "Bãi Biển Sơn Thủy – Tân Trà",
+        "en": "Son Thuy Beach"
+      },
+      "earnedPoints": 25,
+      "checkinAt": "2024-11-12T06:10:00+07:00",
+      "verificationMethod": "qr_crypto",
+      "deviceLocation": {
+        "latitude": 16.00705,
+        "longitude": 108.27195,
+        "accuracyMeters": 5
+      },
+      "distanceToPointMeters": 6.2,
+      "isValid": true,
+      "createdAt": "2024-11-12T06:10:00Z"
+    },
+    "checkin_rec_007": {
+      "id": "checkin_rec_007",
+      "userId": "user_tourist_intl2",
+      "userName": "Park Ji-hoon",
+      "checkinPointId": "cp_cong_thuy_son",
+      "destinationId": "dest_thuy_son",
+      "destinationName": {
+        "vi": "Ngọn Thủy Sơn",
+        "en": "Thuy Son Peak"
+      },
+      "earnedPoints": 50,
+      "checkinAt": "2024-11-13T14:30:00+07:00",
+      "verificationMethod": "qr_crypto",
+      "deviceLocation": {
+        "latitude": 16.00415,
+        "longitude": 108.26345,
+        "accuracyMeters": 4.2
+      },
+      "distanceToPointMeters": 7.1,
+      "isValid": true,
+      "createdAt": "2024-11-13T14:30:00Z"
+    },
+    "checkin_rec_008": {
+      "id": "checkin_rec_008",
+      "userId": "user_tourist_intl2",
+      "userName": "Park Ji-hoon",
+      "checkinPointId": "cp_bien_son_thuy",
+      "destinationId": "dest_son_thuy",
+      "destinationName": {
+        "vi": "Bãi Biển Sơn Thủy – Tân Trà",
+        "en": "Son Thuy Beach"
+      },
+      "earnedPoints": 25,
+      "checkinAt": "2024-11-13T17:15:00+07:00",
+      "verificationMethod": "qr_crypto",
+      "deviceLocation": {
+        "latitude": 16.00695,
+        "longitude": 108.27205,
+        "accuracyMeters": 4.8
+      },
+      "distanceToPointMeters": 7.5,
+      "isValid": true,
+      "createdAt": "2024-11-13T17:15:00Z"
+    }
+  },
+  "rewards": {
+    "reward_voucher_tuong_da": {
+      "id": "reward_voucher_tuong_da",
+      "name": {
+        "vi": "Voucher 100.000 VNĐ Mua Tượng Đá Mỹ Nghệ Non Nước",
+        "en": "100,000 VND Non Nuoc Marble Souvenir Voucher"
+      },
+      "description": {
+        "vi": "Áp dụng giảm trực tiếp 100.000 VNĐ cho hóa đơn mua tượng đá, đồ trang sức đá cẩm thạch hoặc quà lưu niệm tại các cơ sở liên kết chính thức trong Làng đá Non Nước.",
+        "en": "Direct 100,000 VND discount applicable on marble sculptures, stone jewelry, or souvenirs across authorized Non Nuoc village studios."
+      },
+      "type": "voucher",
+      "pointCost": 150,
+      "originalValue": 100000,
+      "currency": "VND",
+      "stock": 100,
+      "totalRedeemed": 18,
+      "validUntil": "2025-12-31T23:59:59+07:00",
+      "isActive": true,
+      "isPublished": true,
+      "images": [
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/rewards/reward_voucher_tuong_da.jpg"
+      ],
+      "terms": {
+        "vi": "Mỗi hóa đơn áp dụng tối đa 1 voucher. Không quy đổi thành tiền mặt. Xuất trình mã QR tại quầy thanh toán.",
+        "en": "Max 1 voucher per purchase. Non-refundable for cash. Present QR voucher at checkout."
+      },
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z"
+    },
+    "reward_ve_dong_am_phu": {
+      "id": "reward_ve_dong_am_phu",
+      "name": {
+        "vi": "Vé Miễn Phí Tham Quan Động Âm Phủ (Trị giá 20.000 VNĐ)",
+        "en": "Free Entrance Ticket to Am Phu Cave (Value 20,000 VND)"
+      },
+      "description": {
+        "vi": "Đổi điểm tích lũy lấy vé vào cửa trực tiếp tham quan Động Âm Phủ. Quét mã QR tại cổng soát vé Động Âm Phủ để qua cổng nhanh không cần xếp hàng mua vé giấy.",
+        "en": "Redeem points for direct entry into Am Phu Cave. Scan digital QR voucher at the gate to skip ticket lines."
+      },
+      "type": "ticket",
+      "pointCost": 80,
+      "originalValue": 20000,
+      "currency": "VND",
+      "stock": 250,
+      "totalRedeemed": 45,
+      "validUntil": "2025-12-31T23:59:59+07:00",
+      "isActive": true,
+      "isPublished": true,
+      "images": [
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/rewards/reward_ve_am_phu.jpg"
+      ],
+      "terms": {
+        "vi": "Vé có giá trị sử dụng 1 lần cho 1 người lớn trong vòng 30 ngày kể từ ngày đổi.",
+        "en": "Valid for one-time adult admission within 30 days of redemption."
+      },
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z"
+    },
+    "reward_ve_thang_may": {
+      "id": "reward_ve_thang_may",
+      "name": {
+        "vi": "Vé Khứ Hồi Thang Máy Kính Núi Thủy Sơn (Trị giá 30.000 VNĐ)",
+        "en": "Round-trip Glass Elevator Ticket for Thuy Son (Value 30,000 VND)"
+      },
+      "description": {
+        "vi": "Vé khứ hồi thang máy kính ngoài trời cao 43m đưa du khách lên thẳng sườn núi Thủy Sơn cạnh Chùa Linh Ứng và tháp Xá Lợi, vừa ngắm trọn biển Non Nước.",
+        "en": "Round-trip ticket for the 43m glass elevator ascending directly to Linh Ung Pagoda and Xa Loi Stupa with coastal ocean panoramas."
+      },
+      "type": "ticket",
+      "pointCost": 100,
+      "originalValue": 30000,
+      "currency": "VND",
+      "stock": 200,
+      "totalRedeemed": 32,
+      "validUntil": "2025-12-31T23:59:59+07:00",
+      "isActive": true,
+      "isPublished": true,
+      "images": [
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/rewards/reward_elevator_ticket.jpg"
+      ],
+      "terms": {
+        "vi": "Áp dụng cả 2 chiều lên và xuống trong cùng 1 ngày.",
+        "en": "Valid for both ascent and descent on the same operating day."
+      },
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z"
+    },
+    "reward_voucher_ca_phe": {
+      "id": "reward_voucher_ca_phe",
+      "name": {
+        "vi": "Voucher 50.000 VNĐ Cà Phê View Biển Sơn Thủy & An Thượng",
+        "en": "50,000 VND Coastal Coffee Voucher (Son Thuy & An Thuong)"
+      },
+      "description": {
+        "vi": "Thưởng thức ly cà phê muối Đà Nẵng hoặc nước ép trái cây nhiệt đới tại các quán cà phê boutique đối tác tại khu phố An Thượng và bãi biển Sơn Thủy.",
+        "en": "Enjoy signature Da Nang salt coffee or tropical juices at partner boutique cafes along An Thuong and Son Thuy Beach."
+      },
+      "type": "voucher",
+      "pointCost": 60,
+      "originalValue": 50000,
+      "currency": "VND",
+      "stock": 150,
+      "totalRedeemed": 26,
+      "validUntil": "2025-12-31T23:59:59+07:00",
+      "isActive": true,
+      "isPublished": true,
+      "images": [
+        "https://storage.googleapis.com/smarttravel-se13.appspot.com/rewards/reward_coffee.jpg"
+      ],
+      "terms": {
+        "vi": "Áp dụng cho hóa đơn từ 60.000 VNĐ trở lên tại các quán cà phê có logo đối tác SmartTravel.",
+        "en": "Valid for bills from 60,000 VND at SmartTravel partner cafe venues."
+      },
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z"
+    }
+  },
+  "reward_redemptions": {
+    "redemption_real_001": {
+      "id": "redemption_real_001",
+      "userId": "user_tourist_vn1",
+      "userName": "Nguyễn Ngọc Bữu",
+      "rewardId": "reward_voucher_tuong_da",
+      "rewardName": {
+        "vi": "Voucher 100.000 VNĐ Mua Tượng Đá Mỹ Nghệ Non Nước",
+        "en": "100,000 VND Non Nuoc Marble Souvenir Voucher"
+      },
+      "pointsSpent": 150,
+      "status": "COMPLETED",
+      "voucherCode": "ST-NN-STONE-20241110-891",
+      "redeemedAt": "2024-11-10T12:00:00+07:00",
+      "usedAt": "2024-11-10T15:30:00+07:00",
+      "usedLocation": "Cơ sở Điêu khắc Đá Nguyễn Việt Minh, 73 Nguyễn Duy Trinh",
+      "createdAt": "2024-11-10T12:00:00Z"
+    },
+    "redemption_real_002": {
+      "id": "redemption_real_002",
+      "userId": "user_tourist_intl1",
+      "userName": "James Harrison",
+      "rewardId": "reward_ve_thang_may",
+      "rewardName": {
+        "vi": "Vé Khứ Hồi Thang Máy Kính Núi Thủy Sơn (Trị giá 30.000 VNĐ)",
+        "en": "Round-trip Glass Elevator Ticket for Thuy Son (Value 30,000 VND)"
+      },
+      "pointsSpent": 100,
+      "status": "COMPLETED",
+      "voucherCode": "ST-ELV-20241111-552",
+      "redeemedAt": "2024-11-11T09:10:00+07:00",
+      "usedAt": "2024-11-11T09:25:00+07:00",
+      "usedLocation": "Cổng soát vé Thang máy Kính Thủy Sơn",
+      "createdAt": "2024-11-11T09:10:00Z"
+    },
+    "redemption_real_003": {
+      "id": "redemption_real_003",
+      "userId": "user_tourist_vn2",
+      "userName": "Trần Mai Linh",
+      "rewardId": "reward_voucher_ca_phe",
+      "rewardName": {
+        "vi": "Voucher 50.000 VNĐ Cà Phê View Biển Sơn Thủy & An Thượng",
+        "en": "50,000 VND Coastal Coffee Voucher (Son Thuy & An Thuong)"
+      },
+      "pointsSpent": 60,
+      "status": "PENDING",
+      "voucherCode": "ST-CF-20241112-334",
+      "redeemedAt": "2024-11-12T07:00:00+07:00",
+      "usedAt": null,
+      "usedLocation": null,
+      "createdAt": "2024-11-12T07:00:00Z"
+    },
+    "redemption_real_004": {
+      "id": "redemption_real_004",
+      "userId": "user_tourist_intl2",
+      "userName": "Park Ji-hoon",
+      "rewardId": "reward_ve_dong_am_phu",
+      "rewardName": {
+        "vi": "Vé Miễn Phí Tham Quan Động Âm Phủ (Trị giá 20.000 VNĐ)",
+        "en": "Free Entrance Ticket to Am Phu Cave (Value 20,000 VND)"
+      },
+      "pointsSpent": 80,
+      "status": "COMPLETED",
+      "voucherCode": "ST-AP-20241113-771",
+      "redeemedAt": "2024-11-13T15:00:00+07:00",
+      "usedAt": "2024-11-13T15:20:00+07:00",
+      "usedLocation": "Quầy soát vé Động Âm Phủ",
+      "createdAt": "2024-11-13T15:00:00Z"
+    }
+  },
+  "stone_carving_contests": {
+    "contest_non_nuoc_2025": {
+      "id": "contest_non_nuoc_2025",
+      "title": {
+        "vi": "Hội Thi Sáng Tác Điêu Khắc Đá Mỹ Nghệ Non Nước Lần Thứ V – 2025",
+        "en": "5th Non Nuoc Fine Arts Stone Carving Competition – 2025",
+        "ko": "제5회 논누옥 대리석 조각 창작 공모전 2025",
+        "zh": "2025第五届弄诺传统大理石雕刻艺术创作大赛"
+      },
+      "description": {
+        "vi": "Hội thi thường niên do UBND quận Ngũ Hành Sơn phối hợp Sở Văn hóa & Thể thao TP. Đà Nẵng tổ chức nhằm tôn vinh các nghệ nhân, thợ giỏi và bảo tồn Di sản Văn hóa Phi vật thể Quốc gia. Cuộc thi quy tụ các tác phẩm xuất sắc nhất được chế tác thủ công tinh xảo từ đá cẩm thạch tự nhiên, thể hiện các chủ đề: Phật giáo, văn hóa dân gian Việt Nam, khát vọng biển đảo và phát triển xanh.",
+        "en": "Annual competition organized by the People's Committee of Ngu Hanh Son District and Da Nang Department of Culture & Sports to honor master sculptors and preserve National Intangible Cultural Heritage. Featuring exquisite marble works celebrating Buddhist art, Vietnamese folk legends, and maritime heritage."
+      },
+      "organizer": "UBND Quận Ngũ Hành Sơn & Hiệp hội Làng đá Non Nước",
+      "startDate": "2025-01-10T00:00:00+07:00",
+      "endDate": "2025-03-20T23:59:59+07:00",
+      "votingStartDate": "2025-02-01T00:00:00+07:00",
+      "votingEndDate": "2025-03-15T23:59:59+07:00",
+      "status": "VOTING_ACTIVE",
+      "isPublished": true,
+      "totalEntries": 3,
+      "totalVotes": 482,
+      "bannerImageUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/contests/contest_2025_banner.jpg",
+      "rules": {
+        "vi": "Mỗi du khách có tài khoản hợp lệ được bình chọn 1 lần cho mỗi tác phẩm yêu thích.",
+        "en": "Each verified user account may cast one vote per favored sculpture entry."
+      },
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-11-01T00:00:00Z",
+      "__collections__": {
+        "entries": {
+          "entry_001": {
+            "id": "entry_001",
+            "contestId": "contest_non_nuoc_2025",
+            "artisanId": "artisan_nguyen_long_buu",
+            "artisanName": "Nghệ nhân Nhân dân Nguyễn Long Bửu",
+            "title": {
+              "vi": "Hồn Đá Ngũ Hành – Khát Vọng Hòa Bình",
+              "en": "Soul of Marble Mountains – Aspiration for Peace"
+            },
+            "description": {
+              "vi": "Tác phẩm điêu khắc nghệ thuật đương đại tạc từ đá cẩm thạch xám khói nguyên khối, kết hợp giữa hình tượng 5 ngọn núi Ngũ Hành Sơn và cánh chim bồ câu vút bay ra biển lớn.",
+              "en": "A contemporary monolithic smoke-gray marble sculpture unifying the five peaks of Ngu Hanh Son with a dove soaring toward the open sea."
+            },
+            "material": "Đá cẩm thạch xám khói tự nhiên (Natural Smoky Marble)",
+            "dimensions": "150cm x 80cm x 60cm",
+            "weightKg": 420,
+            "voteCount": 218,
+            "images": [
+              "https://storage.googleapis.com/smarttravel-se13.appspot.com/contests/entry_001_front.jpg",
+              "https://storage.googleapis.com/smarttravel-se13.appspot.com/contests/entry_001_detail.jpg"
+            ],
+            "submittedAt": "2025-01-15T10:00:00+07:00"
+          },
+          "entry_002": {
+            "id": "entry_002",
+            "contestId": "contest_non_nuoc_2025",
+            "artisanId": "artisan_tran_van_xuat",
+            "artisanName": "Nghệ nhân Ưu tú Trần Văn Xuất",
+            "title": {
+              "vi": "Quán Thế Âm Ngự Tòa Sen Cứu Khổ Cứu Nạn",
+              "en": "Avalokiteshvara on Lotus Throne of Compassion"
+            },
+            "description": {
+              "vi": "Pho tượng Bồ Tát Quán Thế Âm tạc từ đá cẩm thạch trắng mịn nguyên khối không tì vết, gương mặt tỏa rạng từ bi hỷ xả, tà áo mềm mại như gợn sóng biển Đông.",
+              "en": "A flawless monolithic white marble statue of Avalokiteshvara with a benevolent expression, seated atop a delicate double lotus blossom."
+            },
+            "material": "Đá cẩm thạch trắng tự nhiên (Pure White Marble)",
+            "dimensions": "180cm x 75cm x 70cm",
+            "weightKg": 580,
+            "voteCount": 164,
+            "images": [
+              "https://storage.googleapis.com/smarttravel-se13.appspot.com/contests/entry_002_front.jpg",
+              "https://storage.googleapis.com/smarttravel-se13.appspot.com/contests/entry_002_closeup.jpg"
+            ],
+            "submittedAt": "2025-01-16T14:30:00+07:00"
+          },
+          "entry_003": {
+            "id": "entry_003",
+            "contestId": "contest_non_nuoc_2025",
+            "artisanId": "artisan_nguyen_viet_minh",
+            "artisanName": "Nghệ nhân Ưu tú Nguyễn Việt Minh",
+            "title": {
+              "vi": "Cá Chép Hóa Rồng Vượt Sóng Cổ Cò",
+              "en": "Carp Transforming into Dragon Crossing Co Co Waves"
+            },
+            "description": {
+              "vi": "Tác phẩm tạc từ đá ngọc cẩm thạch xanh ngọc bích, biểu trưng cho sự kiên trì bền bỉ, thịnh vượng và sức bật vươn lên mạnh mẽ của thành phố đáng sống Đà Nẵng.",
+              "en": "Carved from vivid jade-green marble depicting the mythical carp transforming into a dragon amid churning waves, symbolizing resilience and prosperity."
+            },
+            "material": "Đá ngọc cẩm thạch xanh (Green Jade Marble)",
+            "dimensions": "120cm x 90cm x 45cm",
+            "weightKg": 350,
+            "voteCount": 100,
+            "images": [
+              "https://storage.googleapis.com/smarttravel-se13.appspot.com/contests/entry_003_front.jpg"
+            ],
+            "submittedAt": "2025-01-18T09:00:00+07:00"
+          }
+        },
+        "votes": {
+          "vote_001": {
+            "id": "vote_001",
+            "contestId": "contest_non_nuoc_2025",
+            "entryId": "entry_001",
+            "userId": "user_tourist_vn1",
+            "userName": "Nguyễn Ngọc Bữu",
+            "votedAt": "2025-02-02T10:15:00+07:00",
+            "ipAddress": "113.160.224.15",
+            "deviceFingerprint": "dev_web_chrome_win_01"
+          },
+          "vote_002": {
+            "id": "vote_002",
+            "contestId": "contest_non_nuoc_2025",
+            "entryId": "entry_002",
+            "userId": "user_tourist_intl1",
+            "userName": "James Harrison",
+            "votedAt": "2025-02-03T14:40:00+07:00",
+            "ipAddress": "118.69.182.40",
+            "deviceFingerprint": "dev_mobile_iphone15_02"
+          },
+          "vote_003": {
+            "id": "vote_003",
+            "contestId": "contest_non_nuoc_2025",
+            "entryId": "entry_003",
+            "userId": "user_tourist_vn2",
+            "userName": "Trần Mai Linh",
+            "votedAt": "2025-02-04T08:20:00+07:00",
+            "ipAddress": "14.162.140.88",
+            "deviceFingerprint": "dev_mobile_android_s23_03"
+          },
+          "vote_004": {
+            "id": "vote_004",
+            "contestId": "contest_non_nuoc_2025",
+            "entryId": "entry_001",
+            "userId": "user_tourist_intl2",
+            "userName": "Park Ji-hoon",
+            "votedAt": "2025-02-05T19:30:00+07:00",
+            "ipAddress": "171.244.135.22",
+            "deviceFingerprint": "dev_mobile_samsung_04"
+          }
+        }
+      }
+    }
+  },
+  "audit_logs": {
+    "audit_log_real_001": {
+      "id": "audit_log_real_001",
+      "actionType": "RBAC_ROLE_ASSIGNMENT",
+      "performedBy": "user_admin_bql",
+      "performedByName": "Nguyễn Văn An (Trưởng Ban Quản lý)",
+      "targetResource": "users/user_manager_bql",
+      "targetResourceType": "users",
+      "diffPayload": {
+        "before": {
+          "role": "TOURIST",
+          "customClaims": null
+        },
+        "after": {
+          "role": "TOURISM_MANAGER",
+          "customClaims": {
+            "role": "TOURISM_MANAGER",
+            "department": "Tổ Nghiệp vụ Du lịch & Sự kiện",
+            "assignedZone": "ngu_hanh_son_district"
+          }
+        }
+      },
+      "ipAddress": "113.160.224.10",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/130.0.0.0 Safari/537.36",
+      "status": "SUCCESS",
+      "timestamp": "2024-01-15T08:35:00+07:00",
+      "createdAt": "2024-01-15T08:35:00Z"
+    },
+    "audit_log_real_002": {
+      "id": "audit_log_real_002",
+      "actionType": "EVENT_PUBLISH",
+      "performedBy": "user_manager_bql",
+      "performedByName": "Trần Thị Thu Hà (Cán bộ Nghiệp vụ)",
+      "targetResource": "events_workshops/evt_quan_the_am_2025",
+      "targetResourceType": "events_workshops",
+      "diffPayload": {
+        "before": {
+          "status": "DRAFT",
+          "isPublished": false
+        },
+        "after": {
+          "status": "UPCOMING",
+          "isPublished": true,
+          "maxCapacity": 5000
+        }
+      },
+      "ipAddress": "113.160.224.18",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) Safari/605.1.15",
+      "status": "SUCCESS",
+      "timestamp": "2024-10-01T10:00:00+07:00",
+      "createdAt": "2024-10-01T10:00:00Z"
+    },
+    "audit_log_real_003": {
+      "id": "audit_log_real_003",
+      "actionType": "REWARD_INVENTORY_RESTOCK",
+      "performedBy": "user_manager_bql",
+      "performedByName": "Trần Thị Thu Hà (Cán bộ Nghiệp vụ)",
+      "targetResource": "rewards/reward_voucher_tuong_da",
+      "targetResourceType": "rewards",
+      "diffPayload": {
+        "before": {
+          "stock": 50
+        },
+        "after": {
+          "stock": 100,
+          "restockedBy": "Hiệp hội Làng đá Non Nước bổ sung 50 voucher"
+        }
+      },
+      "ipAddress": "113.160.224.18",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/130.0.0.0",
+      "status": "SUCCESS",
+      "timestamp": "2024-11-01T14:20:00+07:00",
+      "createdAt": "2024-11-01T14:20:00Z"
+    },
+    "audit_log_real_004": {
+      "id": "audit_log_real_004",
+      "actionType": "DESTINATION_HOURS_UPDATE",
+      "performedBy": "user_admin_bql",
+      "performedByName": "Nguyễn Văn An (Trưởng Ban Quản lý)",
+      "targetResource": "destinations/dest_thuy_son",
+      "targetResourceType": "destinations",
+      "diffPayload": {
+        "before": {
+          "elevatorClosingHour": "16:30"
+        },
+        "after": {
+          "elevatorClosingHour": "17:00",
+          "reason": "Điều chỉnh phục vụ cao điểm du khách ngắm hoàng hôn mùa đông"
+        }
+      },
+      "ipAddress": "113.160.224.10",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/130.0.0.0",
+      "status": "SUCCESS",
+      "timestamp": "2024-11-05T09:00:00+07:00",
+      "createdAt": "2024-11-05T09:00:00Z"
+    }
+  },
+  "analytics_daily": {
+    "analytics_2024-11-10": {
+      "date": "2024-11-10",
+      "dayOfWeek": "Sunday",
+      "totalVisitors": 4820,
+      "domesticVisitors": 2980,
+      "internationalVisitors": 1840,
+      "newAppRegistrations": 312,
+      "totalCheckins": 1450,
+      "totalBookings": 68,
+      "bookingRevenueVND": 18500000,
+      "ticketRevenueVND": 192800000,
+      "rewardsRedeemedCount": 24,
+      "topDestinationsByScans": [
+        {
+          "destinationId": "dest_thuy_son",
+          "name": "Ngọn Thủy Sơn",
+          "scans": 680,
+          "sharePercent": 46.9
+        },
+        {
+          "destinationId": "dest_huyen_khong",
+          "name": "Động Huyền Không",
+          "scans": 410,
+          "sharePercent": 28.3
+        },
+        {
+          "destinationId": "dest_non_nuoc",
+          "name": "Làng Nghề Đá Non Nước",
+          "scans": 220,
+          "sharePercent": 15.2
+        },
+        {
+          "destinationId": "dest_am_phu",
+          "name": "Động Âm Phủ",
+          "scans": 140,
+          "sharePercent": 9.6
+        }
+      ],
+      "languageDistribution": {
+        "vi": 58.2,
+        "en": 21.4,
+        "ko": 14.1,
+        "zh": 6.3
+      },
+      "deviceDistribution": {
+        "ios": 52.4,
+        "android": 41.8,
+        "web": 5.8
+      },
+      "averageRating": 4.8,
+      "audioGuidePlays": 890,
+      "vr360Interactions": 1240,
+      "createdAt": "2024-11-10T23:59:59Z"
+    },
+    "analytics_2024-11-11": {
+      "date": "2024-11-11",
+      "dayOfWeek": "Monday",
+      "totalVisitors": 3150,
+      "domesticVisitors": 1720,
+      "internationalVisitors": 1430,
+      "newAppRegistrations": 195,
+      "totalCheckins": 980,
+      "totalBookings": 42,
+      "bookingRevenueVND": 11200000,
+      "ticketRevenueVND": 126000000,
+      "rewardsRedeemedCount": 16,
+      "topDestinationsByScans": [
+        {
+          "destinationId": "dest_thuy_son",
+          "name": "Ngọn Thủy Sơn",
+          "scans": 440,
+          "sharePercent": 44.9
+        },
+        {
+          "destinationId": "dest_huyen_khong",
+          "name": "Động Huyền Không",
+          "scans": 290,
+          "sharePercent": 29.6
+        },
+        {
+          "destinationId": "dest_non_nuoc",
+          "name": "Làng Nghề Đá Non Nước",
+          "scans": 150,
+          "sharePercent": 15.3
+        },
+        {
+          "destinationId": "dest_am_phu",
+          "name": "Động Âm Phủ",
+          "scans": 100,
+          "sharePercent": 10.2
+        }
+      ],
+      "languageDistribution": {
+        "vi": 51.5,
+        "en": 25.2,
+        "ko": 16.8,
+        "zh": 6.5
+      },
+      "deviceDistribution": {
+        "ios": 54.1,
+        "android": 40.5,
+        "web": 5.4
+      },
+      "averageRating": 4.8,
+      "audioGuidePlays": 620,
+      "vr360Interactions": 840,
+      "createdAt": "2024-11-11T23:59:59Z"
+    }
+  },
+  "ai_itineraries_and_logs": {
+    "ai_log_real_001": {
+      "id": "ai_log_real_001",
+      "type": "rag_itinerary_recommendation",
+      "userId": "user_tourist_vn1",
+      "userName": "Nguyễn Ngọc Bữu",
+      "userInterests": [
+        "lịch sử triều Nguyễn",
+        "văn hóa Phật giáo Champa",
+        "hang động kỳ vĩ",
+        "nghệ thuật điêu khắc đá Non Nước",
+        "chụp ảnh phong cảnh"
+      ],
+      "inputParameters": {
+        "availableDuration": "1 ngày (07:30 - 18:00)",
+        "budgetVND": 1000000,
+        "transportation": "xe_may_va_di_bo",
+        "groupType": "solo_traveler",
+        "pace": "kham_pha_sau_va_chup_anh"
+      },
+      "ragContextRetrieved": {
+        "retrievedDestinationIds": [
+          "dest_thuy_son",
+          "dest_huyen_khong",
+          "dest_tam_thai",
+          "dest_am_phu",
+          "dest_non_nuoc",
+          "dest_vong_giang_dai"
+        ],
+        "retrievedEventIds": [
+          "evt_stone_workshop_2025"
+        ],
+        "similarityScoreAvg": 0.942
+      },
+      "generatedItinerary": {
+        "itineraryTitle": {
+          "vi": "Hành Trình Di Sản: Từ Huyền Tích Núi Đá Đến Làng Nghề 400 Năm",
+          "en": "Heritage Route: From Sacred Marble Peaks to 400-Year Craft Village"
+        },
+        "estimatedTotalCostVND": 460000,
+        "timeline": [
+          {
+            "timeSlot": "07:30 - 08:30",
+            "destinationId": "dest_thuy_son",
+            "activityTitle": "Chinh phục bậc đá tam cấp Cổng 1 Thủy Sơn & Chiêm bái Quốc tự Tam Thai",
+            "notes": "Leo bộ 156 bậc đá buổi sáng sớm không khí mát lành, quét QR check-in nhận 50 điểm thưởng."
+          },
+          {
+            "timeSlot": "08:45 - 09:30",
+            "destinationId": "dest_vong_giang_dai",
+            "activityTitle": "Ngắm toàn cảnh sông Cổ Cò từ Vọng Giang Đài & Đọc bia ký vua Minh Mạng",
+            "notes": "Quan sát thủy lộ cổ nối liền Đà Nẵng và Hội An thời kỳ thương cảng."
+          },
+          {
+            "timeSlot": "10:00 - 11:30",
+            "destinationId": "dest_huyen_khong",
+            "activityTitle": "Chiêm ngưỡng luồng sáng Giếng Trời Động Huyền Không & Nghe Audio Guide",
+            "notes": "Thời khắc ánh sáng tự nhiên đẹp nhất trong ngày. Tìm hiểu dấu tích bệ thờ Champa cổ."
+          },
+          {
+            "timeSlot": "11:45 - 13:15",
+            "destinationId": "dest_non_nuoc",
+            "activityTitle": "Nghỉ trưa, thưởng thức mì Quảng & bánh xèo dưới chân núi Ngũ Hành",
+            "notes": "Thưởng thức ẩm thực địa phương tại các quán ven đường Huyền Trân Công Chúa."
+          },
+          {
+            "timeSlot": "13:30 - 15:30",
+            "destinationId": "dest_non_nuoc",
+            "activityTitle": "Tham quan Làng đá Non Nước & Tham dự Workshop cùng Nghệ nhân Ưu tú",
+            "notes": "Học kỹ thuật gọt đục đá cẩm thạch thủ công, tự tay tạc con dấu đá mang về."
+          },
+          {
+            "timeSlot": "16:00 - 17:15",
+            "destinationId": "dest_am_phu",
+            "activityTitle": "Khám phá Động Âm Phủ – Chiêm nghiệm triết lý luân hồi hướng thiện",
+            "notes": "Điểm tham quan mát mẻ cuối buổi chiều, thử thách bước lên Cổng Thiên Đường."
+          },
+          {
+            "timeSlot": "17:30 - 18:30",
+            "destinationId": "dest_son_thuy",
+            "activityTitle": "Dạo mát, ngắm hoàng hôn trên bãi cát Bãi biển Sơn Thủy",
+            "notes": "Thư giãn đôi chân sau một ngày leo núi, quét QR check-in tại công viên bãi biển."
+          }
+        ]
+      },
+      "aiModel": "gemini-1.5-pro",
+      "tokenUsage": {
+        "promptTokens": 1850,
+        "completionTokens": 920,
+        "totalTokens": 2770
+      },
+      "executionTimeMs": 2840,
+      "userFeedback": {
+        "rating": 5,
+        "savedToBookmarks": true
+      },
+      "createdAt": "2024-11-10T07:15:00Z"
+    },
+    "ai_log_real_002": {
+      "id": "ai_log_real_002",
+      "type": "photo_landmark_recognition",
+      "userId": "user_tourist_intl1",
+      "userName": "James Harrison",
+      "uploadedImageUrl": "https://storage.googleapis.com/smarttravel-se13.appspot.com/ai_uploads/james_vision_query_01.jpg",
+      "recognitionOutput": {
+        "identifiedDestinationId": "dest_huyen_khong",
+        "identifiedDestinationName": {
+          "vi": "Động Huyền Không, Ngũ Hành Sơn, Đà Nẵng",
+          "en": "Huyen Khong Cave, Marble Mountains, Da Nang"
+        },
+        "confidence": 0.985,
+        "detectedLandmarkFeatures": [
+          "natural_skylight_shafts",
+          "cliff_carved_shakyamuni_buddha",
+          "stone_altar_reliefs",
+          "incense_burners",
+          "marble_karst_cave_dome"
+        ],
+        "historicalContextSnippet": {
+          "vi": "Động Huyền Không là hang động lộ thiên nổi tiếng nhất Ngũ Hành Sơn với vòm động thủng 5 lỗ giếng trời tự nhiên và pho tượng Phật tạc vào vách núi năm 1960.",
+          "en": "Huyen Khong Cave is renowned for its 5 natural skylight ceiling openings and monumental Buddha carved directly into the cliff."
+        },
+        "suggestedAction": "NAVIGATE_TO_DESTINATION_DETAILS"
+      },
+      "aiModel": "gemini-1.5-pro-vision",
+      "tokenUsage": {
+        "promptTokens": 1120,
+        "completionTokens": 380,
+        "totalTokens": 1500
+      },
+      "executionTimeMs": 3210,
+      "createdAt": "2024-11-11T10:15:00Z"
+    }
+  }
+}
