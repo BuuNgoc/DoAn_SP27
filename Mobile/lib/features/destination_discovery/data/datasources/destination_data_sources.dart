@@ -27,18 +27,19 @@ class FirestoreDestinationRemoteDataSource implements DestinationRemoteDataSourc
 
   @override
   Future<List<DestinationModel>> fetchDestinations() async {
-    try {
-      final snap = await _firestore
-          .collection(FirestoreCollections.destinations)
-          .where('isPublished', isEqualTo: true)
-          .get();
-      if (snap.docs.isEmpty) {
-        return DestinationSampleData.destinations;
-      }
-      return snap.docs.map((d) => DestinationModel.fromFirestore(d.data(), d.id)).toList();
-    } on FirebaseException catch (_) {
+    final snap = await _firestore
+        .collection(FirestoreCollections.destinations)
+        .where('isPublished', isEqualTo: true)
+        .get();
+
+    if (snap.docs.isEmpty) {
+      // Nếu collection rỗng, nạp dữ liệu mẫu Ngũ Hành Sơn
       return DestinationSampleData.destinations;
     }
+
+    return snap.docs
+        .map((d) => DestinationModel.fromFirestore(d.data(), d.id))
+        .toList();
   }
 }
 

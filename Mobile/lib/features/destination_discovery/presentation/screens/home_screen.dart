@@ -56,6 +56,21 @@ class _HomeViewState extends State<_HomeView> {
     'An Thượng',
   ];
 
+  static DestinationCategory? categoryForIndex(int index) {
+    switch (index) {
+      case 1:
+        return DestinationCategory.mountainCave; // Thủy Sơn
+      case 2:
+        return DestinationCategory.craftVillage; // Non Nước
+      case 3:
+        return DestinationCategory.beach; // Sơn Thủy
+      case 4:
+        return DestinationCategory.anThuong; // An Thượng
+      default:
+        return null; // Khám phá (Tất cả)
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = context.select((AuthCubit c) => c.state.user);
@@ -106,6 +121,8 @@ class _HomeViewState extends State<_HomeView> {
                     selectedIndex: _activeTabIndex,
                     onTabSelected: (index) {
                       setState(() => _activeTabIndex = index);
+                      final cat = categoryForIndex(index);
+                      context.read<DestinationListCubit>().selectCategory(cat);
                     },
                   ),
                 ),
@@ -938,40 +955,33 @@ class _DiscoverDestinationsList extends StatelessWidget {
     return BlocBuilder<DestinationListCubit, DestinationListState>(
       builder: (context, state) {
         if (state.status.isLoading) {
-          return const SizedBox(
-            height: 240,
-            child: LoadingState(message: 'Đang tải danh thắng Ngũ Hành Sơn...'),
-          );
+          // Hiển thị Shimmer Loading cho danh sách thẻ điểm đến
+          return const DestinationListShimmer();
         }
 
         if (state.status.isFailure) {
+          // Hiển thị ErrorState đã fix triệt để lỗi Overflow
           return SizedBox(
-            height: 240,
+            height: 250,
             child: ErrorState(
-              message: state.errorMessage ?? 'Không thể tải danh sách',
-              onRetry: () => context.read<DestinationListCubit>().load(),
+              message: state.errorMessage ?? 'An unexpected error occurred. Please try again.',
+              onRetry: () {
+                final cat = _HomeViewState.categoryForIndex(activeTabIndex);
+                context.read<DestinationListCubit>().selectCategory(cat);
+              },
             ),
           );
         }
 
-        // Lọc danh sách điểm đến theo tab đang chọn
-        List<Destination> filtered = state.items;
-        if (activeTabIndex == 1) {
-          // Thủy Sơn
-          filtered = state.items.where((d) => d.name.contains('Thủy Sơn') || d.name.contains('Huyền Không') || d.name.contains('Tam Thai')).toList();
-        } else if (activeTabIndex == 2) {
-          // Non Nước
-          filtered = state.items.where((d) => d.name.contains('Non Nước') || d.name.contains('Làng') || d.name.contains('Linh Ứng')).toList();
-        } else if (activeTabIndex == 3) {
-          // Sơn Thủy
-          filtered = state.items.where((d) => d.name.contains('Biển') || d.name.contains('Sơn Thủy') || d.category == DestinationCategory.beach).toList();
-        } else if (activeTabIndex == 4) {
-          // An Thượng
-          filtered = state.items.where((d) => d.name.contains('An Thượng') || d.category == DestinationCategory.anThuong).toList();
-        }
-
-        if (filtered.isEmpty) {
-          filtered = state.items;
+        final items = state.items;
+        if (items.isEmpty) {
+          return const SizedBox(
+            height: 220,
+            child: EmptyState(
+              title: 'Chưa có điểm đến',
+              subtitle: 'Không tìm thấy địa danh nào trong danh mục này.',
+            ),
+          );
         }
 
         return SizedBox(
@@ -979,10 +989,10 @@ class _DiscoverDestinationsList extends StatelessWidget {
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            itemCount: filtered.length,
+            itemCount: items.length,
             separatorBuilder: (_, _) => const SizedBox(width: 14),
             itemBuilder: (context, i) {
-              final d = filtered[i];
+              final d = items[i];
               return _ShangriLaDestinationCard(destination: d);
             },
           ),
