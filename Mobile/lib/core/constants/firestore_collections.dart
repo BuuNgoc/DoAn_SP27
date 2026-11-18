@@ -4,6 +4,7 @@ class FirestoreCollections {
 
   // Root Collections
   static const String users = 'users';
+  static const String categories = 'categories';
   static const String destinations = 'destinations';
   static const String artisans = 'artisans';
   static const String eventsWorkshops = 'events_workshops';

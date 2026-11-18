@@ -23,6 +23,24 @@ enum DestinationCategory {
   String localizedLabel(BuildContext context) => context.tr(labelKey);
 
   static DestinationCategory? fromCode(String? code) {
+    if (code == null) return null;
+    switch (code) {
+      case 'mountain_cave':
+      case 'cat_hang_dong':
+        return DestinationCategory.mountainCave;
+      case 'pagoda':
+      case 'cat_den_chua':
+        return DestinationCategory.pagoda;
+      case 'craft_village':
+      case 'cat_lang_nghe':
+        return DestinationCategory.craftVillage;
+      case 'beach':
+      case 'cat_bien':
+        return DestinationCategory.beach;
+      case 'an_thuong':
+      case 'cat_an_thuong':
+        return DestinationCategory.anThuong;
+    }
     for (final c in DestinationCategory.values) {
       if (c.code == code) return c;
     }
