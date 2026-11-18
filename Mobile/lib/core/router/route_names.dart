@@ -3,8 +3,11 @@ class RouteNames {
   RouteNames._();
 
   // ── 5 tab của MainNavigationShell ─────────────────────────────────────
-  static const String explore = '/explore'; // FE-02, 03, 06, 12, 13, 14
+  static const String home = '/explore'; // Home (Shangri-La luxury hero & discovery)
+  static const String explore = '/explore'; // Backward-compatible alias
+  static const String destinationsTab = '/explore-destinations'; // Explore screen
   static const String map = '/map'; // FE-04
+  static const String myTrip = '/my-trip'; // My Trip (Upcoming, Saved, Itinerary, History)
   static const String ai = '/ai'; // FE-05 & RAG
   static const String checkin = '/checkin'; // FE-08, FE-09
   static const String profile = '/profile'; // FE-01, 07, 10, 11

@@ -19,6 +19,11 @@ class MainNavigationShell extends StatelessWidget {
 
   List<TourismNavItem> _buildNavItems(BuildContext context) => [
         TourismNavItem(
+          icon: Icons.home_outlined,
+          selectedIcon: Icons.home_rounded,
+          label: context.tr('nav.home'),
+        ),
+        TourismNavItem(
           icon: Icons.explore_outlined,
           selectedIcon: Icons.explore_rounded,
           label: context.tr('nav.explore'),
@@ -29,14 +34,9 @@ class MainNavigationShell extends StatelessWidget {
           label: context.tr('nav.map'),
         ),
         TourismNavItem(
-          icon: Icons.auto_awesome_outlined,
-          selectedIcon: Icons.auto_awesome_rounded,
-          label: context.tr('nav.ai_itinerary'),
-        ),
-        TourismNavItem(
-          icon: Icons.qr_code_scanner_outlined,
-          selectedIcon: Icons.qr_code_scanner_rounded,
-          label: context.tr('nav.checkin_rewards'),
+          icon: Icons.luggage_outlined,
+          selectedIcon: Icons.luggage_rounded,
+          label: context.tr('nav.my_trip'),
         ),
         TourismNavItem(
           icon: Icons.person_outline_rounded,

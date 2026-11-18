@@ -47,6 +47,13 @@ class ProfileScreen extends StatelessWidget {
             _GroupLabel(context.tr('profile.section_my_activity')),
             _MenuGroup(children: [
               ProfileMenuTile(
+                icon: Icons.luggage_rounded,
+                iconColor: AppColors.primary,
+                title: 'Hành trình của tôi (My Trips)',
+                subtitle: 'Lộ trình gợi ý & điểm đến đã lên kế hoạch',
+                onTap: () => context.push(RouteNames.myTrip),
+              ),
+              ProfileMenuTile(
                 icon: Icons.confirmation_number_rounded,
                 title: context.tr('profile.booking_history_title'),
                 subtitle: context.tr('profile.booking_history_subtitle'),
@@ -65,6 +72,13 @@ class ProfileScreen extends StatelessWidget {
                 title: context.tr('profile.my_reviews_title'),
                 subtitle: context.tr('profile.my_reviews_subtitle'),
                 onTap: () => context.push(RouteNames.myReviews),
+              ),
+              ProfileMenuTile(
+                icon: Icons.notifications_none_rounded,
+                iconColor: AppColors.primaryLight,
+                title: 'Thông báo',
+                subtitle: 'Cập nhật chuyến đi và ưu đãi mới nhất',
+                onTap: () => showAppSnackBar(context, 'Chưa có thông báo mới.', type: SnackType.info),
               ),
               ProfileMenuTile(
                 icon: Icons.qr_code_scanner_rounded,
@@ -92,6 +106,13 @@ class ProfileScreen extends StatelessWidget {
           ] else ...[
             _GroupLabel(context.tr('profile.section_guest_explore')),
             _MenuGroup(children: [
+              ProfileMenuTile(
+                icon: Icons.luggage_rounded,
+                iconColor: AppColors.primary,
+                title: 'Hành trình của tôi (My Trips)',
+                subtitle: 'Lộ trình gợi ý & điểm đến đã lưu',
+                onTap: () => context.push(RouteNames.myTrip),
+              ),
               ProfileMenuTile(
                 icon: Icons.favorite_rounded,
                 iconColor: AppColors.error,
