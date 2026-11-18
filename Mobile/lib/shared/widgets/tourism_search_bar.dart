@@ -8,7 +8,7 @@ class TourismSearchBar extends StatelessWidget {
   const TourismSearchBar({
     super.key,
     this.controller,
-    this.hintText = 'Tìm hang động, chùa cổ, làng đá Non Nước...',
+    this.hintText = 'Bạn muốn khám phá điều gì?',
     this.onChanged,
     this.onSubmitted,
     this.onTap,

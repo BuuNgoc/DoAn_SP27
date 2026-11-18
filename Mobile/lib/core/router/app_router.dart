@@ -16,6 +16,7 @@ import '../../features/auth/presentation/screens/profile_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/booking_management/presentation/screens/booking_form_screen.dart';
 import '../../features/booking_management/presentation/screens/booking_screens.dart';
+import '../../features/booking_management/presentation/screens/my_trip_screen.dart';
 import '../../features/destination_discovery/domain/entities/destination.dart';
 import '../../features/destination_discovery/presentation/screens/destination_detail_screen.dart';
 import '../../features/destination_discovery/presentation/screens/destination_list_screen.dart';
@@ -93,19 +94,23 @@ class AppRouter {
               GoRoute(path: RouteNames.explore, builder: (_, _) => const HomeScreen()),
             ]),
             StatefulShellBranch(routes: [
+              GoRoute(path: RouteNames.destinationsTab, builder: (_, _) => const DestinationListScreen()),
+            ]),
+            StatefulShellBranch(routes: [
               GoRoute(path: RouteNames.map, builder: (_, _) => const InteractiveMapScreen()),
             ]),
             StatefulShellBranch(routes: [
-              GoRoute(path: RouteNames.ai, builder: (_, _) => const AiAssistantHubScreen()),
-            ]),
-            StatefulShellBranch(routes: [
-              GoRoute(path: RouteNames.checkin, builder: (_, _) => const CheckinLoyaltyHubScreen()),
+              GoRoute(path: RouteNames.myTrip, builder: (_, _) => const MyTripScreen()),
             ]),
             StatefulShellBranch(routes: [
               GoRoute(path: RouteNames.profile, builder: (_, _) => const ProfileScreen()),
             ]),
           ],
         ),
+
+        // ── Direct routes for AI & Checkin Hubs ───────────────────────────
+        GoRoute(path: RouteNames.ai, builder: (_, _) => const AiAssistantHubScreen()),
+        GoRoute(path: RouteNames.checkin, builder: (_, _) => const CheckinLoyaltyHubScreen()),
 
         // ── FE-01 Auth ────────────────────────────────────────────────────
         GoRoute(

@@ -115,7 +115,8 @@ class _NavItemWidget extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 10.5,
-                    fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
+                    letterSpacing: isSelected ? 0.2 : 0.0,
+                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                     color: isSelected ? AppColors.primary : AppColors.textMuted,
                   ),
                 ),
