@@ -39,6 +39,9 @@ Mỗi khi người dùng đưa ra yêu cầu lập trình (code tính năng mớ
  │ • ui-ux-pro-max   (Tra cứu du lịch: palette, style, layout) │
  │ • design-system   (Áp dụng design tokens: color, spacing)   │
  │ • ui-styling      (Tái sử dụng component, responsive)       │
+ │ • taste-skill     (Anti-slop frontend, bố cục figma/x.ai)   │
+ │ • hallmark        (Bộ quy tắc chuẩn The Floor, token, a11y) │
+ │ • unslop          (Rà soát & loại bỏ giao diện AI vibecoded)│
  └──────────────────────────────┬──────────────────────────────┘
                                 │
                                 ▼
@@ -78,6 +81,10 @@ Mỗi khi người dùng đưa ra yêu cầu lập trình (code tính năng mớ
      - **Khoảng cách**: Dùng `AppDimensions` (`core/constants/app_dimensions.dart` với hệ spacing 4, 8, 12, 16, 24, 32, 48).
      - **Typography**: Dùng `AppTheme` (`core/theme/app_theme.dart`).
      - **Tái sử dụng**: Dùng các component đã chuẩn hóa trong `Mobile/lib/shared/widgets/` (`TourismCard`, `DestinationCard`, `PrimaryButton`, `CategoryChip`, `TourismSearchBar`, v.v.).
+  3. `taste-skill`, `hallmark` & `unslop`:
+     - **Chống giao diện AI-slop / vibecoded**: Tuyệt đối không dùng gradient tím ngẫu nhiên, neon glow, icon emoji thay cho icon chuẩn, hoặc text phóng đại.
+     - **Quy tắc The Floor (hallmark)**: Màu sắc và font bắt buộc qua token hệ thống, kiểm soát animation an toàn (`prefers-reduced-motion`), bố cục có điểm nhấn rõ ràng thay vì nhồi nhét.
+     - **Quy trình Redline (unslop)**: Rà soát có thứ tự: Spacing $\rightarrow$ Color $\rightarrow$ Type $\rightarrow$ Icons $\rightarrow$ Copy $\rightarrow$ Motion.
 
 #### 💻 Giai Đoạn 3: Lập Trình & Sửa Lỗi (Implementation & Debugging)
 - **Khi nào áp dụng**: Khi bắt tay vào viết code hoặc điều tra lỗi.
