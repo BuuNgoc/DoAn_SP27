@@ -1,32 +1,32 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_dimensions.dart';
-import '../../../../core/constants/app_strings.dart';
 import '../../../../core/di/injection_container.dart';
-import '../../../../core/localization/app_localizations.dart';
-import '../../../../core/localization/locale_cubit.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/view_status.dart';
-import '../../../../shared/widgets/app_feedback.dart';
-import '../../../../shared/widgets/category_chip.dart';
 import '../../../../shared/widgets/cover_image.dart';
-import '../../../../shared/widgets/section_header.dart';
+import '../../../../shared/widgets/floating_ai_chat_button.dart';
 import '../../../../shared/widgets/state_views.dart';
-import '../../../../shared/widgets/tourism_components.dart';
-import '../../../../shared/widgets/tourism_search_bar.dart';
 import '../../../auth/presentation/bloc/auth_cubit.dart';
 import '../../domain/entities/destination.dart';
 import '../bloc/destination_cubits.dart';
 
-/// [Redesign Shangri-La Circle] Trang chủ Du lịch Thông minh Smart Travel Ngũ Hành Sơn.
-/// Phong cách thiết kế:
-/// - Luxury hospitality & Minimalist premium interface
-/// - Large immersive photography hero
-/// - Editorial-style sections (Trải nghiệm bản sắc địa phương, Nghỉ dưỡng & Khách sạn, VR360, AI Assistant)
-/// - Spacious white space, refined card components
+/// [Ảnh Mẫu 2: Pixel-Perfect] Trang chủ SmartTravel – Ngũ Hành Sơn.
+/// Tái tạo chính xác 100% phong cách Shangri-La Circle Luxury:
+/// 1. Top Section:
+///    - Dãy núi thủy mặc & đường đồng mức mạ vàng mờ ảo phía sau
+///    - Search Capsule trắng bo tròn chứa Golden Logo, Text "Ngũ Hành Sơn" & User Avatar
+///    - 5 nút danh mục tròn (Di tích, Ẩm thực, Làng đá, Mua sắm, Sự kiện)
+///    - Thanh Membership Loyalty Points màu vàng cát vân đồng mức (Tên thành viên + Điểm thưởng)
+/// 2. Thân trang (White Sheet):
+///    - Banner Carousel "Questers Rewards" với Mascot & CTA đỏ đất "Tham gia ngay"
+///    - Bento Grid 3 thẻ (1 thẻ dọc bên trái, 2 thẻ ngang xếp chồng bên phải)
+///    - Thanh Tabs Khám phá ("Khám phá", "Thủy Sơn", "Non Nước", "Sơn Thủy", "An Thượng") kèm vạch vàng kim
+///    - Danh sách thẻ điểm đến sang trọng theo từng tab
+///    - Nút nổi "Trợ lý AI" (Shangri-La Chat)
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -34,312 +34,666 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<DestinationListCubit>()..load(),
-      child: BlocListener<LocaleCubit, Locale>(
-        listenWhen: (prev, curr) => prev.languageCode != curr.languageCode,
-        listener: (context, _) => context.read<DestinationListCubit>().load(),
-        child: const _HomeView(),
-      ),
+      child: const _HomeView(),
     );
   }
 }
 
-class _HomeView extends StatelessWidget {
+class _HomeView extends StatefulWidget {
   const _HomeView();
+
+  @override
+  State<_HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<_HomeView> {
+  int _activeTabIndex = 0;
+  static const List<String> _discoverTabs = [
+    'Khám phá',
+    'Thủy Sơn',
+    'Non Nước',
+    'Sơn Thủy',
+    'An Thượng',
+  ];
 
   @override
   Widget build(BuildContext context) {
     final user = context.select((AuthCubit c) => c.state.user);
-    final greetingName =
-        user == null ? context.tr('home.guest_name') : user.fullName.split(' ').last;
+    final userName = user != null && user.fullName.isNotEmpty ? user.fullName : 'Nguyễn Ngọc Bữu';
+    final userPoints = user != null && user.loyaltyPoints > 0 ? user.loyaltyPoints : 280;
 
-    return RefreshIndicator(
-      color: AppColors.primary,
-      onRefresh: () => context.read<DestinationListCubit>().load(),
-      child: CustomScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        slivers: [
-          // ── 1. Luxury Hospitality Header ──────────────────────────────────────
-          SliverToBoxAdapter(
-            child: _LuxuryHomeHeader(greetingName: greetingName, userAvatar: user?.avatarUrl),
-          ),
+    return Scaffold(
+      backgroundColor: const Color(0xFFFAF7F2), // Warm Parchment
+      body: Stack(
+        children: [
+          RefreshIndicator(
+            color: AppColors.primary,
+            onRefresh: () => context.read<DestinationListCubit>().load(),
+            child: CustomScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              slivers: [
+                // ── 1. Top Header with Mountain & Golden Contours Background ──
+                SliverToBoxAdapter(
+                  child: _ShangriLaTopHeader(
+                    userName: userName,
+                    userPoints: userPoints,
+                    userAvatar: user?.avatarUrl,
+                  ),
+                ),
 
-          // ── 2. Large Immersive Hero Section ───────────────────────────────────
-          const SliverToBoxAdapter(
-            child: _ShangriLaHeroSection(),
-          ),
+                // ── 2. Questers Rewards Carousel Banner ───────────────────────
+                const SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(20, 16, 20, 16),
+                    child: _QuestersRewardBanner(),
+                  ),
+                ),
 
-          // ── 3. Minimalist Search Bar ──────────────────────────────────────────
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 14),
-              child: TourismSearchBar(
-                readOnly: true,
-                hintText: 'Bạn muốn khám phá điều gì?',
-                onTap: () => context.push('${RouteNames.destinations}?focus=1'),
-                onFilterTap: () => context.push(RouteNames.destinations),
-              ),
-            ),
-          ),
+                // ── 3. Bento Grid Section (1 Portrait Left + 2 Stacked Right) ──
+                const SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: _ShangriLaBentoGrid(),
+                  ),
+                ),
 
-          // ── 4. Elegant Category Pills ─────────────────────────────────────────
-          SliverToBoxAdapter(
-            child: _ShangriLaCategoryBar(),
-          ),
+                const SliverToBoxAdapter(child: SizedBox(height: 24)),
 
-          const SliverToBoxAdapter(child: SizedBox(height: 28)),
-
-          // ── 5. Featured Destinations (Điểm đến nổi bật) ──────────────────────
-          SliverToBoxAdapter(
-            child: SectionHeader(
-              title: 'Điểm Đến Nổi Bật',
-              subtitle: 'Những danh lam thắng cảnh huyền bí không thể bỏ lỡ',
-              actionLabel: 'Xem tất cả',
-              icon: Icons.auto_awesome_rounded,
-              onAction: () => context.push(RouteNames.destinations),
-            ),
-          ),
-          const SliverToBoxAdapter(child: SizedBox(height: 14)),
-          SliverToBoxAdapter(
-            child: BlocBuilder<DestinationListCubit, DestinationListState>(
-              builder: (context, state) {
-                if (state.status.isLoading) {
-                  return const SizedBox(height: 280, child: LoadingState(message: 'Đang tải danh thắng...'));
-                }
-                if (state.status.isFailure) {
-                  return SizedBox(
-                    height: 280,
-                    child: ErrorState(
-                      message: state.errorMessage ?? 'Không thể tải danh sách',
-                      onRetry: () => context.read<DestinationListCubit>().load(),
-                    ),
-                  );
-                }
-                final featured = [...state.items]..sort((a, b) => b.ratingAvg.compareTo(a.ratingAvg));
-                return SizedBox(
-                  height: 285,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    itemCount: featured.take(6).length,
-                    separatorBuilder: (_, _) => const SizedBox(width: 16),
-                    itemBuilder: (context, i) {
-                      final item = featured[i];
-                      return DestinationCard(
-                        width: 260,
-                        title: item.name,
-                        imageUrl: item.coverImage,
-                        category: item.category.label,
-                        rating: item.ratingAvg,
-                        reviewCount: item.reviewCount,
-                        location: item.address,
-                        hasVr360: item.hasVr360,
-                        hasAudioGuide: item.hasAudioGuide,
-                        onTap: () => context.push(RouteNames.destinationDetail(item.id)),
-                      );
+                // ── 4. Discover Tabs (Khám phá, Thủy Sơn, Non Nước...) ─────────
+                SliverToBoxAdapter(
+                  child: _ShangriLaDiscoverTabs(
+                    tabs: _discoverTabs,
+                    selectedIndex: _activeTabIndex,
+                    onTabSelected: (index) {
+                      setState(() => _activeTabIndex = index);
                     },
                   ),
-                );
-              },
+                ),
+
+                const SliverToBoxAdapter(child: SizedBox(height: 16)),
+
+                // ── 5. Destination Horizontal Cards for Active Tab ───────────
+                SliverToBoxAdapter(
+                  child: _DiscoverDestinationsList(activeTabIndex: _activeTabIndex),
+                ),
+
+                const SliverToBoxAdapter(child: SizedBox(height: 100)), // Bottom padding
+              ],
             ),
           ),
 
-          const SliverToBoxAdapter(child: SizedBox(height: 32)),
-
-          // ── 6. Local Experiences (Trải nghiệm bản sắc địa phương) ─────────────
-          SliverToBoxAdapter(
-            child: SectionHeader(
-              title: 'Trải Nghiệm Bản Sắc Địa Phương',
-              subtitle: 'Nghề thủ công 400 năm, làng đá Non Nước & văn hóa miền Trung',
-              actionLabel: 'Xem tất cả',
-              icon: Icons.palette_outlined,
-              onAction: () => context.push('${RouteNames.events}?kind=workshop'),
+          // ── 6. Floating AI Assistant Chat Button ────────────────────────────
+          Positioned(
+            left: 20,
+            bottom: 24,
+            child: FloatingAiChatButton(
+              label: 'Trợ lý AI',
+              onTap: () => context.push(RouteNames.aiChat),
             ),
           ),
-          const SliverToBoxAdapter(child: SizedBox(height: 14)),
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: 320,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                children: [
-                  ExperienceCard(
-                    title: 'Workshop Tự Tay Chạm Khắc Tượng Đá Non Nước',
-                    imageUrl: 'assets/images/artisan_workshop.jpg',
-                    location: 'Làng Đá Mỹ Nghệ Non Nước',
-                    duration: '90 phút',
-                    price: '350.000đ',
-                    category: 'LÀNG NGHỀ TRUYỀN THỐNG',
-                    rating: 4.9,
-                    reviewCount: 148,
-                    onTap: () => context.push(RouteNames.events),
-                  ),
-                  const SizedBox(width: 16),
-                  ExperienceCard(
-                    title: 'Trải Nghiệm Làm Đèn Lồng Cổ Truyền Hội An & Đà Nẵng',
-                    imageUrl: 'assets/images/linh_ung_pagoda.jpg',
-                    location: 'Không gian Văn hóa Phố Cổ Non Nước',
-                    duration: '60 phút',
-                    price: '280.000đ',
-                    category: 'THỦ CÔNG MỸ NGHỆ',
-                    rating: 4.8,
-                    reviewCount: 96,
-                    onTap: () => context.push(RouteNames.events),
-                  ),
-                  const SizedBox(width: 16),
-                  ExperienceCard(
-                    title: 'Food Tour: Ẩm Thực Miền Trung Quanh Chân Rặng Ngũ Hành',
-                    imageUrl: 'assets/images/an_thuong_street.jpg',
-                    location: 'Khu ẩm thực & Phố đêm Non Nước',
-                    duration: '120 phút',
-                    price: '420.000đ',
-                    category: 'ẨM THỰC ĐẶC SẢN',
-                    rating: 5.0,
-                    reviewCount: 210,
-                    onTap: () => context.push(RouteNames.anThuong),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          const SliverToBoxAdapter(child: SizedBox(height: 32)),
-
-          // ── 7. Hotels & Accommodation (Nghỉ dưỡng & Khách sạn) ────────────────
-          SliverToBoxAdapter(
-            child: SectionHeader(
-              title: 'Nghỉ Dưỡng & Khách Sạn',
-              subtitle: 'Không gian lưu trú sang trọng hướng biển và rặng núi đá',
-              actionLabel: 'Xem thêm',
-              icon: Icons.hotel_outlined,
-              onAction: () => context.push(RouteNames.beach),
-            ),
-          ),
-          const SliverToBoxAdapter(child: SizedBox(height: 14)),
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: 300,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                children: [
-                  HotelCard(
-                    name: 'Shangri-La Da Nang Non Nuoc Resort & Spa',
-                    imageUrl: 'assets/images/son_thuy_beach.jpg',
-                    location: 'Bãi biển Non Nước, Ngũ Hành Sơn',
-                    pricePerNight: '4.850.000đ',
-                    stars: 5,
-                    rating: 4.9,
-                    reviewCount: 312,
-                    onTap: () => context.push(RouteNames.beach),
-                  ),
-                  const SizedBox(width: 16),
-                  HotelCard(
-                    name: 'Sandy Beach Luxury Heritage Villas',
-                    imageUrl: 'assets/images/marble_mountains.jpg',
-                    location: 'Đường Trường Sa, Ngũ Hành Sơn',
-                    pricePerNight: '3.200.000đ',
-                    stars: 5,
-                    rating: 4.8,
-                    reviewCount: 185,
-                    onTap: () => context.push(RouteNames.beach),
-                  ),
-                  const SizedBox(width: 16),
-                  HotelCard(
-                    name: 'Boutique Marble Mountain Retreat',
-                    imageUrl: 'assets/images/linh_ung_panorama.jpg',
-                    location: 'Chân núi Thủy Sơn, Ngũ Hành Sơn',
-                    pricePerNight: '1.950.000đ',
-                    stars: 4,
-                    rating: 4.7,
-                    reviewCount: 92,
-                    onTap: () => context.push(RouteNames.beach),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          const SliverToBoxAdapter(child: SizedBox(height: 32)),
-
-          // ── 8. VR360 Experience (Explore before you arrive) ───────────────────
-          const SliverToBoxAdapter(
-            child: _Vr360ShangriLaSection(),
-          ),
-
-          const SliverToBoxAdapter(child: SizedBox(height: 32)),
-
-          // ── 9. AI Travel Assistant (Your Personal Travel Assistant) ───────────
-          const SliverToBoxAdapter(
-            child: _AiPersonalAssistantSection(),
-          ),
-
-          const SliverToBoxAdapter(child: SizedBox(height: 32)),
-
-          // ── 10. Curated for You & Specialized Zones (Gợi ý dành cho bạn) ─────
-          SliverToBoxAdapter(
-            child: SectionHeader(
-              title: 'Gợi Ý Dành Cho Bạn',
-              subtitle: 'Các phân khu trải nghiệm đặc sắc tại Ngũ Hành Sơn',
-              icon: Icons.explore_outlined,
-            ),
-          ),
-          const SliverToBoxAdapter(child: SizedBox(height: 14)),
-          const SliverToBoxAdapter(child: _ExperienceZonesGrid()),
-
-          // ── 11. Recently Viewed Section ──────────────────────────────────────
-          const SliverToBoxAdapter(child: _RecentlyViewedSection()),
-
-          const SliverToBoxAdapter(child: SizedBox(height: AppDimensions.bottomNavClearance)),
         ],
       ),
     );
   }
 }
 
-/// Header Luxury phong cách Shangri-La Hospitality
-class _LuxuryHomeHeader extends StatelessWidget {
-  const _LuxuryHomeHeader({required this.greetingName, this.userAvatar});
+// ─────────────────────────────────────────────────────────────────────────────
+// 1. TOP HEADER PHONG CÁCH SHANGRI-LA (SEARCH CAPSULE, 5 ICONS, LOYALTY BAR)
+// ─────────────────────────────────────────────────────────────────────────────
 
-  final String greetingName;
+class _ShangriLaTopHeader extends StatelessWidget {
+  const _ShangriLaTopHeader({
+    required this.userName,
+    required this.userPoints,
+    this.userAvatar,
+  });
+
+  final String userName;
+  final int userPoints;
   final String? userAvatar;
 
   @override
   Widget build(BuildContext context) {
+    final topPadding = MediaQuery.paddingOf(context).top;
+
     return Container(
-      color: AppColors.background,
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
-      child: SafeArea(
-        bottom: false,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Brand Logo & Greeting
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                        decoration: BoxDecoration(
-                          color: AppColors.primarySurface,
-                          borderRadius: BorderRadius.circular(AppDimensions.radiusFull),
-                          border: Border.all(color: AppColors.primary.withValues(alpha: 0.15), width: 0.8),
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        color: Color(0xFFFAF7F2),
+      ),
+      child: Stack(
+        children: [
+          // Lớp nền núi thủy mặc và đường đồng mức tinh tế
+          Positioned.fill(
+            child: CustomPaint(
+              painter: _HeaderMountainPainter(),
+            ),
+          ),
+
+          // Nội dung chính của Header
+          Padding(
+            padding: EdgeInsets.only(top: topPadding + 10, bottom: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // ── 1.1 Search Capsule Bar ──
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Container(
+                    height: 48,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(color: const Color(0xFFE8E5DD), width: 1.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF0F2B24).withValues(alpha: 0.06),
+                          blurRadius: 16,
+                          offset: const Offset(0, 4),
                         ),
-                        child: const Row(
-                          mainAxisSize: MainAxisSize.min,
+                      ],
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () => context.push('${RouteNames.destinations}?focus=1'),
+                        borderRadius: BorderRadius.circular(24),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 14),
+                          child: Row(
+                            children: [
+                              // Circular Golden Sun & Mountain Peak Emblem
+                              Container(
+                                width: 28,
+                                height: 28,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(color: const Color(0xFFD4AF37), width: 1.2),
+                                ),
+                                child: Center(
+                                  child: CustomPaint(
+                                    size: const Size(14, 10),
+                                    painter: _MiniPeakLogoPainter(),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              // Location text (matches "Singapore" in mockup)
+                              const Expanded(
+                                child: Text(
+                                  'Ngũ Hành Sơn, Đà Nẵng',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xFF4A4D48),
+                                    letterSpacing: -0.2,
+                                  ),
+                                ),
+                              ),
+                              // User Avatar Icon
+                              GestureDetector(
+                                onTap: () => context.push(RouteNames.profile),
+                                child: Container(
+                                  width: 32,
+                                  height: 32,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(color: const Color(0xFFD8D4CA), width: 1.0),
+                                  ),
+                                  child: ClipOval(
+                                    child: userAvatar != null && userAvatar!.isNotEmpty
+                                        ? Image.network(userAvatar!, fit: BoxFit.cover)
+                                        : const Icon(Icons.person_outline_rounded, size: 20, color: Color(0xFF242824)),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 18),
+
+                // ── 1.2 Five Circular Quick Action Buttons ──
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _QuickActionCircle(
+                        icon: Icons.apartment_rounded,
+                        label: 'Di tích',
+                        onTap: () => context.push('${RouteNames.destinations}?cat=mountain_cave'),
+                      ),
+                      _QuickActionCircle(
+                        icon: Icons.restaurant_rounded,
+                        label: 'Ẩm thực',
+                        onTap: () => context.push(RouteNames.anThuong),
+                      ),
+                      _QuickActionCircle(
+                        icon: Icons.groups_rounded,
+                        label: 'Làng đá',
+                        onTap: () => context.push('${RouteNames.events}?kind=workshop'),
+                      ),
+                      _QuickActionCircle(
+                        icon: Icons.shopping_bag_outlined,
+                        label: 'Mua sắm',
+                        onTap: () => context.push(RouteNames.anThuong),
+                      ),
+                      _QuickActionCircle(
+                        icon: Icons.celebration_rounded,
+                        label: 'Sự kiện',
+                        onTap: () => context.push(RouteNames.events),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                // ── 1.3 Loyalty Points Strip (Sand Beige Contour Bar) ──
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Container(
+                    height: 48,
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFFE8DFD0), Color(0xFFDDD2C0)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: const Color(0xFFD4C8B2), width: 0.8),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF242824).withValues(alpha: 0.04),
+                          blurRadius: 10,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () => context.push(RouteNames.rewards),
+                        borderRadius: BorderRadius.circular(16),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 18),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                userName,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xFF242824),
+                                  letterSpacing: -0.2,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    '$userPoints Điểm',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xFF242824),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  const Icon(Icons.chevron_right_rounded, size: 18, color: Color(0xFF5A5D55)),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _QuickActionCircle extends StatelessWidget {
+  const _QuickActionCircle({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 52,
+            height: 52,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              border: Border.all(color: const Color(0xFFEBE7DD), width: 1.0),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF0F2B24).withValues(alpha: 0.06),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Center(
+              child: Icon(icon, size: 23, color: const Color(0xFF242824)),
+            ),
+          ),
+          const SizedBox(height: 7),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF4A4D48),
+              letterSpacing: -0.2,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 2. BANNER CAROUSEL "QUESTERS REWARDS" (MASCOT, TERRACOTTA RED CTA)
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _QuestersRewardBanner extends StatelessWidget {
+  const _QuestersRewardBanner();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 146,
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFFE5F0EC), Color(0xFFF2F8F5), Color(0xFFFAF7F2)],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+        ),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: const Color(0xFFD3E4DC), width: 1.0),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF0F2B24).withValues(alpha: 0.05),
+            blurRadius: 14,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(18),
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
+              child: Row(
+                children: [
+                  // Mascot Illustration (Character with red Q)
+                  Container(
+                    width: 86,
+                    height: 110,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.7),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(color: const Color(0xFFCDE0D7), width: 0.8),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 48,
+                          height: 48,
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFB83A2E), // Terracotta Red
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Center(
+                            child: Icon(Icons.explore_rounded, color: Colors.white, size: 26),
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        const Text(
+                          'Questers',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w800,
+                            color: Color(0xFFB83A2E),
+                            letterSpacing: -0.3,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(width: 14),
+
+                  // Text content & CTA
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Questers Rewards',
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w800,
+                            color: Color(0xFFB83A2E), // Terracotta Red headline
+                            letterSpacing: -0.3,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        const Text(
+                          'Stay, play, learn and earn perks every time you book as a family',
+                          style: TextStyle(
+                            fontSize: 11.5,
+                            color: Color(0xFF4A4D48),
+                            height: 1.3,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 10),
+                        // Join Now Button (Solid Red Pill)
+                        Material(
+                          color: const Color(0xFFB83A2E),
+                          borderRadius: BorderRadius.circular(16),
+                          child: InkWell(
+                            onTap: () => context.push(RouteNames.rewards),
+                            borderRadius: BorderRadius.circular(16),
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                              child: Text(
+                                'Tham gia ngay',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Dots indicator at bottom center
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 6,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 14,
+                    height: 3.5,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFB83A2E),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Container(
+                    width: 4,
+                    height: 3.5,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFB69A67).withValues(alpha: 0.5),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Container(
+                    width: 4,
+                    height: 3.5,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFB69A67).withValues(alpha: 0.5),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 3. BENTO GRID (1 PORTRAIT LEFT + 2 STACKED LANDSCAPE RIGHT)
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _ShangriLaBentoGrid extends StatelessWidget {
+  const _ShangriLaBentoGrid();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 240,
+      child: Row(
+        children: [
+          // ── Left Portrait Card: Shangri-La Boutique ──
+          Expanded(
+            flex: 5,
+            child: GestureDetector(
+              onTap: () => context.push('${RouteNames.events}?kind=workshop'),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.08),
+                      blurRadius: 14,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      const CoverImage(
+                        source: 'assets/images/artisan_workshop.jpg',
+                        fit: BoxFit.cover,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.black.withValues(alpha: 0.2),
+                              Colors.transparent,
+                              Colors.black.withValues(alpha: 0.8),
+                            ],
+                            stops: const [0.0, 0.4, 1.0],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Icon(Icons.diamond_outlined, size: 11, color: AppColors.accent),
-                            SizedBox(width: 4),
-                            Text(
-                              'SMART TRAVEL NGŨ HÀNH SƠN',
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'SMART TRAVEL\nBOUTIQUE',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 1.5,
+                                    fontFamily: 'serif',
+                                  ),
+                                ),
+                                const SizedBox(height: 6),
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 16,
+                                      height: 16,
+                                      decoration: const BoxDecoration(
+                                        color: Color(0xFFEB001B),
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                    Transform.translate(
+                                      offset: const Offset(-6, 0),
+                                      child: Container(
+                                        width: 16,
+                                        height: 16,
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFFF79E1B).withValues(alpha: 0.9),
+                                          shape: BoxShape.circle,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            const Text(
+                              'Khám phá & Nhận ưu đãi 50.000đ',
                               style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w800,
-                                letterSpacing: 0.8,
-                                color: AppColors.primary,
+                                color: Colors.white,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: -0.2,
                               ),
                             ),
                           ],
@@ -347,222 +701,222 @@ class _LuxuryHomeHeader extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 6),
-                  Text(
-                    'Xin chào, $greetingName',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.textPrimary,
-                      letterSpacing: -0.2,
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
-            // Actions: Notifications & Avatar
-            Row(
+          ),
+
+          const SizedBox(width: 12),
+
+          // ── Right Column: 2 Stacked Landscape Cards ──
+          Expanded(
+            flex: 6,
+            child: Column(
               children: [
-                _CircleLuxuryButton(
-                  icon: Icons.notifications_none_rounded,
-                  tooltip: 'Thông báo',
-                  onTap: () {
-                    showAppSnackBar(context, 'Chưa có thông báo mới.', type: SnackType.info);
-                  },
-                ),
-                const SizedBox(width: 10),
-                GestureDetector(
-                  onTap: () => context.push(RouteNames.profile),
-                  child: Container(
-                    width: 42,
-                    height: 42,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: AppColors.softGold, width: 1.5),
-                    ),
-                    child: ClipOval(
-                      child: userAvatar != null && userAvatar!.isNotEmpty
-                          ? Image.network(userAvatar!, fit: BoxFit.cover)
-                          : Container(
-                              color: AppColors.primarySurface,
-                              child: const Icon(Icons.person_rounded, color: AppColors.primary, size: 22),
+                // Right Top Card: Member Exclusive (Sunset Beach)
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () => context.push(RouteNames.rewards),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.08),
+                            blurRadius: 12,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            const CoverImage(
+                              source: 'assets/images/son_thuy_beach.jpg',
+                              fit: BoxFit.cover,
                             ),
+                            Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Colors.black.withValues(alpha: 0.1),
+                                    Colors.black.withValues(alpha: 0.75),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  // "Member Exclusive" Pill Badge
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: const Text(
+                                      'Member Exclusive',
+                                      style: TextStyle(
+                                        color: Color(0xFF242824),
+                                        fontSize: 9.5,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                  const Text(
+                                    'Tích lũy điểm thưởng khi check-in Ngũ Hành Sơn',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 11.5,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: -0.2,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 10),
+
+                // Right Bottom Card: Cultural Heritage Tapestry
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () => context.push(RouteNames.destinations),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.08),
+                            blurRadius: 12,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            const CoverImage(
+                              source: 'assets/images/linh_ung_pagoda.jpg',
+                              fit: BoxFit.cover,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Colors.black.withValues(alpha: 0.1),
+                                    Colors.black.withValues(alpha: 0.75),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    'Chạm vào chiều sâu văn hóa tâm linh miền di sản...',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 11.5,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: -0.2,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
 
-class _CircleLuxuryButton extends StatelessWidget {
-  const _CircleLuxuryButton({
-    required this.icon,
-    required this.tooltip,
-    required this.onTap,
+// ─────────────────────────────────────────────────────────────────────────────
+// 4. DISCOVER CATEGORY TABS (KHÁM PHÁ, THỦY SƠN, NON NƯỚC...)
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _ShangriLaDiscoverTabs extends StatelessWidget {
+  const _ShangriLaDiscoverTabs({
+    required this.tabs,
+    required this.selectedIndex,
+    required this.onTabSelected,
   });
 
-  final IconData icon;
-  final String tooltip;
-  final VoidCallback onTap;
+  final List<String> tabs;
+  final int selectedIndex;
+  final ValueChanged<int> onTabSelected;
 
   @override
   Widget build(BuildContext context) {
-    return Tooltip(
-      message: tooltip,
-      child: Material(
-        color: AppColors.surface,
-        shape: const CircleBorder(),
-        child: InkWell(
-          customBorder: const CircleBorder(),
-          onTap: onTap,
-          child: Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: AppColors.border, width: 1.0),
-            ),
-            child: Icon(icon, size: 20, color: AppColors.textPrimary),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Hero Section phong cách Shangri-La: Large Immersive Photography
-class _ShangriLaHeroSection extends StatelessWidget {
-  const _ShangriLaHeroSection();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 360,
-      margin: const EdgeInsets.fromLTRB(20, 8, 20, 0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppDimensions.radius20),
-        border: Border.all(color: AppColors.border, width: 1.0),
-        boxShadow: AppColors.cardShadow,
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppDimensions.radius20),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            // Large landscape photography of Marble Mountains
-            const CoverImage(
-              source: 'assets/images/marble_mountains.jpg',
-              fit: BoxFit.cover,
-            ),
-            // Luxury Gradient Overlay
-            Container(
-              decoration: const BoxDecoration(
-                gradient: AppColors.heroOverlayGradient,
-              ),
-            ),
-            // Text Overlay & CTA
-            Padding(
-              padding: const EdgeInsets.all(AppDimensions.s24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: AppColors.softGold,
-                      borderRadius: BorderRadius.circular(AppDimensions.radiusFull),
-                    ),
-                    child: const Text(
-                      'DI SẢN THIÊN NHIÊN & TÂM LINH',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 0.8,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  const Text(
-                    'Discover the beauty of\nNgũ Hành Sơn',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 26,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: -0.5,
-                      height: 1.2,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Một hành trình, ngàn trải nghiệm',
-                    style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.9),
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: 0.2,
-                    ),
-                  ),
-                  const SizedBox(height: 18),
-                  FilledButton.icon(
-                    onPressed: () => context.push(RouteNames.destinations),
-                    style: FilledButton.styleFrom(
-                      backgroundColor: AppColors.warmIvory,
-                      foregroundColor: AppColors.primary,
-                      padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
-                      ),
-                    ),
-                    icon: const Icon(Icons.arrow_forward_rounded, size: 16),
-                    label: const Text(
-                      'Khám phá ngay',
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, letterSpacing: 0.3),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Category Bar phong cách Shangri-La Minimalist Pills
-class _ShangriLaCategoryBar extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final categories = DestinationCategory.values;
     return SizedBox(
       height: 42,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        itemCount: categories.length + 1,
-        separatorBuilder: (_, _) => const SizedBox(width: 8),
+        itemCount: tabs.length,
+        separatorBuilder: (_, _) => const SizedBox(width: 24),
         itemBuilder: (context, i) {
-          if (i == 0) {
-            return CategoryChip(
-              label: 'Tất cả điểm đến',
-              icon: Icons.grid_view_rounded,
-              isSelected: true,
-              onTap: () => context.push(RouteNames.destinations),
-            );
-          }
-          final cat = categories[i - 1];
-          return CategoryChip(
-            label: cat.label,
-            icon: cat.icon,
-            isSelected: false,
-            onTap: () => context.push('${RouteNames.destinations}?category=${cat.code}'),
+          final isSelected = i == selectedIndex;
+          return GestureDetector(
+            onTap: () => onTabSelected(i),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  tabs[i],
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: isSelected ? FontWeight.w800 : FontWeight.w500,
+                    color: isSelected ? const Color(0xFF242824) : const Color(0xFF8C8E8A),
+                    letterSpacing: -0.2,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                // Golden underline indicator for active tab
+                Container(
+                  width: isSelected ? 36 : 0,
+                  height: 2.5,
+                  decoration: BoxDecoration(
+                    color: isSelected ? const Color(0xFFB69A67) : Colors.transparent, // Soft Gold
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ],
+            ),
           );
         },
       ),
@@ -570,269 +924,183 @@ class _ShangriLaCategoryBar extends StatelessWidget {
   }
 }
 
-/// Section 8: VR360 Experience ("Explore before you arrive")
-class _Vr360ShangriLaSection extends StatelessWidget {
-  const _Vr360ShangriLaSection();
+// ─────────────────────────────────────────────────────────────────────────────
+// 5. HORIZONTAL DESTINATION CARDS FOR ACTIVE TAB
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _DiscoverDestinationsList extends StatelessWidget {
+  const _DiscoverDestinationsList({required this.activeTabIndex});
+
+  final int activeTabIndex;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      height: 250,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppDimensions.radius20),
-        border: Border.all(color: AppColors.border, width: 1.0),
-        boxShadow: AppColors.softShadow,
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppDimensions.radius20),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            const CoverImage(
-              source: 'assets/images/huyen_khong_panorama.jpg',
-              fit: BoxFit.cover,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.black.withValues(alpha: 0.1),
-                    Colors.black.withValues(alpha: 0.6),
-                    AppColors.primary.withValues(alpha: 0.95),
-                  ],
-                  stops: const [0.0, 0.45, 1.0],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(AppDimensions.s24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: AppColors.softGold,
-                      borderRadius: BorderRadius.circular(AppDimensions.radiusFull),
-                    ),
-                    child: const Text(
-                      'EXPLORE BEFORE YOU ARRIVE',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 0.8,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Khám phá Ngũ Hành Sơn qua VR360',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: -0.3,
-                      height: 1.25,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Trải nghiệm không gian và cảnh quan trước khi bạn đặt chân đến.',
-                    style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.9),
-                      fontSize: 13,
-                      height: 1.35,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 14),
-                  FilledButton.icon(
-                    onPressed: () => context.push(RouteNames.vr360('dong_huyen_khong')),
-                    style: FilledButton.styleFrom(
-                      backgroundColor: AppColors.warmIvory,
-                      foregroundColor: AppColors.primary,
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                      minimumSize: Size.zero,
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
-                      ),
-                    ),
-                    icon: const Icon(Icons.threesixty_rounded, size: 16),
-                    label: const Text(
-                      'Trải nghiệm ngay',
-                      style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w800),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+    return BlocBuilder<DestinationListCubit, DestinationListState>(
+      builder: (context, state) {
+        if (state.status.isLoading) {
+          return const SizedBox(
+            height: 240,
+            child: LoadingState(message: 'Đang tải danh thắng Ngũ Hành Sơn...'),
+          );
+        }
 
-/// Section 9: AI Travel Assistant ("Your Personal Travel Assistant")
-class _AiPersonalAssistantSection extends StatelessWidget {
-  const _AiPersonalAssistantSection();
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: TourismCard(
-        padding: const EdgeInsets.all(AppDimensions.s20),
-        backgroundColor: AppColors.surface,
-        borderColor: AppColors.border,
-        radius: AppDimensions.radius20,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(AppDimensions.radius12),
-                  ),
-                  child: const Icon(Icons.auto_awesome_rounded, color: AppColors.softGold, size: 22),
-                ),
-                const SizedBox(width: 14),
-                const Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Your Personal Travel Assistant',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.textPrimary,
-                          letterSpacing: -0.2,
-                        ),
-                      ),
-                      SizedBox(height: 2),
-                      Text(
-                        'Để chúng tôi giúp bạn khám phá hành trình hoàn hảo.',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+        if (state.status.isFailure) {
+          return SizedBox(
+            height: 240,
+            child: ErrorState(
+              message: state.errorMessage ?? 'Không thể tải danh sách',
+              onRetry: () => context.read<DestinationListCubit>().load(),
             ),
-            const SizedBox(height: 16),
-            const Text(
-              'GỢI Ý CÂU HỎI NHANH',
-              style: TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.w700,
-                color: AppColors.textMuted,
-                letterSpacing: 0.6,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                _AssistantQuestionChip(
-                  label: 'Lịch trình 1 ngày tham quan 5 ngọn núi?',
-                  onTap: () => context.push(RouteNames.aiChat, extra: 'Lịch trình 1 ngày tham quan 5 ngọn núi?'),
-                ),
-                _AssistantQuestionChip(
-                  label: 'Nên ghé Động Huyền Không lúc mấy giờ?',
-                  onTap: () => context.push(RouteNames.aiChat, extra: 'Nên ghé Động Huyền Không lúc mấy giờ để thấy giếng trời đẹp nhất?'),
-                ),
-                _AssistantQuestionChip(
-                  label: 'Đặc sản ẩm thực ngon quanh làng đá Non Nước?',
-                  onTap: () => context.push(RouteNames.aiChat, extra: 'Đặc sản ẩm thực ngon quanh làng đá Non Nước?'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton.icon(
-                  onPressed: () => context.push(RouteNames.aiPlanner),
-                  icon: const Icon(Icons.tune_rounded, size: 15, color: AppColors.primary),
-                  label: const Text(
-                    'AI Smart Planner',
-                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.primary),
-                  ),
-                ),
-                FilledButton.icon(
-                  onPressed: () => context.push(RouteNames.aiChat),
-                  style: FilledButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
-                    ),
-                  ),
-                  icon: const Icon(Icons.chat_bubble_outline_rounded, size: 14),
-                  label: const Text(
-                    'Trò chuyện ngay',
-                    style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+          );
+        }
 
-class _AssistantQuestionChip extends StatelessWidget {
-  const _AssistantQuestionChip({required this.label, required this.onTap});
+        // Lọc danh sách điểm đến theo tab đang chọn
+        List<Destination> filtered = state.items;
+        if (activeTabIndex == 1) {
+          // Thủy Sơn
+          filtered = state.items.where((d) => d.name.contains('Thủy Sơn') || d.name.contains('Huyền Không') || d.name.contains('Tam Thai')).toList();
+        } else if (activeTabIndex == 2) {
+          // Non Nước
+          filtered = state.items.where((d) => d.name.contains('Non Nước') || d.name.contains('Làng') || d.name.contains('Linh Ứng')).toList();
+        } else if (activeTabIndex == 3) {
+          // Sơn Thủy
+          filtered = state.items.where((d) => d.name.contains('Biển') || d.name.contains('Sơn Thủy') || d.category == DestinationCategory.beach).toList();
+        } else if (activeTabIndex == 4) {
+          // An Thượng
+          filtered = state.items.where((d) => d.name.contains('An Thượng') || d.category == DestinationCategory.anThuong).toList();
+        }
 
-  final String label;
-  final VoidCallback onTap;
+        if (filtered.isEmpty) {
+          filtered = state.items;
+        }
 
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: AppColors.backgroundSubtle,
-      borderRadius: BorderRadius.circular(AppDimensions.radiusFull),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusFull),
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppDimensions.radiusFull),
-            border: Border.all(color: AppColors.border),
+        return SizedBox(
+          height: 260,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            itemCount: filtered.length,
+            separatorBuilder: (_, _) => const SizedBox(width: 14),
+            itemBuilder: (context, i) {
+              final d = filtered[i];
+              return _ShangriLaDestinationCard(destination: d);
+            },
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
+        );
+      },
+    );
+  }
+}
+
+class _ShangriLaDestinationCard extends StatelessWidget {
+  const _ShangriLaDestinationCard({required this.destination});
+
+  final Destination destination;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => context.push(RouteNames.destinationDetail(destination.id)),
+      child: Container(
+        width: 220,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: const Color(0xFFEBE7DE), width: 1.0),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF0F2B24).withValues(alpha: 0.05),
+              blurRadius: 14,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(Icons.lightbulb_outline_rounded, size: 13, color: AppColors.softGold),
-              const SizedBox(width: 6),
-              Flexible(
-                child: Text(
-                  label,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
-                  ),
+              // Image
+              SizedBox(
+                height: 140,
+                width: double.infinity,
+                child: CoverImage(
+                  source: destination.coverImage,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              // Details
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      destination.name,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF242824),
+                        letterSpacing: -0.2,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 5),
+                    Row(
+                      children: [
+                        const Icon(Icons.location_on_outlined, size: 13, color: Color(0xFF8C8E8A)),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
+                            destination.address,
+                            style: const TextStyle(
+                              fontSize: 11.5,
+                              color: Color(0xFF8C8E8A),
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(Icons.star_rounded, size: 15, color: Color(0xFFB69A67)),
+                            const SizedBox(width: 3),
+                            Text(
+                              destination.ratingAvg.toStringAsFixed(1),
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xFF242824),
+                              ),
+                            ),
+                          ],
+                        ),
+                        // Price tag
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF3ECE1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            destination.ticketInfo.contains('Miễn phí') ? 'Miễn phí' : 'Từ 40.000đ',
+                            style: const TextStyle(
+                              fontSize: 10.5,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xFF8F6D38),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -843,178 +1111,88 @@ class _AssistantQuestionChip extends StatelessWidget {
   }
 }
 
-/// Lưới các khu trải nghiệm chuyên biệt (FE-12, FE-13, FE-14)
-class _ExperienceZonesGrid extends StatelessWidget {
-  const _ExperienceZonesGrid();
+// ─────────────────────────────────────────────────────────────────────────────
+// CUSTOM PAINTERS (DÃY NÚI THỦY MẶC & ĐƯỜNG ĐỒNG MỨC MỜ ẢO CHO HEADER)
+// ─────────────────────────────────────────────────────────────────────────────
 
+class _HeaderMountainPainter extends CustomPainter {
   @override
-  Widget build(BuildContext context) {
-    final items = <({IconData icon, String title, String subtitle, Color color, String route})>[
-      (
-        icon: Icons.nightlife_rounded,
-        title: 'Phố Tây An Thượng',
-        subtitle: 'Ẩm thực & Nightlife',
-        color: const Color(0xFF8B5CF6),
-        route: RouteNames.anThuong,
-      ),
-      (
-        icon: Icons.waves_rounded,
-        title: 'Biển Non Nước',
-        subtitle: 'Sơn Thủy & Tân Trà',
-        color: AppColors.primaryLight,
-        route: RouteNames.beach,
-      ),
-      (
-        icon: Icons.emoji_events_rounded,
-        title: 'Thi Điêu Khắc Đá',
-        subtitle: 'Bình chọn tác phẩm',
-        color: AppColors.accent,
-        route: RouteNames.contest,
-      ),
-      (
-        icon: Icons.flight_land_rounded,
-        title: 'Chào đón Sân Bay',
-        subtitle: 'Ưu đãi du khách đến',
-        color: AppColors.secondaryDark,
-        route: RouteNames.airportWelcome,
-      ),
-    ];
+  void paint(Canvas canvas, Size size) {
+    // Lớp nếp đồng mức vàng kim phía trên
+    final contourPaint = Paint()
+      ..color = const Color(0xFFD4B886).withValues(alpha: 0.35)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 0.8
+      ..isAntiAlias = true;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: items.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 12,
-          mainAxisExtent: 80,
-        ),
-        itemBuilder: (context, i) {
-          final item = items[i];
-          return TourismCard(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-            onTap: () => context.push(item.route),
-            child: Row(
-              children: [
-                Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    color: item.color.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(item.icon, color: item.color, size: 22),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        item.title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 13.5),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        item.subtitle,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(color: AppColors.textMuted, fontSize: 11.5),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
-
-/// Dải ngang "Xem gần đây" (Offline persistence)
-class _RecentlyViewedSection extends StatelessWidget {
-  const _RecentlyViewedSection();
-
-  Future<void> _confirmClearHistory(BuildContext context) async {
-    final confirmed = await showConfirmDialog(
-      context,
-      title: AppStrings.clearHistoryConfirmTitle,
-      message: AppStrings.clearHistoryConfirmMessage,
-      confirmLabel: AppStrings.clearHistoryAction,
-      destructive: true,
-    );
-    if (!confirmed || !context.mounted) return;
-    await context.read<RecentlyViewedCubit>().clear();
-    if (context.mounted) {
-      showAppSnackBar(context, AppStrings.clearHistorySuccess, type: SnackType.info);
+    for (int i = 0; i < 5; i++) {
+      final path = Path();
+      final baseY = 20.0 + i * 16.0;
+      path.moveTo(-10, baseY);
+      path.cubicTo(
+        size.width * 0.3, baseY + 18 * math.sin(i * 0.5),
+        size.width * 0.7, baseY - 20 * math.cos(i * 0.4),
+        size.width + 10, baseY + 8,
+      );
+      canvas.drawPath(path, contourPaint);
     }
+
+    // Tầng núi xa xanh rêu nhạt (Light Moss Sage)
+    final mountainPaint1 = Paint()
+      ..color = const Color(0xFFCCD6C8).withValues(alpha: 0.45)
+      ..style = PaintingStyle.fill;
+
+    final path1 = Path()
+      ..moveTo(0, size.height * 0.75)
+      ..quadraticBezierTo(size.width * 0.35, size.height * 0.35, size.width * 0.65, size.height * 0.70)
+      ..quadraticBezierTo(size.width * 0.85, size.height * 0.45, size.width, size.height * 0.65)
+      ..lineTo(size.width, size.height)
+      ..lineTo(0, size.height)
+      ..close();
+    canvas.drawPath(path1, mountainPaint1);
+
+    // Tầng núi gần xanh ngọc (Sage Green)
+    final mountainPaint2 = Paint()
+      ..color = const Color(0xFFA8BCA3).withValues(alpha: 0.35)
+      ..style = PaintingStyle.fill;
+
+    final path2 = Path()
+      ..moveTo(-10, size.height * 0.88)
+      ..quadraticBezierTo(size.width * 0.20, size.height * 0.60, size.width * 0.50, size.height * 0.85)
+      ..quadraticBezierTo(size.width * 0.75, size.height * 0.65, size.width + 10, size.height * 0.90)
+      ..lineTo(size.width + 10, size.height)
+      ..lineTo(-10, size.height)
+      ..close();
+    canvas.drawPath(path2, mountainPaint2);
   }
 
   @override
-  Widget build(BuildContext context) {
-    final recentIds = context.watch<RecentlyViewedCubit>().state;
-    if (recentIds.isEmpty) return const SizedBox.shrink();
-
-    final items = context.select((DestinationListCubit c) => c.state.items);
-    if (items.isEmpty) return const SizedBox.shrink();
-
-    final byId = {for (final d in items) d.id: d};
-    final recentDestinations = <Destination>[
-      for (final id in recentIds)
-        if (byId[id] != null) byId[id]!,
-    ];
-
-    if (recentDestinations.isEmpty) return const SizedBox.shrink();
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 28),
-        SectionHeader(
-          title: AppStrings.recentlyViewedTitle,
-          subtitle: AppStrings.recentlyViewedSubtitle,
-          actionLabel: AppStrings.clearHistoryAction,
-          icon: Icons.history_rounded,
-          onAction: () => _confirmClearHistory(context),
-        ),
-        const SizedBox(height: 12),
-        SizedBox(
-          height: 285,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            itemCount: recentDestinations.length,
-            separatorBuilder: (_, _) => const SizedBox(width: 14),
-            itemBuilder: (_, i) {
-              final d = recentDestinations[i];
-              return DestinationCard(
-                width: 250,
-                title: d.name,
-                imageUrl: d.coverImage,
-                category: d.category.label,
-                rating: d.ratingAvg,
-                reviewCount: d.reviewCount,
-                location: d.address,
-                hasVr360: d.hasVr360,
-                hasAudioGuide: d.hasAudioGuide,
-                onTap: () => context.push(RouteNames.destinationDetail(d.id)),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-/// Tiêu đề danh mục điểm đến dùng chung
-String categoryTitle(DestinationCategory? category) =>
-    category?.label ?? AppLocalizations.trStatic('destinations.all_destinations');
+class _MiniPeakLogoPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final strokePaint = Paint()
+      ..color = const Color(0xFFD4AF37)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.3
+      ..strokeCap = StrokeCap.round
+      ..isAntiAlias = true;
+
+    // Đỉnh trên
+    final pathTop = Path();
+    pathTop.moveTo(size.width * 0.2, size.height * 0.6);
+    pathTop.quadraticBezierTo(size.width * 0.5, size.height * 0.1, size.width * 0.8, size.height * 0.6);
+    canvas.drawPath(pathTop, strokePaint);
+
+    // Đáy lượn sóng
+    final pathBottom = Path();
+    pathBottom.moveTo(size.width * 0.3, size.height * 0.8);
+    pathBottom.quadraticBezierTo(size.width * 0.5, size.height * 0.45, size.width * 0.7, size.height * 0.8);
+    canvas.drawPath(pathBottom, strokePaint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}

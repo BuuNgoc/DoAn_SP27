@@ -14,6 +14,7 @@ import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/password_screens.dart';
 import '../../features/auth/presentation/screens/profile_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
+import '../../features/auth/presentation/screens/splash_screen.dart';
 import '../../features/booking_management/presentation/screens/booking_form_screen.dart';
 import '../../features/booking_management/presentation/screens/booking_screens.dart';
 import '../../features/booking_management/presentation/screens/my_trip_screen.dart';
@@ -59,15 +60,20 @@ class AppRouter {
   static GoRouter create(AuthCubit authCubit) {
     return GoRouter(
       navigatorKey: rootNavigatorKey,
-      initialLocation: RouteNames.explore,
+      initialLocation: RouteNames.splash,
       refreshListenable: _StreamListenable(authCubit.stream),
       redirect: (context, state) {
         final location = state.uri.toString();
         final loggedIn = authCubit.state.isAuthenticated;
 
-        // Điều hướng từ gốc '/' về trang chính '/explore'
+        // Cho phép màn hình Splash hiển thị ban đầu
+        if (state.matchedLocation == RouteNames.splash) {
+          return null;
+        }
+
+        // Điều hướng từ gốc '/' về trang splash
         if (state.matchedLocation == '/') {
-          return RouteNames.explore;
+          return RouteNames.splash;
         }
 
         // Chưa đăng nhập mà truy cập đường dẫn được bảo vệ -> chuyển về /login
@@ -87,6 +93,10 @@ class AppRouter {
       },
       errorBuilder: (context, state) => const _NotFoundScreen(),
       routes: [
+        GoRoute(
+          path: RouteNames.splash,
+          builder: (_, _) => const SplashScreen(),
+        ),
         StatefulShellRoute.indexedStack(
           builder: (context, state, shell) => MainNavigationShell(navigationShell: shell),
           branches: [
