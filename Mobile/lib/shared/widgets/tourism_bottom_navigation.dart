@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/constants/app_colors.dart';
-import '../../core/constants/app_dimensions.dart';
-
-/// Item trong thanh điều hướng NHS360.
+/// Item trong thanh điều hướng SmartTravel Ngũ Hành Sơn.
 class TourismNavItem {
   const TourismNavItem({
     required this.icon,
@@ -18,7 +15,8 @@ class TourismNavItem {
   final String? badge;
 }
 
-/// Thanh điều hướng nổi chuẩn Mobile Tourism (TourismBottomNavigation).
+/// [Ảnh Mẫu 2] Thanh điều hướng phong cách Shangri-La Deep Forest Green.
+/// Màu xanh thẳm sang trọng (#132B2E / #173F35), bo góc tinh tế, biểu tượng vàng kim khi active.
 class TourismBottomNavigation extends StatelessWidget {
   const TourismBottomNavigation({
     super.key,
@@ -35,24 +33,27 @@ class TourismBottomNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.paddingOf(context).bottom;
 
-    return Padding(
-      padding: EdgeInsets.fromLTRB(16, 0, 16, bottomInset > 0 ? bottomInset : 14),
-      child: Container(
-        height: 68,
-        decoration: BoxDecoration(
-          color: AppColors.surface.withValues(alpha: 0.98),
-          borderRadius: BorderRadius.circular(AppDimensions.radiusSheet),
-          border: Border.all(color: AppColors.border, width: 1.2),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFF0F172A).withValues(alpha: 0.08),
-              blurRadius: 28,
-              offset: const Offset(0, 8),
-            ),
-          ],
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF132B2E), // Deep Forest Green luxury
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(22),
+          topRight: Radius.circular(22),
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(AppDimensions.radiusSheet),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.18),
+            blurRadius: 20,
+            offset: const Offset(0, -4),
+          ),
+        ],
+      ),
+      child: SafeArea(
+        top: false,
+        minimum: EdgeInsets.only(bottom: bottomInset > 0 ? bottomInset : 8),
+        child: Container(
+          height: 64,
+          padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -88,24 +89,20 @@ class _NavItemWidget extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            padding: const EdgeInsets.symmetric(vertical: 8),
+          borderRadius: BorderRadius.circular(16),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
-                  padding: EdgeInsets.symmetric(horizontal: isSelected ? 14 : 0, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: isSelected ? AppColors.primarySurface : Colors.transparent,
-                    borderRadius: BorderRadius.circular(AppDimensions.radiusFull),
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                   child: Icon(
                     isSelected ? item.selectedIcon : item.icon,
                     size: 22,
-                    color: isSelected ? AppColors.primary : AppColors.textMuted,
+                    color: isSelected ? const Color(0xFFFAF7F2) : const Color(0xFF8FA8A1),
                   ),
                 ),
                 const SizedBox(height: 3),
@@ -117,9 +114,19 @@ class _NavItemWidget extends StatelessWidget {
                     fontSize: 10.5,
                     letterSpacing: isSelected ? 0.2 : 0.0,
                     fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                    color: isSelected ? AppColors.primary : AppColors.textMuted,
+                    color: isSelected ? const Color(0xFFFAF7F2) : const Color(0xFF8FA8A1),
                   ),
                 ),
+                if (isSelected)
+                  Container(
+                    margin: const EdgeInsets.only(top: 2),
+                    width: 4,
+                    height: 4,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFE4B85E), // Soft Gold dot
+                      shape: BoxShape.circle,
+                    ),
+                  ),
               ],
             ),
           ),
@@ -128,4 +135,3 @@ class _NavItemWidget extends StatelessWidget {
     );
   }
 }
-

@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import '../../shared/widgets/offline_banner_widget.dart';
 import '../../shared/widgets/tourism_bottom_navigation.dart';
 import '../constants/app_colors.dart';
-import '../localization/app_localizations.dart';
 import '../network/connectivity_cubit.dart';
 
 /// Khung điều hướng di động chính (360Mobile App):
@@ -19,29 +18,29 @@ class MainNavigationShell extends StatelessWidget {
 
   List<TourismNavItem> _buildNavItems(BuildContext context) => [
         TourismNavItem(
-          icon: Icons.home_outlined,
-          selectedIcon: Icons.home_rounded,
-          label: context.tr('nav.home'),
+          icon: Icons.search_rounded,
+          selectedIcon: Icons.search_rounded,
+          label: 'Khám phá',
         ),
         TourismNavItem(
-          icon: Icons.explore_outlined,
-          selectedIcon: Icons.explore_rounded,
-          label: context.tr('nav.explore'),
+          icon: Icons.calendar_today_outlined,
+          selectedIcon: Icons.calendar_today_rounded,
+          label: 'Đặt chỗ',
         ),
         TourismNavItem(
           icon: Icons.map_outlined,
           selectedIcon: Icons.map_rounded,
-          label: context.tr('nav.map'),
+          label: 'Bản đồ',
         ),
         TourismNavItem(
-          icon: Icons.luggage_outlined,
-          selectedIcon: Icons.luggage_rounded,
-          label: context.tr('nav.my_trip'),
+          icon: Icons.confirmation_number_outlined,
+          selectedIcon: Icons.confirmation_number_rounded,
+          label: 'Vouchers',
         ),
         TourismNavItem(
           icon: Icons.person_outline_rounded,
           selectedIcon: Icons.person_rounded,
-          label: context.tr('nav.personal'),
+          label: 'Tài khoản',
         ),
       ];
 

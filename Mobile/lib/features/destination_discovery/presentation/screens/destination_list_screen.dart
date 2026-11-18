@@ -3,26 +3,35 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_dimensions.dart';
 import '../../../../core/di/injection_container.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/view_status.dart';
 import '../../../../shared/widgets/cover_image.dart';
-import '../../../../shared/widgets/loading_indicator.dart';
-import '../../../../shared/widgets/tourism_components.dart';
-import '../../../../shared/widgets/tourism_search_bar.dart';
+import '../../../../shared/widgets/floating_ai_chat_button.dart';
+import '../../../../shared/widgets/state_views.dart';
 import '../../domain/entities/destination.dart';
 import '../bloc/destination_cubits.dart';
-import '../widgets/destination_widgets.dart';
 
-/// [Redesign Shangri-La Editorial] Màn hình Khám Phá (Explore Screen).
-/// Phong cách: Tạp chí du lịch cao cấp (Editorial Travel Magazine):
-/// - Header "Khám phá" thanh lịch
-/// - Minimalist Luxury Search Bar
-/// - Bộ lọc phân loại: Tất cả, Địa điểm, Khách sạn, Ẩm thực, Văn hóa, Trải nghiệm
-/// - Layout xen kẽ nhịp nhàng giữa Large Feature Cards, Horizontal Cards và Editorial Sections
+/// [Ảnh Mẫu 4: Pixel-Perfect] Danh sách điểm đến phong cách Shangri-La Circle Luxury.
+/// 1. Top Bar:
+///    - Nút Back <
+///    - Tiêu đề "Ngũ Hành Sơn", phụ đề ngày tham quan "13 Th12 - 14 Th12"
+///    - Pill đơn vị tiền tệ "VND" kèm biểu tượng thẻ tag bên phải
+/// 2. Segmented Tabs:
+///    - Tab "List" (icon danh sách) kèm vạch gạch chân vàng kim Soft Gold (#B69A67 / #D4AF37)
+///    - Tab "Map" (icon bản đồ) - bấm chuyển nhanh sang Bản đồ tương tác
+/// 3. Thẻ điểm đến toàn màn hình (Luxury Hero Cards):
+///    - Ảnh tràn viền chất lượng cao
+///    - Góc trên trái: Logo ấn ngọc SmartTravel hoàng gia màu trắng
+///    - Góc trên phải: Pill vàng kim chứa giá "Từ 40.000 VNĐ / vé" hoặc "Miễn phí" / Pill xám "Sold Out"
+///    - Đáy ảnh: Tiêu đề in đậm màu trắng + Biểu tượng ghim vị trí và địa chỉ chi tiết
+/// 4. Nút nổi "Trợ lý AI" (Shangri-La Chat) ở góc dưới trái
 class DestinationListScreen extends StatelessWidget {
-  const DestinationListScreen({super.key, this.initialCategory, this.autofocusSearch = false});
+  const DestinationListScreen({
+    super.key,
+    this.initialCategory,
+    this.autofocusSearch = false,
+  });
 
   final DestinationCategory? initialCategory;
   final bool autofocusSearch;
@@ -31,578 +40,443 @@ class DestinationListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<DestinationListCubit>()..load(category: initialCategory),
-      child: _DestinationListView(autofocus: autofocusSearch),
+      child: const _DestinationListPixelPerfectView(),
     );
   }
 }
 
-class _DestinationListView extends StatefulWidget {
-  const _DestinationListView({required this.autofocus});
-
-  final bool autofocus;
+class _DestinationListPixelPerfectView extends StatefulWidget {
+  const _DestinationListPixelPerfectView();
 
   @override
-  State<_DestinationListView> createState() => _DestinationListViewState();
+  State<_DestinationListPixelPerfectView> createState() => _DestinationListPixelPerfectViewState();
 }
 
-class _DestinationListViewState extends State<_DestinationListView> {
-  final _controller = TextEditingController();
-  int _selectedFilterIndex = 0;
-
-  static const List<String> _filters = [
-    'Tất cả',
-    'Địa điểm',
-    'Khách sạn',
-    'Ẩm thực',
-    'Văn hóa',
-    'Trải nghiệm',
-  ];
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  void _onFilterTap(int index, DestinationListCubit cubit) {
-    setState(() => _selectedFilterIndex = index);
-    DestinationCategory? cat;
-    switch (index) {
-      case 1: // Địa điểm
-        cat = DestinationCategory.mountainCave;
-        break;
-      case 2: // Khách sạn / Nghỉ dưỡng
-        cat = DestinationCategory.beach;
-        break;
-      case 3: // Ẩm thực
-        cat = DestinationCategory.anThuong;
-        break;
-      case 4: // Văn hóa
-        cat = DestinationCategory.pagoda;
-        break;
-      case 5: // Trải nghiệm
-        cat = DestinationCategory.craftVillage;
-        break;
-      default:
-        cat = null;
-    }
-    cubit.selectCategory(cat);
-  }
+class _DestinationListPixelPerfectViewState extends State<_DestinationListPixelPerfectView> {
+  int _selectedViewTab = 0; // 0: List, 1: Map
+  String _selectedCurrency = 'VND';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Colors.white,
       body: SafeArea(
         bottom: false,
-        child: BlocBuilder<DestinationListCubit, DestinationListState>(
-          builder: (context, state) {
-            final cubit = context.read<DestinationListCubit>();
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                // ── 1. Top Bar (Back, Title + Dates, Currency Tag Pill) ──
+                _buildTopBar(context),
 
-            return CustomScrollView(
-              slivers: [
-                // ── 1. Editorial Header ─────────────────────────────────────────
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 16, 20, 4),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              'EDITORIAL TRAVEL GUIDE',
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: 1.2,
-                                color: AppColors.primaryLight,
-                              ),
-                            ),
-                            if (Navigator.of(context).canPop())
-                              IconButton(
-                                icon: const Icon(Icons.close_rounded, size: 22, color: AppColors.textPrimary),
-                                onPressed: () => Navigator.of(context).maybePop(),
-                              ),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.baseline,
-                          textBaseline: TextBaseline.alphabetic,
-                          children: [
-                            const Text(
-                              'Khám phá',
-                              style: TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.w800,
-                                color: AppColors.textPrimary,
-                                letterSpacing: -0.5,
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            if (state.status.isSuccess)
-                              Text(
-                                '${state.items.length} điểm đến tuyển chọn',
-                                style: const TextStyle(
-                                  fontSize: 13,
-                                  color: AppColors.textMuted,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                // ── 2. Segmented Tabs (List vs Map) ─────────────────────
+                _buildSegmentedTabs(context),
 
-                // ── 2. Search Field ─────────────────────────────────────────────
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
-                    child: TourismSearchBar(
-                      controller: _controller,
-                      hintText: 'Tìm địa điểm, hang động, chùa cổ...',
-                      onChanged: cubit.search,
-                    ),
-                  ),
-                ),
+                const Divider(height: 1, color: Color(0xFFEBE7DD)),
 
-                // ── 3. Category Filter Chips (Tất cả, Địa điểm, Khách sạn,...) ──
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 40,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      itemCount: _filters.length,
-                      separatorBuilder: (_, _) => const SizedBox(width: 8),
-                      itemBuilder: (context, i) {
-                        final isSelected = i == _selectedFilterIndex;
-                        return InkWell(
-                          borderRadius: BorderRadius.circular(AppDimensions.radiusFull),
-                          onTap: () => _onFilterTap(i, cubit),
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 200),
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                            decoration: BoxDecoration(
-                              color: isSelected ? AppColors.primary : AppColors.surface,
-                              borderRadius: BorderRadius.circular(AppDimensions.radiusFull),
-                              border: Border.all(
-                                color: isSelected ? AppColors.primary : AppColors.border,
-                                width: 1.0,
-                              ),
-                            ),
-                            child: Text(
-                              _filters[i],
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                                color: isSelected ? Colors.white : AppColors.textPrimary,
-                              ),
-                            ),
+                // ── 3. Destination Cards List ───────────────────────────
+                Expanded(
+                  child: BlocBuilder<DestinationListCubit, DestinationListState>(
+                    builder: (context, state) {
+                      if (state.status.isLoading) {
+                        return const Center(
+                          child: LoadingState(message: 'Đang tải danh sách điểm đến...'),
+                        );
+                      }
+
+                      if (state.status.isFailure) {
+                        return Center(
+                          child: ErrorState(
+                            message: state.errorMessage ?? 'Không thể tải danh sách',
+                            onRetry: () => context.read<DestinationListCubit>().load(),
                           ),
                         );
-                      },
-                    ),
+                      }
+
+                      if (state.items.isEmpty) {
+                        return const Center(
+                          child: EmptyState(
+                            title: 'Chưa có điểm đến',
+                            subtitle: 'Không tìm thấy danh thắng nào phù hợp.',
+                          ),
+                        );
+                      }
+
+                      return RefreshIndicator(
+                        color: AppColors.primary,
+                        onRefresh: () => context.read<DestinationListCubit>().load(),
+                        child: ListView.separated(
+                          padding: const EdgeInsets.fromLTRB(16, 16, 16, 90),
+                          itemCount: state.items.length,
+                          separatorBuilder: (_, _) => const SizedBox(height: 16),
+                          itemBuilder: (context, index) {
+                            final destination = state.items[index];
+                            final isSoldOut = index == state.items.length - 1 && state.items.length > 3;
+
+                            return _ShangriLaLuxuryCard(
+                              destination: destination,
+                              isSoldOut: isSoldOut,
+                              currency: _selectedCurrency,
+                              onTap: () => context.push(RouteNames.destinationDetail(destination.id)),
+                            );
+                          },
+                        ),
+                      );
+                    },
                   ),
                 ),
-
-                const SliverToBoxAdapter(child: SizedBox(height: 16)),
-
-                // ── 4. Alternating Magazine Content ─────────────────────────────
-                _buildSliverContent(context, state),
-
-                const SliverToBoxAdapter(child: SizedBox(height: AppDimensions.bottomNavClearance)),
               ],
-            );
-          },
+            ),
+
+            // ── 4. Floating AI Assistant Chat Button (Bottom Left) ─────────
+            Positioned(
+              left: 20,
+              bottom: 24,
+              child: FloatingAiChatButton(
+                label: 'Trợ lý AI',
+                onTap: () => context.push(RouteNames.aiChat),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildSliverContent(BuildContext context, DestinationListState state) {
-    if (state.status.isLoading) {
-      return const SliverFillRemaining(
-        child: LoadingIndicator(message: 'Đang tải danh sách điểm đến tuyển chọn...'),
-      );
-    }
-    if (state.status.isFailure) {
-      return SliverFillRemaining(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(state.errorMessage ?? 'Không thể tải điểm đến', style: const TextStyle(color: AppColors.error)),
-                const SizedBox(height: 12),
-                FilledButton(
-                  onPressed: () => context.read<DestinationListCubit>().load(category: state.category),
-                  child: const Text('Thử lại'),
+  // ── Top Bar ────────────────────────────────────────────────────────────────
+  Widget _buildTopBar(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // Back Button
+          IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20, color: Color(0xFF242824)),
+            onPressed: () => Navigator.of(context).maybePop(),
+          ),
+
+          // Center Title & Dates
+          const Column(
+            children: [
+              Text(
+                'Ngũ Hành Sơn',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF242824),
+                  letterSpacing: -0.2,
                 ),
-              ],
+              ),
+              SizedBox(height: 2),
+              Text(
+                '13 Th12 - 14 Th12',
+                style: TextStyle(
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF70736C),
+                ),
+              ),
+            ],
+          ),
+
+          // Currency Tag Pill
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                _selectedCurrency = _selectedCurrency == 'VND' ? 'USD' : 'VND';
+              });
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: const Color(0xFFDBD6CA), width: 1.0),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.sell_outlined, size: 13, color: Color(0xFF5A5D55)),
+                  const SizedBox(width: 4),
+                  Text(
+                    _selectedCurrency,
+                    style: const TextStyle(
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF242824),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ── Segmented Tabs (List vs Map) ───────────────────────────────────────────
+  Widget _buildSegmentedTabs(BuildContext context) {
+    return Row(
+      children: [
+        // Tab 1: List
+        Expanded(
+          child: GestureDetector(
+            onTap: () => setState(() => _selectedViewTab = 0),
+            child: Container(
+              color: Colors.transparent,
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: Column(
+                children: [
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.format_list_bulleted_rounded, size: 18, color: Color(0xFF242824)),
+                      SizedBox(width: 6),
+                      Text(
+                        'Danh sách (List)',
+                        style: TextStyle(
+                          fontSize: 13.5,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFF242824),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  // Golden Underline Indicator
+                  Container(
+                    height: 2.5,
+                    width: double.infinity,
+                    color: _selectedViewTab == 0 ? const Color(0xFFB69A67) : Colors.transparent, // Soft Gold
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      );
-    }
-    if (state.items.isEmpty) {
-      return const SliverFillRemaining(
-        child: EmptyStateWidget(
-          icon: Icons.travel_explore_rounded,
-          title: 'Không tìm thấy điểm đến',
-          message: 'Hãy thử đổi từ khóa tìm kiếm hoặc chọn danh mục khác.',
-        ),
-      );
-    }
 
-    // Alternating magazine layout
-    final items = state.items;
-    return SliverPadding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      sliver: SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (context, i) {
-            final d = items[i];
-            final layoutPattern = i % 3;
-
-            if (layoutPattern == 0) {
-              // Pattern 0: Large Feature Card
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: _EditorialLargeCard(destination: d),
-              );
-            } else if (layoutPattern == 1) {
-              // Pattern 1: Horizontal Card
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: _EditorialHorizontalCard(destination: d),
-              );
-            } else {
-              // Pattern 2: Immersive Full Bleed Card
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: _EditorialBannerCard(destination: d),
-              );
-            }
-          },
-          childCount: items.length,
+        // Tab 2: Map
+        Expanded(
+          child: GestureDetector(
+            onTap: () {
+              // Bấm chuyển sang Bản đồ tương tác
+              context.push(RouteNames.map);
+            },
+            child: Container(
+              color: Colors.transparent,
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: Column(
+                children: [
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.map_outlined, size: 18, color: Color(0xFF70736C)),
+                      SizedBox(width: 6),
+                      Text(
+                        'Bản đồ (Map)',
+                        style: TextStyle(
+                          fontSize: 13.5,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF70736C),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                    height: 2.5,
+                    width: double.infinity,
+                    color: Colors.transparent,
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 }
 
-/// Thẻ lớn (Large Feature Card) trong tạp chí
-class _EditorialLargeCard extends StatelessWidget {
-  const _EditorialLargeCard({required this.destination});
+// ─────────────────────────────────────────────────────────────────────────────
+// THẺ ĐIỂM ĐẾN PHONG CÁCH SHANGRI-LA (PIXEL-PERFECT CARD WITH GOLD PRICE PILL)
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _ShangriLaLuxuryCard extends StatelessWidget {
+  const _ShangriLaLuxuryCard({
+    required this.destination,
+    required this.isSoldOut,
+    required this.currency,
+    required this.onTap,
+  });
 
   final Destination destination;
+  final bool isSoldOut;
+  final String currency;
+  final VoidCallback onTap;
+
+  String _formatPrice() {
+    if (destination.ticketInfo.contains('Miễn phí')) {
+      return 'Miễn phí';
+    }
+    if (currency == 'USD') {
+      return 'From USD 2 / vé';
+    }
+    return 'Từ 40.000 VNĐ / vé';
+  }
 
   @override
   Widget build(BuildContext context) {
-    return TourismCard(
-      padding: EdgeInsets.zero,
-      radius: AppDimensions.radius20,
-      onTap: () => context.push(RouteNames.destinationDetail(destination.id)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 210,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.10),
+              blurRadius: 14,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Stack(
+            fit: StackFit.expand,
             children: [
+              // Hero Image
               CoverImage(
                 source: destination.coverImage,
-                height: 210,
-                width: double.infinity,
-                radius: AppDimensions.radius20 - 2,
+                fit: BoxFit.cover,
               ),
+
+              // Gradient Overlay (top shadow for logo/pill + dark bottom for title/address)
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.black.withValues(alpha: 0.35),
+                      Colors.transparent,
+                      Colors.black.withValues(alpha: 0.82),
+                    ],
+                    stops: const [0.0, 0.4, 1.0],
+                  ),
+                ),
+              ),
+
+              // Top-Left Brand Logo Emblem
               Positioned(
                 top: 14,
                 left: 14,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  width: 32,
+                  height: 32,
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withValues(alpha: 0.9),
-                    borderRadius: BorderRadius.circular(AppDimensions.radiusFull),
-                    border: Border.all(color: AppColors.softGold.withValues(alpha: 0.7), width: 0.8),
+                    color: Colors.white.withValues(alpha: 0.85),
+                    shape: BoxShape.circle,
                   ),
-                  child: Text(
-                    destination.category.label.toUpperCase(),
-                    style: const TextStyle(
-                      color: AppColors.warmIvory,
-                      fontSize: 10.5,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 0.8,
-                    ),
+                  child: const Center(
+                    child: Icon(Icons.temple_buddhist_rounded, size: 18, color: Color(0xFF173F35)),
                   ),
                 ),
               ),
+
+              // Top-Right Gold Price Pill or Grey Sold Out Pill
               Positioned(
                 top: 14,
                 right: 14,
-                child: FavoriteButton(destinationId: destination.id, size: 38),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(AppDimensions.s16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    const Icon(Icons.star_rounded, size: 16, color: AppColors.softGold),
-                    const SizedBox(width: 3),
-                    Text(
-                      destination.ratingAvg.toStringAsFixed(1),
-                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: AppColors.textPrimary),
-                    ),
-                    const SizedBox(width: 4),
-                    Text('(${destination.reviewCount} đánh giá)', style: const TextStyle(fontSize: 12, color: AppColors.textMuted)),
-                    const Spacer(),
-                    const Icon(Icons.location_on_outlined, size: 14, color: AppColors.textMuted),
-                    const SizedBox(width: 4),
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        destination.address,
-                        style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  destination.name,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.textPrimary,
-                    letterSpacing: -0.3,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  destination.shortDescription,
-                  style: const TextStyle(fontSize: 13, color: AppColors.textSecondary, height: 1.4),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// Thẻ ngang (Horizontal Card)
-class _EditorialHorizontalCard extends StatelessWidget {
-  const _EditorialHorizontalCard({required this.destination});
-
-  final Destination destination;
-
-  @override
-  Widget build(BuildContext context) {
-    return TourismCard(
-      padding: EdgeInsets.zero,
-      radius: AppDimensions.radius16,
-      onTap: () => context.push(RouteNames.destinationDetail(destination.id)),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              CoverImage(
-                source: destination.coverImage,
-                width: 125,
-                height: 135,
-                radius: AppDimensions.radius16 - 2,
-              ),
-              Positioned(
-                top: 8,
-                left: 8,
-                child: FavoriteButton(destinationId: destination.id, size: 30),
-              ),
-            ],
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(14),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    destination.category.label.toUpperCase(),
-                    style: const TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.primary,
-                      letterSpacing: 0.6,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    destination.name,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.textPrimary,
-                      letterSpacing: -0.2,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    destination.shortDescription,
-                    style: const TextStyle(fontSize: 12, color: AppColors.textSecondary, height: 1.3),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      const Icon(Icons.star_rounded, size: 14, color: AppColors.softGold),
-                      const SizedBox(width: 3),
-                      Text(
-                        destination.ratingAvg.toStringAsFixed(1),
-                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
-                      ),
-                      const SizedBox(width: 8),
-                      if (destination.hasVr360)
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: AppColors.primarySurface,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: const Text(
-                            'VR 360°',
-                            style: TextStyle(fontSize: 9.5, fontWeight: FontWeight.w800, color: AppColors.primary),
+                child: isSoldOut
+                    ? Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF5A5D55).withValues(alpha: 0.85),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: const Text(
+                          'Đã hết vé hôm nay',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 11.5,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
-                    ],
-                  ),
-                ],
+                      )
+                    : Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFE4B85E), // Soft Gold
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.15),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Text(
+                          _formatPrice(),
+                          style: const TextStyle(
+                            color: Color(0xFF242824),
+                            fontSize: 11.5,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: -0.2,
+                          ),
+                        ),
+                      ),
               ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
-/// Thẻ Editorial Banner (Editorial Section Card)
-class _EditorialBannerCard extends StatelessWidget {
-  const _EditorialBannerCard({required this.destination});
-
-  final Destination destination;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 210,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppDimensions.radius20),
-        border: Border.all(color: AppColors.border, width: 1.0),
-        boxShadow: AppColors.softShadow,
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppDimensions.radius20),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            CoverImage(
-              source: destination.coverImage,
-              fit: BoxFit.cover,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.black.withValues(alpha: 0.1),
-                    Colors.black.withValues(alpha: 0.5),
-                    AppColors.primary.withValues(alpha: 0.92),
-                  ],
-                  stops: const [0.0, 0.45, 1.0],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(AppDimensions.s20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                    decoration: BoxDecoration(
-                      color: AppColors.softGold,
-                      borderRadius: BorderRadius.circular(AppDimensions.radiusFull),
-                    ),
-                    child: Text(
-                      destination.category.label.toUpperCase(),
+              // Bottom Title & Address Overlay
+              Positioned(
+                left: 14,
+                right: 14,
+                bottom: 14,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      destination.name,
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 9.5,
+                        fontSize: 17,
                         fontWeight: FontWeight.w800,
-                        letterSpacing: 0.6,
+                        letterSpacing: -0.3,
+                        shadows: [
+                          Shadow(color: Colors.black54, blurRadius: 8, offset: Offset(0, 2)),
+                        ],
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    destination.name,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: -0.3,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    destination.shortDescription,
-                    style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.9),
-                      fontSize: 12.5,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 12),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: FilledButton(
-                      onPressed: () => context.push(RouteNames.destinationDetail(destination.id)),
-                      style: FilledButton.styleFrom(
-                        backgroundColor: AppColors.warmIvory,
-                        foregroundColor: AppColors.primary,
-                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                        minimumSize: Size.zero,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppDimensions.radiusButton),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        const Icon(Icons.location_on_rounded, size: 14, color: Colors.white70),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
+                            destination.address,
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      ),
-                      child: const Text('Xem chi tiết', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
+                      ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

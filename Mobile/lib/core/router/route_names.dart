@@ -2,6 +2,9 @@
 class RouteNames {
   RouteNames._();
 
+  // ── Splash Screen ─────────────────────────────────────────────────────
+  static const String splash = '/splash';
+
   // ── 5 tab của MainNavigationShell ─────────────────────────────────────
   static const String home = '/explore'; // Home (Shangri-La luxury hero & discovery)
   static const String explore = '/explore'; // Backward-compatible alias
