@@ -68,9 +68,6 @@ class RouteNames {
   static const String beach = '/zones/beach';
   static const String airportWelcome = '/welcome-airport';
 
-  // ── FE-17 → FE-28: Admin & CMS Portal ─────────────────────────────
-  static const String admin = '/admin';
-
   /// Các đường dẫn cần đăng nhập (chuyển hướng về `/login?from=...`).
   static const List<String> protectedPrefixes = [
     changePassword,
