@@ -43,6 +43,7 @@ import '../../features/specialized_zones/presentation/screens/an_thuong_experien
 import '../../features/specialized_zones/presentation/screens/beach_tourism_screen.dart';
 import '../../features/vr360_audio_guide/presentation/screens/audio_guide_screen.dart';
 import '../../features/vr360_audio_guide/presentation/screens/vr360_panorama_screen.dart';
+import '../../features/admin_portal/presentation/screens/admin_portal_screen.dart';
 import '../localization/app_localizations.dart';
 import 'main_navigation_shell.dart';
 import 'route_names.dart';
@@ -260,6 +261,12 @@ class AppRouter {
         GoRoute(
           path: RouteNames.airportWelcome,
           builder: (_, s) => AirportArrivalPromoScreen(campaignId: s.uri.queryParameters['campaign']),
+        ),
+
+        // ── FE-17 → FE-28 Admin Web & CMS Portal ──────────────────────────
+        GoRoute(
+          path: RouteNames.admin,
+          builder: (_, _) => const AdminPortalScreen(),
         ),
       ],
     );
