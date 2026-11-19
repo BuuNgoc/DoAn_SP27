@@ -1,71 +1,106 @@
 import React from 'react';
-import { Search, Bell, ShieldCheck, Globe } from 'lucide-react';
+import {
+  Search,
+  Bell,
+  RefreshCw,
+  ExternalLink,
+  ShieldCheck,
+  UserCheck,
+} from 'lucide-react';
+import { AdminUserProfile } from '../services/firebase';
+import { navItems } from './Sidebar';
 
 interface TopbarProps {
-  title: string;
-  badge?: string;
-  searchQuery: string;
-  onSearchChange: (query: string) => void;
+  currentTab: string;
+  currentUser: AdminUserProfile | null;
+  onRefreshData?: () => void;
+  isRefreshing?: boolean;
+  onNavigateLanding: () => void;
 }
 
 export const Topbar: React.FC<TopbarProps> = ({
-  title,
-  badge,
-  searchQuery,
-  onSearchChange,
+  currentTab,
+  currentUser,
+  onRefreshData,
+  isRefreshing,
+  onNavigateLanding,
 }) => {
+  const currentItem = navItems.find((i) => i.id === currentTab) || navItems[0];
+  const isAdmin = currentUser?.role === 'ADMIN';
+
   return (
-    <header className="h-16 bg-white border-b border-[#E2E8F0] px-8 flex items-center justify-between shrink-0 shadow-sm">
-      {/* Title & Badge */}
-      <div className="flex items-center space-x-3">
-        <h2 className="text-lg font-extrabold text-[#0F172A] tracking-tight">{title}</h2>
-        {badge && (
-          <span className="bg-[#EBF2EF] text-[#173F35] text-xs px-2.5 py-0.5 rounded-full font-extrabold border border-[#173F35]/20">
-            {badge}
-          </span>
-        )}
+    <header className="h-16 bg-white border-b border-[#E8DFD0] px-6 flex items-center justify-between z-20 shadow-sm">
+      {/* ── Left: Breadcrumb & Title ─────────────────────────────────── */}
+      <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 text-xs text-[#777A73]">
+          <span className="font-semibold text-[#173F35]">Quản Trị</span>
+          <span>/</span>
+          <span className="text-[#242824] font-bold">{currentItem.title}</span>
+        </div>
       </div>
 
-      {/* Actions & Search */}
-      <div className="flex items-center space-x-4">
-        {/* Search Input */}
-        <div className="relative w-72">
-          <Search className="w-4 h-4 text-[#94A3B8] absolute left-3 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Tìm kiếm dữ liệu CMS..."
-            className="w-full pl-9 pr-3 py-1.5 bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg text-sm text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#173F35] focus:bg-white transition-all placeholder:text-[#94A3B8]"
-          />
-        </div>
+      {/* ── Right: Quick Actions & Profile ────────────────────────────── */}
+      <div className="flex items-center gap-4">
+        {/* Refresh Data Button */}
+        {onRefreshData && (
+          <button
+            onClick={onRefreshData}
+            disabled={isRefreshing}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#E8DFD0] bg-[#FAF7F2] hover:bg-[#F2ECE1] text-[#173F35] text-xs font-semibold transition-all disabled:opacity-50"
+            title="Đồng bộ lại dữ liệu từ Cloud Firestore"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 text-[#B69A67] ${isRefreshing ? 'animate-spin' : ''}`} />
+            <span className="hidden sm:inline">Làm Mới</span>
+          </button>
+        )}
 
-        {/* Port Status */}
-        <div className="flex items-center space-x-1.5 px-3 py-1 bg-[#F1F5F9] rounded-full border border-[#E2E8F0] text-xs font-bold text-[#2563EB]">
-          <Globe className="w-3.5 h-3.5" />
-          <span>REACT TS • 3000</span>
-        </div>
-
-        {/* Role Badge */}
-        <div className="flex items-center space-x-1.5 px-3 py-1 bg-[#DCFCE7] rounded-full text-xs font-extrabold text-[#15803D]">
-          <ShieldCheck className="w-3.5 h-3.5" />
-          <span>ROLE: ADMIN</span>
-        </div>
-
-        {/* Notifications */}
-        <button className="p-2 text-[#64748B] hover:text-[#0F172A] hover:bg-[#F8FAFC] rounded-lg relative">
-          <Bell className="w-4 h-4" />
-          <span className="w-2 h-2 bg-[#DC2626] rounded-full absolute top-1.5 right-1.5"></span>
+        {/* View Public Landing Page */}
+        <button
+          onClick={onNavigateLanding}
+          className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#E8DFD0] text-[#777A73] hover:text-[#173F35] hover:border-[#B69A67] text-xs font-medium transition-all"
+        >
+          <ExternalLink className="w-3.5 h-3.5 text-[#B69A67]" />
+          <span>Xem Trang Chủ</span>
         </button>
 
-        {/* User Profile */}
-        <div className="flex items-center space-x-3 pl-2 border-l border-[#E2E8F0]">
-          <div className="w-9 h-9 rounded-full bg-[#173F35] text-white flex items-center justify-center font-bold text-xs shadow-sm">
-            AD
+        {/* Notifications */}
+        <div className="relative">
+          <button
+            className="w-9 h-9 rounded-lg bg-[#FAF7F2] border border-[#E8DFD0] flex items-center justify-center text-[#777A73] hover:text-[#173F35] transition-colors relative"
+            title="Thông báo hệ thống"
+          >
+            <Bell className="w-4 h-4" />
+            <span className="absolute 1 top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#B83A2E]"></span>
+          </button>
+        </div>
+
+        {/* User Role Badge & Chip */}
+        <div className="flex items-center gap-2.5 pl-2 border-l border-[#E8DFD0]">
+          <div className="text-right hidden sm:block">
+            <div className="text-xs font-bold text-[#173F35] leading-tight">
+              {currentUser?.displayName || 'Quản trị viên'}
+            </div>
+            <div className="flex items-center justify-end gap-1 mt-0.5">
+              <span
+                className={`text-[9px] font-bold px-1.5 py-0.2 rounded uppercase ${
+                  isAdmin
+                    ? 'bg-[#173F35] text-[#E4B85E]'
+                    : 'bg-[#B69A67] text-white'
+                }`}
+              >
+                {isAdmin ? 'ADMIN' : 'MANAGER'}
+              </span>
+            </div>
           </div>
-          <div className="hidden md:block">
-            <div className="text-xs font-bold text-[#0F172A]">Nguyễn Ngọc Bữu</div>
-            <div className="text-[11px] text-[#64748B]">buunnde180722@fpt.edu.vn</div>
+
+          <div
+            className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-xs shadow-sm border ${
+              isAdmin
+                ? 'bg-[#173F35] text-[#E4B85E] border-[#B69A67]'
+                : 'bg-[#EBF2EF] text-[#173F35] border-[#C7DCD4]'
+            }`}
+          >
+            {isAdmin ? <ShieldCheck className="w-4 h-4" /> : <UserCheck className="w-4 h-4" />}
           </div>
         </div>
       </div>
