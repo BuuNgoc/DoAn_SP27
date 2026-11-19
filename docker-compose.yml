@@ -53,6 +53,23 @@ services:
       retries: 3
       start_period: 15s
 
+  # ============================================================================
+  # 3. WEB ADMIN / CMS: ReactJS TypeScript Application (Vite / Nginx Alpine)
+  # ============================================================================
+  web-admin:
+    build:
+      context: ./Web
+      dockerfile: Dockerfile
+    container_name: nhs360-web-admin
+    restart: unless-stopped
+    ports:
+      - "3000:3000"   # Cổng truy cập Web Admin CMS (ReactJS TypeScript)
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - nhs360-network
+
 # ==============================================================================
 # NETWORKS & VOLUMES
 # ==============================================================================

@@ -76,6 +76,21 @@ DoAn_SP27/
 │           ├── specialized_zones/              # [FE-12, FE-13, FE-14] An Thuong Hub, Beach Tourism & Safety, Airport Promo
 │           └── admin_portal/                   # [FE-17 -> FE-28] Content, VR/Audio, Event, Loyalty, Analytics, RBAC, Audit
 │
+├── Web/                                        # WEB ADMIN & CMS PORTAL (ReactJS + TypeScript + Vite)
+│   ├── package.json                            # React 18, Vite 6, Tailwind CSS, Lucide React
+│   ├── vite.config.ts                          # Dev server port 3000
+│   ├── tailwind.config.js                      # Shangri-La Luxury & Enterprise design system
+│   ├── Dockerfile & nginx.conf                 # Multi-stage production container
+│   └── src/
+│       ├── types/                              # Full TypeScript interfaces for Epics 1 -> 8
+│       ├── data/mockData.ts                    # Rich landmark, beach, and artisan datasets
+│       └── components/                         # 11 CMS modules: Destinations, VR360 Hotspot, An Thượng, Beach, Contest, Workshop QR, Campaign, AI Analytics, RBAC, Audit
+│
+├── AI_Service/                                 # AI TRAINING SERVICE & PHOTO RECOGNITION MODELS
+│   ├── requirements.txt                        # TensorFlow/PyTorch, OpenCV, Flask/FastAPI
+│   ├── train_model.py                          # Transfer Learning ResNet50 classifier
+│   └── dataset/                                # 18 classes for Ngu Hanh Son heritage landmarks
+│
 └── Backend/                                    # FIREBASE SERVERLESS BACKEND
     ├── .firebaserc
     ├── firebase.json
